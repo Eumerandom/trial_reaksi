@@ -19,5 +19,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Seed with proper order due to foreign key constraints
+        $this->call([
+            CompanySeeder::class,   // First: Create companies (parent and child)
+            CategorySeeder::class,   // Second: Create categories (parent and child)
+            ProductSeeder::class,    // Last: Create products (needs companies and categories)
+        ]);
     }
 }

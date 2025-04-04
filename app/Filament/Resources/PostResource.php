@@ -6,6 +6,7 @@ use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers;
 use App\Models\Post;
 use Filament\Forms;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
@@ -14,6 +15,8 @@ use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
+use Psy\Util\Str;
 
 class PostResource extends Resource
 {
@@ -25,11 +28,36 @@ class PostResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('content')
-                    ->required(),
+                Forms\Components\Section::make()
+                ->schema([
+                    Forms\Components\Grid::make(2)
+                    ->schema([
+                        TextInput::make('title')
+                        ->required()
+                        ->maxLength(255)
+                        ->columnSpan(1)
+                        ->afterStateUpdated(function (callable $set, $state){
+                            $set('slug', \Illuminate\Support\Str::slug($state));
+                        })
+                        ->live(true),
+                        Forms\Components\Hidden::make('slug')
+                        ->dehydrated(),
+                        Forms\Components\Select::make('status')
+                        ->options([
+                            'draft' => 'Draft',
+                            'published' => 'Published',
+                            'unpublished' => 'Unpublished',
+                        ])
+                        ->required()
+                        ->default('draft')
+                        ->columnSpan(1),
+                        MarkdownEditor::make('content')
+                            ->required()
+                        ->columnSpan(2),
+                        Forms\Components\Hidden::make('author')
+                        ->default(fn () => auth()->id())
+                    ])
+                ])
             ]);
     }
 
@@ -41,7 +69,19 @@ class PostResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('content')
-                    ->limit(50), // menampilkan 50 karakter pertama
+                    ->limit(50),
+                Tables\Columns\TextColumn::make('author')
+                ->sortable()
+                ->searchable(),
+                Tables\Columns\TextColumn::make('status')
+                ->badge()
+                ->sortable()
+                ->color(fn ($state) => match ($state) {
+                    'published' => 'success',
+                    'draft' => 'gray',
+                    'unpublished' => 'warning',
+                })
+
 
             ])
             ->filters([

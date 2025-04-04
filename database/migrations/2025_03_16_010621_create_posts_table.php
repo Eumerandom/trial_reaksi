@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('slug');
+            $table->enum('status', ['published', 'unpublished', 'draft'])->default('draft');
             $table->text('content');
+            $table->foreignId('author')->constrained('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

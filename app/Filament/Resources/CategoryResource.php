@@ -17,13 +17,13 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-folder';
+    protected static ?string $navigationIcon = 'heroicon-o-tag';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()
+                Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()
@@ -83,7 +83,7 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CategoryResource\RelationManagers\ProductsRelationManager::class,
         ];
     }
 
