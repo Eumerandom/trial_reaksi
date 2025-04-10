@@ -25,7 +25,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Kopi hitam premium asli Indonesia dengan cita rasa khas yang telah menjadi favorit keluarga Indonesia sejak 1927',
                 'categories_id' => $kopiCategory->id,
                 'company_id' => $wingsFood->id,
-                'status' => 'affiliated',
+                'status' => 'Unaffiliated',
                 'local_product' => true,
                 'source' => 'https://www.kapalapi.co.id/',
                 'image' => 'product_image/kopi-kapal-api.jpg'
@@ -35,7 +35,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Kopi instant dengan rasa yang kuat dan aroma yang khas, diproduksi dengan biji kopi pilihan dari Indonesia',
                 'categories_id' => $kopiCategory->id,
                 'company_id' => $wingsFood->id,
-                'status' => 'affiliated',
+                'status' => 'Affiliated',
                 'local_product' => true,
                 'source' => 'https://www.abcpresident.co.id/',
                 'image' => 'product_image/kopi-abc.jpg'
@@ -45,7 +45,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Mie instan dengan berbagai varian rasa khas Indonesia, diproduksi oleh Wings Food',
                 'categories_id' => $mieCategory->id,
                 'company_id' => $wingsFood->id,
-                'status' => 'affiliated',
+                'status' => 'Affiliated',
                 'local_product' => true,
                 'source' => 'https://www.wingscorp.com/',
                 'image' => 'product_image/mie-sedaap.jpg'
@@ -55,7 +55,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Kopi instant dengan beragam varian rasa modern, cocok untuk generasi muda Indonesia',
                 'categories_id' => $kopiCategory->id,
                 'company_id' => $wingsFood->id,
-                'status' => 'affiliated',
+                'status' => 'Affiliated',
                 'local_product' => true,
                 'source' => 'https://www.goodday.co.id/',
                 'image' => 'product_image/good-day.jpg'

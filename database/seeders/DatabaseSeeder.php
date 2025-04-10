@@ -15,10 +15,13 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $user = User::factory()->create([
+            'name' => 'Adminlia',
+            'email' => 'adminli@gmail.com',
+            'passwird' => bcrypt('adminLI4')
         ]);
+
+        $user->assignRole('super-admin');
 
         // Seed with proper order due to foreign key constraints
         $this->call([
