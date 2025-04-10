@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id('id');
+        Schema::create('companies', function (Blueprint $table) {
+            $table->id();
             $table->string('name');
-            $table->foreignId('parent_id')->nullable()->constrained('categories');
+            $table->foreignId('parent_id')->nullable()->constrained('companies')->onDelete('cascade');
             $table->string('slug')->unique();
-            $table->timestamps();
+            $table->string('logo')->nullable();
+            $table->enum('status', ['affiliated', 'unaffiliated'])->nullable();
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('companies');
     }
 };
