@@ -14,10 +14,10 @@
                     <option class="hover:bg-white /*hover:bg-gray-400*/ focus:bg-gray-400 outline-0" value="">
                         All
                     </option>
-                    @foreach ($statuses as $status)
+                    @foreach ($companies as $company)
                         <option class="bg-white hover:bg-gray-400 focus:bg-gray-400 outline-0 !important"
-                            value="{{ $status->name }}">
-                            {{ $status->name }}
+                            value="{{ $company->status }}">
+                            {{ $company->status }}
                         </option>
                     @endforeach
                 </select>

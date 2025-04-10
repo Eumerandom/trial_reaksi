@@ -23,8 +23,8 @@ class AfiliatedProducts extends BaseWidget
             ->descriptionIcon('heroicon-m-shopping-bag')
             ->color('danger'),
 
-            Stat::make('Persentasi Terafiliasi', $persentaseTerafiliasi)
-            ->description('Jumlah persentasi terafiliasi')
+            Stat::make('Persentase Terafiliasi', $persentaseTerafiliasi)
+            ->description('Jumlah persentase terafiliasi')
             ->descriptionIcon('heroicon-o-chart-bar')
             ->color('warning'),
 
