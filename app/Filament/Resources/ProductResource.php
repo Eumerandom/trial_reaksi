@@ -30,7 +30,7 @@ class ProductResource extends Resource
                             ->schema([
                                 Components\TextInput::make('name')
                                     ->required()
-                                    ->live()
+                                    ->live(onBlur:true)
                                     ->afterStateUpdated(fn (callable $set, $state) => $set('slug', Str::slug($state))),
                                 Components\TextInput::make('slug')
                                     ->disabled()

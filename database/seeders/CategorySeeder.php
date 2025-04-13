@@ -529,9 +529,9 @@ class CategorySeeder extends Seeder
             'Malkist',
             'Biskuit',
             'Biskuit Colek',
-            'Coklat Batang',
-            'Coklat Pasta',
-            'Coklat Telur',
+            'Cokleat Batang',
+            'Cokleat Pasta',
+            'Cokleat Telur',
             'Jelly',
         ];
 
