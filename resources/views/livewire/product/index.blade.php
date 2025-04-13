@@ -14,10 +14,10 @@
                     <option class="hover:bg-white /*hover:bg-gray-400*/ focus:bg-gray-400 outline-0" value="">
                         All
                     </option>
-                    @foreach ($statuses as $status)
+                    @foreach ($companies as $company)
                         <option class="bg-white hover:bg-gray-400 focus:bg-gray-400 outline-0 !important"
-                            value="{{ $status->name }}">
-                            {{ $status->name }}
+                            value="{{ $company->status }}">
+                            {{ $company->status }}
                         </option>
                     @endforeach
                 </select>
@@ -64,8 +64,8 @@
                         <div class="flex relative w-full">
                             <button type="button"
                                 class="font-medium rounded-lg text-sm px-2.5 py-1 text-center me-2 mb-2 focus:ring-4 focus:outline-none
-                                            {{ optional($product->status)->name === 'Terafiliasi' ? 'border-red-700 bg-red-700 text-white' : 'border-green-700 bg-green-700 text-white' }}">
-                                {{ $product->status->name }}
+                                            {{ optional($product)->status === 'affiliated' ? 'border-red-700 bg-red-700 text-white' : 'border-green-700 bg-green-700 text-white' }}">
+                                {{ $product->status }}
                             </button>
                             @if ($product->local_product)
                             <button type="button"
@@ -81,7 +81,7 @@
                         <p href="" class="text-3xl font-bold tracking-tight text-gray-900">
                             {{ $product->name }}
                         </p>
-                        <p class="mt-1 text-sm text-gray-500">{{ $product->description }}</p>
+                        <p class="mt-1 text-sm text-gray-500">{{ $product->company->name }}</p>
                         <br>
                         <button type="button"
                             class="w-full text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">

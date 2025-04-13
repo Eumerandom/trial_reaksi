@@ -2,7 +2,8 @@
 
 namespace App\Livewire\Product;
 
-use App\Models\Status;
+// use App\Models\Status;
+use App\Models\Company;
 use App\Models\Product;
 use App\Models\Category;
 use Livewire\Component;
@@ -51,7 +52,8 @@ class Index extends Component
         [
             // 'products'=>Product::get(),
             'products'=>$products->paginate(),
-            'statuses'=>Status::get(),
+            // 'statuses'=>Status::get(),
+            'companies'=>Company::get(),
             'categories'=>Category::get(),
         ]
     );

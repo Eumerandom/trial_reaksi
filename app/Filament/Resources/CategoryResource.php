@@ -57,7 +57,8 @@ class CategoryResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->label('No') // Ini kayak fieldnya, untuk memudahkan pengguna mengidentifikasi data
                     ->getStateUsing(fn($record) => Category::orderBy('id')->pluck('id')
-                    ->search($record->id) + 1),
+                    ->search($record->id) + 1)
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Category')
                     ->sortable()

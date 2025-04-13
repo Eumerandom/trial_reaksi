@@ -39,7 +39,6 @@ class ProductResource extends Resource
                                     ->required()
                                     ->columnSpanFull(),
                                 Components\TextInput::make('source')
-                                    ->label('Link')
                                     ->url()
                                     ->required(),
                             ]),
@@ -88,8 +87,8 @@ class ProductResource extends Resource
                     ->sortable()
                     ->badge()
                     ->color(fn ($state) => match ($state) {
-                        'affiliated' => 'success',
-                        'unaffiliated' => 'gray',
+                        'affiliated' => 'danger',
+                        'unaffiliated' => 'success',
                         default => 'danger',
                     }),
 
