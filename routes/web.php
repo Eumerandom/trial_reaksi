@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 Route::middleware([
     'auth:sanctum',
@@ -17,12 +17,14 @@ Route::middleware([
 
     // yang ini nggak dipake karena tanpa role
     // Route::get('/post', App\Livewire\Post\Index::class)->name('posts.index');
-    
+
     Route::get('/post', App\Livewire\Post\Index::class)->name('posts.index')->middleware('role:Siswa');
 });
 
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return view('dashboard');
 })->name('dashboard');
 
 Route::get('/product', App\Livewire\Product\Index::class)->name('product.index');
+Route::get('/berita', App\Livewire\Berita\Index::class)->name('berita.index');
+
