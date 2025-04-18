@@ -1,9 +1,9 @@
-<p align="center">
-    <div align="center" style="border-radius: 50%; overflow: hidden; width: 150px; height: 150px; margin: 0 auto;">
+<div align="center">
+    <div style="border-radius: 50%; overflow: hidden; width: 150px; height: 150px; margin: 0 auto;">
         <img src="https://ugc.production.linktr.ee/0dfad2d7-f8ce-4ee7-b582-dad733d02cee_PASS-REAKSI-NEW-LOGO-08.jpeg?io=true&size=avatar-v3_0" alt="REAKSI Logo" width="150" height="150" style="object-fit: cover;"/>
     </div>
-    <h1 align="center">REAKSI - Rekomendasi Bebas Afiliasi</h1>
-</p>
+    <h1>REAKSI - Rekomendasi Bebas Afiliasi</h1>
+</div>
 
 <p align="center">
     <em>BUY recommend CUT affiliate</em>
