@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,14 +15,18 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
+        Role::create([
+            'name' => 'super_admin',
+            'guard_name' => 'web'
+        ]);
 
         $user = User::factory()->create([
             'name' => 'Adminlia',
             'email' => 'adminli@gmail.com',
-            'passwird' => bcrypt('adminLI4')
+            'password' => bcrypt('adminLI4')
         ]);
 
-        $user->assignRole('super-admin');
+        $user->assignRole('super_admin');
 
         // Seed with proper order due to foreign key constraints
         $this->call([

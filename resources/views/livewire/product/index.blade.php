@@ -1,97 +1,112 @@
-<div wire:poll.200ms class="">
 
+<div class="min-h-screen bg-white dark:bg-black">
+    <div class="mx-auto container">
+        <flux:breadcrumbs class="pt-5">
+            <flux:breadcrumbs.item :href="route('dashboard')" separator="slash">Home</flux:breadcrumbs.item>
+            <flux:breadcrumbs.item separator="slash">Produk</flux:breadcrumbs.item>
+        </flux:breadcrumbs>
+        <div id="filterHeader" class="flex flex-row gap-2 items-center pt-5 sticky top-5 z-50 transition-all duration-300 w-full">
+            {{-- Search Bar --}}
+            <flux:field class="relative flex-grow bg-white dark:bg-black rounded-xl shadow-sm">
+                <flux:icon.search class="absolute right-2 z-50 top-2"></flux:icon.search>
+                <flux:input wire:model.live="search" placeholder="Masukan nama produk "/>
+            </flux:field>
 
-    <!-- <div class="max-w-7xl mx-auto sm:px-6 lg:px-8"> -->
-    <!-- <div wire:poll.2000ms class="bg-white overflow-hidden shadow-xl sm:rounded-lg"> -->
+            {{-- Button Filter--}}
+            <div class="relative flex-shrink-0">
+                <button
+                    wire:click="toggle"
+                    class="flex items-center border gap-2 px-3 py-2 text-black dark:text-white text-sm font-medium w-full bg-white dark:bg-neutral-900 dark:border-zinc-800 rounded-md  hover:bg-slate-100"
+                >
+                    <flux:icon.funnel class="text-black dark:text-white"></flux:icon.funnel>
+                    Filter
+                </button>
 
-    <div class="justify-center max-w-6xl px-4 py-10 mx-auto">
-        <div class="flex gap-5 items-center relative text-gray-800">
-            <!-- <div class="bg-white rounded-lg shadow-md"> -->
-            <div class="flex">
-                <p class="font-bold px-1">Status :</p>
-                <select wire:model.live="filterStatus" name="" id=""
-                    class="py-0 text-gray-500 inline-block border-transparent hover:border-b-gray-400 outline-0 focus:ring-0 focus:border-transparent bg-transparent ">
-                    <option class="hover:bg-white /*hover:bg-gray-400*/ focus:bg-gray-400 outline-0" value="">
-                        All
-                    </option>
-                    @foreach ($companies as $company)
-                        <option class="bg-white hover:bg-gray-400 focus:bg-gray-400 outline-0 !important"
-                            value="{{ $company->status }}">
-                            {{ $company->status }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="flex">
-                <p class="font-bold px-1">Category :</p>
-                <select wire:model.live="filterCategory" name="" id=""
-                    class="py-0 text-gray-500 border-transparent hover:border-b-gray-400 outline-0 focus:ring-0 focus:border-transparent bg-transparent">
-                    <option value="">All</option>
-                    @foreach ($categories as $category)
-                        <option value="{{ $category->name }}">{{ $category->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="lg:w-72 md:w-56 w- absolute right-0 rounded-full border-1">
-                <input wire:model="search" class="w-full rounded-full /*border-none outline-0*/ focus:ring-0"
-                    type="text" placeholder="Search">
-                <span class="absolute inset-y-0 right-5 flex items-center pl-2">
-                    <button type="submit" class="p-1 focus:outline-none focus:shadow-outline">
-                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" viewBox="0 0 24 24" class="text-blue-500 w-6 h-6">
-                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                    </button>
-                </span>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="justify-center max-w-6xl px-4 py-4 mx-auto lg:py-0">
-
-        <div wire:poll.200ms class="grid grid-cols-1 gap-6 lg:grid-cols-3 md:grid-cols-2">
-
-            @foreach($products as $key => $product)
-                <div class="bg-white rounded-lg shadow-md" wire:key="{{ $product->id }}">
-                    <a href="#">
-                        <img src="{{'/storage/' . $product->image}}" alt="{{ $product->name }}"
-                            class="object-cover w-full h-64 rounded-t-lg">
-                    </a>
-                    <div class="p-5">
-                        <div class="flex relative w-full">
-                            <button type="button"
-                                class="font-medium rounded-lg text-sm px-2.5 py-1 text-center me-2 mb-2 focus:ring-4 focus:outline-none
-                                            {{ optional($product)->status === 'affiliated' ? 'border-red-700 bg-red-700 text-white' : 'border-green-700 bg-green-700 text-white' }}">
-                                {{ $product->status }}
-                            </button>
-                            @if ($product->local_product)
-                            <button type="button"
-                                class="font-black rounded-lg text-sm px-2.5 py-1 text-center me-2 mb-2 bg-transparent text-yellow-600 border border-yellow-700">
-                                Local
-                            </button>
-                            @endif
-                            <p class="absolute right-0 mt-1 text-sm text-gray-500">
-                                {{ $product->category->name }}
-                            </p>
+                {{-- Dropdown Filter--}}
+                @if ($open)
+                    <div class="absolute z-10 w-64 sm:w-80 right-0 top-12 bg-white dark:bg-black border rounded p-4 shadow-lg">
+                        <div class="grid grid-cols-1 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold ">Status Afiliasi</label>
+                                <select wire:model.live="filterStatus" class="mt-1 w-full dark:bg-black border rounded py-2 px-3">
+                                    <option value="">Semua</option>
+                                    <option value="affiliated">Terafiliasi</option>
+                                    <option value="unaffiliated">Tidak Terafiliasi</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold ">Kategori</label>
+                                <select wire:model.live="filterCategory" class="mt-1 w-full dark:bg-black  border  rounded py-2 px-3">
+                                    <option value="">Semua Kategori</option>
+                                    @foreach($categories as $kategori)
+                                        <option value="{{$kategori->name}}">{{$kategori->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                        <br>
-                        <p href="" class="text-3xl font-bold tracking-tight text-gray-900">
-                            {{ $product->name }}
-                        </p>
-                        <p class="mt-1 text-sm text-gray-500">{{ $product->company->name }}</p>
-                        <br>
-                        <button type="button"
-                            class="w-full text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                            <a href="{{ $product->source }}">Sumber</a>
-                        </button>
                     </div>
-                </div>
+                @endif
+            </div>
+
+            {{-- Layout Options --}}
+            <div class="flex-shrink-0 ml-auto">
+                <flux:dropdown class="bg-white dark:bg-black">
+                    <flux:button class="bg-white dark:bg-black" icon:trailing="sliders-horizontal"></flux:button>
+                    <flux:menu>
+                        <div class="p-2">
+                            <h4 class="text-black dark:text-white mb-2">Pengurutan</h4>
+                            <div class="flex gap-2 mb-4">
+                                <button wire:click="setSort('asc')" class="flex items-center gap-1 p-2 rounded {{ $sort === 'asc' ? 'bg-black/10 dark:bg-gray-900' : '' }}">
+                                    <span class="text-sm">A-Z</span>
+                                </button>
+                                <button wire:click="setSort('desc')" class="flex items-center gap-1 p-2 rounded {{ $sort === 'desc' ? 'bg-black/10 dark:bg-gray-900' : '' }}">
+                                    <span class="text-sm">Z-A</span>
+                                </button>
+                            </div>
+                            <h4 class="text-black dark:text-white mb-2">Layout</h4>
+                            <div class="flex gap-2">
+                                <button wire:click="setLayout('grid')" class="p-2 rounded {{ $layout === 'grid' ? 'bg-black/10 dark:bg-gray-900' : '' }}">
+                                    <flux:icon.layout-grid class="size-5"></flux:icon.layout-grid>
+                                </button>
+                                <button wire:click="setLayout('list')" class="p-2 rounded {{ $layout === 'list' ? 'bg-black/10 dark:bg-gray-900' : '' }}">
+                                    <flux:icon.list class="size-5"></flux:icon.list>
+                                </button>
+                            </div>
+                        </div>
+                    </flux:menu>
+                </flux:dropdown>
+            </div>
+        </div>
+
+        <div class="mt-6 mb-8">
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+                Menampilkan <span class="font-medium text-gray-900 dark:text-white">{{ $products->count() }}</span>
+                dari <span class="font-medium text-gray-900 dark:text-white">{{ $products->total() }}</span> produk
+            </p>
+        </div>
+
+        <div class="{{ $layout === 'grid' ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6' : 'space-y-6 du' }}">
+            @foreach($products as $product)
+                @if($layout === 'grid')
+                    <x-product.grid-card :product="$product" />
+                @else
+                    <x-product.list-card :product="$product" />
+                @endif
             @endforeach
 
+            <div class="col-span-full mt-8">
+                {{ $products->links() }}
+            </div>
         </div>
     </div>
-
 </div>
+<script>
+    const filterHeader = document.getElementById("filterHeader");
+    window.addEventListener("scroll", function() {
+        if (window.scrollY > 100) {
+            filterHeader.classList.add("px-5");
+        } else {
+            filterHeader.classList.remove("px-5");
+        }
+    });
+</script>

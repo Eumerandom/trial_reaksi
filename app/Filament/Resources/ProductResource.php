@@ -68,7 +68,9 @@ class ProductResource extends Resource
                                 Components\FileUpload::make('image')
                                     ->required()
                                     ->image()
-                                    ->directory('product_images'),
+                                    ->directory('product_images')
+                                    ->disk('public')
+                                    ->preserveFilenames(),
                             ]),
                     ])
             ]);
