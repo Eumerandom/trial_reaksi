@@ -12,68 +12,68 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        // Get categories
-        $kopiCategory = Category::where('name', 'Kopi')->first();
+        $sodaCategory = Category::where('name', 'Minuman Soda')->first();
         $mieCategory = Category::where('name', 'Mie Instan')->first();
-        
-        // Get Wings Food company
-        $wingsFood = Company::where('name', 'Wings Food')->first();
+
+        if (!$sodaCategory) {
+            $sodaCategory = Category::firstOrCreate(
+                ['slug' => Str::slug('Minuman Soda')],
+                ['name' => 'Minuman Soda']
+            );
+        }
+        if (!$mieCategory) {
+            $mieCategory = Category::firstOrCreate(
+                ['slug' => Str::slug('Mie Instan')],
+                ['name' => 'Mie Instan']
+            );
+        }
+
+        $cocaColaCompany = Company::firstOrCreate(
+            ['slug' => Str::slug('The Coca-Cola Company')],
+            ['name' => 'The Coca-Cola Company', 'status' => 'Affiliated']
+        );
+        $indofoodCompany = Company::firstOrCreate(
+            ['slug' => Str::slug('Indofood')],
+            ['name' => 'Indofood', 'status' => 'Unaffiliated']
+        );
 
         $products = [
             [
-                'name' => 'Kopi Kapal Api',
-                'description' => 'Kopi hitam premium asli Indonesia dengan cita rasa khas yang telah menjadi favorit keluarga Indonesia sejak 1927',
-                'categories_id' => $kopiCategory->id,
-                'company_id' => $wingsFood->id,
-                'status' => 'Unaffiliated',
-                'local_product' => true,
-                'source' => 'https://www.kapalapi.co.id/',
-                'image' => 'product_image/kopi-kapal-api.jpg'
-            ],
-            [
-                'name' => 'Kopi ABC',
-                'description' => 'Kopi instant dengan rasa yang kuat dan aroma yang khas, diproduksi dengan biji kopi pilihan dari Indonesia',
-                'categories_id' => $kopiCategory->id,
-                'company_id' => $wingsFood->id,
+                'name' => 'Coca-Cola',
+                'description' => 'Minuman berkarbonasi rasa kola.',
+                'categories_id' => $sodaCategory->id,
+                'company_id' => $cocaColaCompany->id,
                 'status' => 'Affiliated',
-                'local_product' => true,
-                'source' => 'https://www.abcpresident.co.id/',
-                'image' => 'product_image/kopi-abc.jpg'
+                'local_product' => false,
+                'source' => 'https://www.coca-cola.com/',
+                'image' => 'product_images/Coacola.jpeg'
             ],
             [
-                'name' => 'Mie Sedaap',
-                'description' => 'Mie instan dengan berbagai varian rasa khas Indonesia, diproduksi oleh Wings Food',
+                'name' => 'Indomie',
+                'description' => 'Mie instan populer dari Indonesia dengan berbagai varian rasa.',
                 'categories_id' => $mieCategory->id,
-                'company_id' => $wingsFood->id,
+                'company_id' => $indofoodCompany->id,
                 'status' => 'Affiliated',
                 'local_product' => true,
-                'source' => 'https://www.wingscorp.com/',
-                'image' => 'product_image/mie-sedaap.jpg'
-            ],
-            [
-                'name' => 'Good Day',
-                'description' => 'Kopi instant dengan beragam varian rasa modern, cocok untuk generasi muda Indonesia',
-                'categories_id' => $kopiCategory->id,
-                'company_id' => $wingsFood->id,
-                'status' => 'Affiliated',
-                'local_product' => true,
-                'source' => 'https://www.goodday.co.id/',
-                'image' => 'product_image/good-day.jpg'
+                'source' => 'https://www.indomie.com/',
+                'image' => 'product_images/Indomie.webp'
             ],
         ];
 
         foreach ($products as $product) {
-            Product::create([
-                'name' => $product['name'],
-                'slug' => Str::slug($product['name']),
-                'description' => $product['description'],
-                'categories_id' => $product['categories_id'],
-                'company_id' => $product['company_id'],
-                'status' => $product['status'],
-                'local_product' => $product['local_product'],
-                'source' => $product['source'],
-                'image' => $product['image'],
-            ]);
+            Product::updateOrCreate(
+                ['slug' => Str::slug($product['name'])], 
+                [
+                    'name' => $product['name'],
+                    'description' => $product['description'],
+                    'categories_id' => $product['categories_id'],
+                    'company_id' => $product['company_id'],
+                    'status' => $product['status'],
+                    'local_product' => $product['local_product'],
+                    'source' => $product['source'],
+                    'image' => $product['image'],
+                ]
+            );
         }
     }
 }
