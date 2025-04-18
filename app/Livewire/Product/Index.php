@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Product;
 
-// use App\Models\Status;
 use App\Models\Company;
 use App\Models\Product;
 use App\Models\Category;
@@ -16,7 +15,13 @@ class Index extends Component
     public $filterStatus;
     public $filterCategory;
     public $search;
-    public $layout = 'grid'; // grid atau list
+    public $layout = 'grid';
+    public $sort = '';
+
+    public function setSort($type)
+    {
+        $this->sort = $type;
+    }
 
     public function setLayout($type)
     {
@@ -40,6 +45,12 @@ class Index extends Component
             $products->whereHas('category', function ($query) {
                $query->where( 'name', $this->filterCategory );
             });
+        }
+
+        if ($this->sort === 'asc') {
+            $products->orderBy('name', 'asc');
+        } elseif ($this->sort === 'desc') {
+            $products->orderBy('name', 'desc');
         }
 
         if ($this->search) {
