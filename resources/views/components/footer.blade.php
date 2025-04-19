@@ -1,4 +1,4 @@
-<footer class="border-t mx-auto border-zinc-300 dark:border-zinc-800 container">
+<footer class="border-t mx-auto border-zinc-300 dark:border-zinc-800 container mt-10">
     <div class="flex flex-col text-black dark:text-white mx-auto container py-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 md:divide-x md:divide-zinc-300 md:dark:divide-zinc-800">
             <div class="pr-0 md:pr-8">

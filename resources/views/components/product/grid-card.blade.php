@@ -18,16 +18,17 @@
         </div>
         <div class="p-2 space-y-0.5">
             <div class="flex justify-between items-start">
-                <div class="min-h-16">
+                <div class="min-h-16 space-y-1">
                     <span class="rounded-lg text-xs bg-gray-200 dark:bg-gray-500/30 py-0.5 px-1.5">{{ $product->category?->name }}</span>
-                    <h1 class="font-bold text-lg mt-1 line-clamp-1">{{ $product->name }}</h1>
+                    <div class="flex flex-row gap-1 items-center text-black/50 dark:text-gray-100/60">
+                        <flux:icon.building-2 class="text-light size-3"></flux:icon.building-2>
+                        <p class="font-thin text-xs">{{ $product->company?->name }}</p>
+                    </div>
+                    <h1 class="font-bold text-lg line-clamp-1">{{ $product->name }}</h1>
                 </div>
             </div>
-            <div class="flex flex-row gap-1 items-center text-black/50 dark:text-gray-100/60">
-                <flux:icon.building-2 class="text-light size-3"></flux:icon.building-2>
-                <p class="font-thin text-xs">{{ $product->company?->name }}</p>
-            </div>
-            <p class="text-gray-600 dark:text-gray-400 text-xs line-clamp-1">{{ $product->description }}</p>
+
+
             <div class="flex justify-between items-center text-black dark:text-white">
                 <button class="flex flex-row items-center gap-2 text-xs cursor-pointer bg-black/10 dark:bg-gray-900/60 py-1 px-2 rounded-md">Selengkapnya <flux:icon.info class="size-3"></flux:icon.info></button>
             </div>

@@ -13,7 +13,6 @@ class AfiliatedProducts extends BaseWidget
         $totalTerafiliasi = Product::where('status', 'Affiliated')->count();
 
         $berdasarkanKategori = Product::where('status', 'Affiliated')->select('categories_id')->groupBy('categories_id')->get();
-
         $totalProduct = Product::count();
         $persentaseTerafiliasi = $totalTerafiliasi > 0 ? round(($totalTerafiliasi / $totalProduct) * 100, 1) : 0;
 
