@@ -32,6 +32,11 @@ class Index extends Component
         $this->open = !$this->open;
     }
 
+    public function viewDetail($slug)
+    {
+        return redirect()->route('product.show', ['slug' => $slug]);
+
+    }
 
     public function render()
     {

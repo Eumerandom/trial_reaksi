@@ -1,14 +1,13 @@
-<div class="fade-up w-full transform-gpu sm:px-3 md:px-3">
+
+<div class="fade-up w-full transform-gpu sm:px-3 md:px-3" wire:click="viewDetail('{{$product->slug}}')">
     <div @class([
             'relative flex flex-col gap-1 bg-slate-white dark:bg-black rounded-md border border-zinc-900 transition-all duration-300 hover:shadow-md origin-top hover:scale-[1.03]',
-            'hover:shadow-green-500' => $product->status !== 'affiliated',
-            'hover:shadow-red-500' => $product->status == 'affiliated',
-            'dark:hover:shadow-green-500' => $product->status !== 'affiliated',
-            'dark:hover:shadow-red-500' => $product->status == 'affiliated',
+            $product->status !== 'affiliated' ? 'hover:shadow-green-500' : 'hover:shadow-red-500',
+            $product->status !== 'affiliated' ? 'dark:hover:shadow-green-500' : 'dark:hover:shadow-red-500'
         ])>
         <div class="w-46 lg:w-full h-auto aspect-square">
             <span class="absolute top-3 right-3 py-1 px-2 rounded-md bg-{{ $product->status === 'affiliated' ? 'red' : 'green' }}-500">
-                @if($product->status === 'affiliated')
+                @if($product->statusa === 'affiliated')
                     <flux:icon.check class="size-3"></flux:icon.check>
                 @else
                     <flux:icon.x class="size-3"></flux:icon.x>
