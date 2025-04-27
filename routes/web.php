@@ -21,10 +21,10 @@ Route::middleware([
     Route::get('/post', App\Livewire\Post\Index::class)->name('posts.index')->middleware('role:Siswa');
 });
 
-Route::get('/', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::get('/', App\Livewire\Dashboard::class)->name('dashboard');
 
 Route::get('/product', App\Livewire\Product\Index::class)->name('product.index');
+Route::get('/product/{slug}', App\Livewire\Product\Show::class)->name('product.show');
 Route::get('/berita', App\Livewire\Berita\Index::class)->name('berita.index');
+
 
