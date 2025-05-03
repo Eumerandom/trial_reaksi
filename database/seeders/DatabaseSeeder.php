@@ -28,11 +28,12 @@ class DatabaseSeeder extends Seeder
 
         $user->assignRole('super_admin');
 
-        // Seed with proper order due to foreign key constraints
+        // Run PostSeeder after user creation as posts need an author
         $this->call([
-            CompanySeeder::class,   // First: Create companies (parent and child)
-            CategorySeeder::class,   // Second: Create categories (parent and child)
-            ProductSeeder::class,    // Last: Create products (needs companies and categories)
+            PostSeeder::class,      // First: Create posts (needs users only)
+            CompanySeeder::class,   // Second: Create companies (parent and child)
+            CategorySeeder::class,  // Third: Create categories (parent and child)
+            ProductSeeder::class,   // Last: Create products (needs companies and categories)
         ]);
     }
 }

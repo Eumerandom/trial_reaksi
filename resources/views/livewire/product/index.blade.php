@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-white dark:bg-black">
-    <div class="mx-auto container">
+    <div class="mx-auto container sm:px-4">
         <flux:breadcrumbs class="pt-5">
             <flux:breadcrumbs.item :href="route('dashboard')" separator="slash">Home</flux:breadcrumbs.item>
             <flux:breadcrumbs.item separator="slash">Produk</flux:breadcrumbs.item>

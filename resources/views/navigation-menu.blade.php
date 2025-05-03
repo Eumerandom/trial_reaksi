@@ -6,7 +6,7 @@
                     <a href="{{ route('dashboard') }}" class="flex items-center">
                         <img src="https://ugc.production.linktr.ee/0dfad2d7-f8ce-4ee7-b582-dad733d02cee_PASS-REAKSI-NEW-LOGO-08.jpeg?io=true&size=avatar-v3_0"
                              alt="REAKSI"
-                        class="ml-2 object-cover rounded-full max-w-16 h-auto text-gray-800 dark:text-white font-bold text-lg">
+                        class="ml-2 object-cover rounded-full max-w-12 h-auto text-gray-800 dark:text-white font-bold text-lg">
                     </a>
                 </div>
 
