@@ -6,6 +6,7 @@ use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers;
 use App\Models\Post;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
@@ -51,6 +52,10 @@ class PostResource extends Resource
                         ->required()
                         ->default('draft')
                         ->columnSpan(1),
+                        FileUpload::make('thumbnail')
+                        ->columnSpan(2)
+                        ->image()
+                        ->directory('thumbnail_berita'),
                         MarkdownEditor::make('content')
                             ->required()
                         ->columnSpan(2),

@@ -25,6 +25,7 @@ Route::get('/', App\Livewire\Dashboard::class)->name('dashboard');
 
 Route::get('/product', App\Livewire\Product\Index::class)->name('product.index');
 Route::get('/product/{slug}', App\Livewire\Product\Show::class)->name('product.show');
-Route::get('/berita', App\Livewire\Berita\Index::class)->name('berita.index');
+Route::get('/berita', \App\Livewire\Post\Index::class)->name('berita.index');
+Route::get('/berita/{slug}', \App\Livewire\Post\Show::class)->name('berita.show');
 
 

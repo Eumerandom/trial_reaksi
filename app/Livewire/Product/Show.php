@@ -9,6 +9,7 @@ class Show extends Component
 {
     public $product;
     public $company;
+    public $showShareModal = false;
 
     public function mount($slug)
     {
@@ -17,6 +18,12 @@ class Show extends Component
         $this->company = $company;
         $this->product = $products;
     }
+
+    public function toggleShareModal()
+    {
+        $this->showShareModal = !$this->showShareModal;
+    }
+
     public function render()
     {
         return view('livewire.product.show');
