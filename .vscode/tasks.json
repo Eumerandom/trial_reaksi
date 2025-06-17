@@ -1,0 +1,243 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Laravel: Serve",
+			"type": "shell",
+			"command": "php artisan serve",
+			"group": "none",
+			"isBackground": true,
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"focus": false
+			}
+		},
+		{
+			"label": "NPM: Dev",
+			"type": "shell",
+			"command": "npm run dev",
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "none",
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"focus": false
+			}
+		},
+		{
+			"label": "NPM: Build",
+			"type": "shell",
+			"command": "npm run build",
+			"problemMatcher": [],
+			"group": "build",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"focus": false
+			}
+		},
+		{
+			"label": "Composer: Install",
+			"type": "shell",
+			"command": "composer install",
+			"problemMatcher": [],
+			"group": "none",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"focus": false
+			}
+		},
+		{
+			"label": "Composer: Update",
+			"type": "shell",
+			"command": "composer update",
+			"problemMatcher": [],
+			"group": "none",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"focus": false
+			}
+		},
+		{
+			"label": "Laravel: Migrate",
+			"type": "shell",
+			"command": "php artisan migrate",
+			"problemMatcher": [],
+			"group": "none",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"focus": false
+			}
+		},
+		{
+			"label": "Laravel: Migrate Fresh",
+			"type": "shell",
+			"command": "php artisan migrate:fresh --seed",
+			"problemMatcher": [],
+			"group": "none",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"focus": false
+			}
+		},
+		{
+			"label": "Laravel: Clear Cache",
+			"type": "shell",
+			"command": "php artisan optimize:clear",
+			"problemMatcher": [],
+			"group": "none",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"focus": false
+			}
+		},
+		{
+			"label": "Dev Server: Start All",
+			"dependsOn": ["Laravel: Serve", "NPM: Dev"],
+			"problemMatcher": [],
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"focus": true
+			}
+		},
+		{
+			"label": "Laravel: Run Tests",
+			"type": "shell",
+			"command": "php artisan test",
+			"problemMatcher": [],
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"focus": false
+			}
+		},
+		{
+			"label": "Artisan: Make Controller",
+			"type": "shell",
+			"command": "php artisan make:controller ${input:controllerName} ${input:controllerOptions}",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"focus": false
+			}
+		},
+		{
+			"label": "Artisan: Make Model",
+			"type": "shell",
+			"command": "php artisan make:model ${input:modelName} ${input:modelOptions}",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"focus": false
+			}
+		},
+		{
+			"label": "Artisan: Make Migration",
+			"type": "shell",
+			"command": "php artisan make:migration ${input:migrationName}",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"focus": false
+			}
+		},
+		{
+			"label": "Laravel: Queue Worker",
+			"type": "shell",
+			"command": "php artisan queue:work",
+			"isBackground": true,
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"focus": false
+			}
+		},
+		{
+			"label": "Laravel: Run Project Dev",
+			"type": "shell",
+			"command": "php artisan dev",
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"focus": true
+			}
+		}
+	],
+	"inputs": [
+		{
+			"id": "controllerName",
+			"description": "Controller name (e.g. UserController)",
+			"default": "ExampleController",
+			"type": "promptString"
+		},
+		{
+			"id": "controllerOptions",
+			"description": "Controller options (e.g. --resource, --api)",
+			"default": "--resource",
+			"type": "pickString",
+			"options": [
+				"--resource",
+				"--api",
+				"--invokable",
+				"",
+				"--resource --model=Model",
+				"--api --model=Model"
+			]
+		},
+		{
+			"id": "modelName",
+			"description": "Model name (e.g. User)",
+			"default": "Example",
+			"type": "promptString"
+		},
+		{
+			"id": "modelOptions",
+			"description": "Model options",
+			"default": "-mc",
+			"type": "pickString",
+			"options": [
+				"-mc",
+				"-mf",
+				"-mcf",
+				"-m",
+				"-c",
+				"-f",
+				"-mfs",
+				"-mcfs",
+				"-ms",
+				"-mcs",
+				""
+			]
+		},
+		{
+			"id": "migrationName",
+			"description": "Migration name (e.g. create_users_table)",
+			"default": "create_examples_table",
+			"type": "promptString"
+		}
+	]
+}
