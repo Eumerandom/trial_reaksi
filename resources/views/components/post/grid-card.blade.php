@@ -1,4 +1,4 @@
-<div class="rounded-md shadow-md overflow-hidden">
+<div class="rounded-lg overflow-hidden bg-white shadow-lg">
     <a href="{{ route('berita.show', $post->slug) }}">
         <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="{{ $post->title }}" class="w-full h-48 object-cover">
         <div class="p-4">
