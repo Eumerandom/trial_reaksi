@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gray-50 dark:bg-black py-8">
+<div class="min-h-screen bg-gray-100 dark:bg-zinc-900 py-8">
     <div class="container mx-auto space-y-8">
         <flux:breadcrumbs>
             <flux:breadcrumbs.item :href="route('dashboard')" separator="slash">Home</flux:breadcrumbs.item>
@@ -6,7 +6,7 @@
             <flux:breadcrumbs.item separator="slash">{{ $product->name }}</flux:breadcrumbs.item>
         </flux:breadcrumbs>
 
-        <div class="flex flex-col md:flex-row gap-6">
+        <div class="max-w-6xl m-auto flex flex-col md:flex-row gap-6">
             {{--Produk Card--}}
             @if($product)
                 <div class="w-full md:w-1/2 bg-white h-full dark:bg-zinc-800 shadow-md rounded-xl overflow-hidden relative">
@@ -21,13 +21,23 @@
                     <img
                         src="{{ '/storage/' . $product->image }}"
                         alt="{{ $product->name }}"
-                        class="object-cover h-2/3 w-full"
+                        class="object-cover h-64 w-full"
                     />
-                    <div class="p-6 space-y-4 h-1/3">
-                        <span class="inline-block text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-                            {{ $product->category->name }}
-                        </span>
-                        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">{{ $product->name }}</h2>
+                    <div class="p-6 space-y-2 h-1/3">
+                       <div>
+                            <div>
+                                <span class="inline-block text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                                    {{ $product->category->name }}
+                                </span>
+                                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">{{ $product->name }}</h2>
+                            </div>
+                            <!-- Share Button -->
+                            <div class="flex items-center mt-6">
+                                <button wire:click="toggleShareModal" class="p-3 rounded-full bg-gray-100 dark:bg-zinc-700 hover:bg-gray-200 dark:hover:bg-zinc-600 transition-all duration-200">
+                                    <flux:icon.share class="size-5 text-gray-600 dark:text-gray-400"></flux:icon.share>
+                                </button>
+                            </div>
+                       </div>
                         <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{{ $product->description }}</p>
 
                         @if($product->source)
@@ -36,12 +46,7 @@
                             </a>
                         @endif
                         
-                        <!-- Share Button -->
-                        <div class="flex items-center mt-6">
-                            <button wire:click="toggleShareModal" class="p-3 rounded-full bg-gray-100 dark:bg-zinc-700 hover:bg-gray-200 dark:hover:bg-zinc-600 transition-all duration-200">
-                                <flux:icon.share class="size-5 text-gray-600 dark:text-gray-400"></flux:icon.share>
-                            </button>
-                        </div>
+
                     </div>
                 </div>
             @endif

@@ -1,7 +1,7 @@
 <div>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    <div class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-black">
+    <div class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-100 dark:bg-black">
         <div class="max-w-4xl mx-auto">
             {{-- Card 1 --}}
             <div class="mb-16 p-6 sm:p-8 bg-white dark:bg-zinc-800 rounded-lg shadow-md text-center transform transition duration-700 ease-in-out"

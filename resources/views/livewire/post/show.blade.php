@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-white dark:bg-black">
+<div class="min-h-screen bg-gray-100 dark:bg-black">
     <div class="mx-auto container sm:px-4">
         <flux:breadcrumbs class="pt-5">
             <flux:breadcrumbs.item :href="route('dashboard')" separator="slash">Home</flux:breadcrumbs.item>
@@ -6,7 +6,7 @@
             <flux:breadcrumbs.item separator="slash">{{ $post->title }}</flux:breadcrumbs.item>
         </flux:breadcrumbs>
 
-        <div class="mt-8">
+        <div class="mt-8 max-w-6xl m-auto ">
             {{-- Header --}}
             <div class="mb-8">
                 <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{{ $post->title }}</h1>
