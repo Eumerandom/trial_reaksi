@@ -62,6 +62,7 @@ class Index extends Component
             $products->where(function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
                     ->orWhere('description', 'like', '%' . $this->search . '%')
+                    // ->orWhere('company', 'like', '%' . $this->search . '%')
                     ->orWhere('status', 'like', '%' . $this->search . '%')
                     ->orWhereHas('category', function ($q) {
                         $q->where('name', 'like', '%' . $this->search . '%');
