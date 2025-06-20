@@ -19,13 +19,19 @@ class PostList extends BaseWidget
                 return PostResource::getEloquentQuery();
             })
             ->columns([
-                Tables\Columns\TextColumn::make('id')
+                Tables\Columns\TextColumn::make('no')
                     ->label('No')
-                    ->getStateUsing(fn($record) => Post::orderBy('id')->pluck('id')
-                        ->search($record->id) + 1),
+                    ->getStateUsing(function ($record, $livewire) {
+                        $perPage = $livewire->getTableRecordsPerPage();
+                        $page = $livewire->getTablePage();
+                        $index = $livewire->getTableRecords()->search($record) + 1;
+                        return ($page - 1) * $perPage + $index;
+                    }),
                 Tables\Columns\TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
+                // Tables\Columns\TextColumn::make('content')
+                //     ->limit(30),
                 Tables\Columns\TextColumn::make('authorUser.name') // diambil berdasarkan relasi di model Post
                     ->label('Author')
                     ->sortable()
@@ -41,6 +47,8 @@ class PostList extends BaseWidget
                         'draft' => 'gray',
                         'unpublished' => 'warning',
                     }),
-            ]);
-    }
+            ])
+            ->defaultSort('created_at', 'desc')
+
+    ;}
 }
