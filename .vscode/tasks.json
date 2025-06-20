@@ -2,9 +2,9 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "NPM: Dev",
+			"label": "Composer: Dev",
 			"type": "shell",
-			"command": "npm run dev",
+			"command": "composer run dev",
 			"isBackground": true,
 			"problemMatcher": [],
 			"group": "none",
@@ -44,6 +44,18 @@
 			"command": "composer update",
 			"problemMatcher": [],
 			"group": "none",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"focus": false
+			}
+		},
+		{
+			"label": "Composer: Build",
+			"type": "shell",
+			"command": "composer run build",
+			"problemMatcher": [],
+			"group": "build",
 			"presentation": {
 				"reveal": "always",
 				"panel": "shared",
