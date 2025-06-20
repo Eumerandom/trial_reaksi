@@ -80,7 +80,10 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Columns\TextColumn::make('id')->label('No'),
+                Columns\TextColumn::make('id')
+                    ->label('No')
+                    ->getStateUsing(fn($record) => Product::orderBy('id')->pluck('id')
+                        ->search($record->id) + 1),
                 Columns\TextColumn::make('name')->sortable()->searchable(),
                 Columns\TextColumn::make('company.name')->sortable()->searchable(),
                 Columns\TextColumn::make('category.name')->sortable()->searchable(),
