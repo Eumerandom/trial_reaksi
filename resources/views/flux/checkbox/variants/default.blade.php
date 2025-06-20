@@ -12,7 +12,7 @@ if (! isset($name)) {
 }
 
 $classes = Flux::classes()
-    ->add('flex size-[1.125rem] rounded-[.3rem] mt-px outline-offset-2')
+    ->add('flex size-4.5 rounded-[.3rem] mt-px outline-offset-2')
     ;
 @endphp
 

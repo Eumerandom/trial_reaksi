@@ -30,7 +30,7 @@ $classes = Flux::classes()
     // Styles for when this link is the "current" one...
     ->add('data-current:after:absolute data-current:after:-bottom-3 data-current:after:inset-x-0 data-current:after:h-[2px]')
     ->add([
-        '[--hover-fill:color-mix(in_oklab,_var(--color-accent-content),_transparent_90%)]',
+        '[--hover-fill:color-mix(in_oklab,var(--color-accent-content),transparent_90%)]',
 
     ])
     ->add(match ($accent) {
@@ -66,7 +66,7 @@ $classes = Flux::classes()
     <?php endif; ?>
 
     <?php if ($slot->isNotEmpty()): ?>
-        <div class="{{ $icon ? 'ms-3' : '' }} flex-1 text-sm font-medium leading-none whitespace-nowrap [[data-nav-footer]_&]:hidden [[data-nav-sidebar]_[data-nav-footer]_&]:block" data-content>{{ $slot }}</div>
+        <div class="{{ $icon ? 'ms-3' : '' }} flex-1 text-sm font-medium leading-none whitespace-nowrap in-data-nav-footer:hidden [[data-nav-sidebar]_[data-nav-footer]_&]:block" data-content>{{ $slot }}</div>
     <?php endif; ?>
 
     <?php if (is_string($iconTrailing) && $iconTrailing !== ''): ?>

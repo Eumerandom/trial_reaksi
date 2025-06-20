@@ -4,7 +4,7 @@
 
 @php
 $classes = Flux::classes()
-    ->add('-mx-[.3125rem] px-[.3125rem]')
+    ->add('-mx-1.25 px-[.3125rem]')
     ->add('[&+&>[data-flux-menu-separator-top]]:hidden [&:first-child>[data-flux-menu-separator-top]]:hidden [&:last-child>[data-flux-menu-separator-bottom]]:hidden')
     ;
 @endphp

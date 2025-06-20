@@ -13,7 +13,7 @@
                 <div class="hidden space-x-8 sm:ml-10 sm:flex items-center">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')"
                                 class="relative text-gray-800 dark:text-white border-b-2 border-transparent
-                                       {{ request()->routeIs('dashboard') ? '!border-zinc-700 dark:!border-zinc-300' : 'hover:border-transparent' }}
+                                       {{ request()->routeIs('dashboard') ? 'border-zinc-700! dark:border-zinc-300!' : 'hover:border-transparent' }}
                                        after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:h-[2px] after:w-0
                                        after:bg-zinc-700 dark:after:bg-zinc-300
                                        after:transition-all after:duration-300 hover:after:w-full">
@@ -25,7 +25,7 @@
                 <div class="hidden space-x-8 sm:ml-10 sm:flex items-center">
                     <x-nav-link href="{{ route('product.index') }}" :active="request()->routeIs('product.index')"
                                 class="relative text-gray-800 dark:text-white border-b-2 border-transparent
-                                       {{ request()->routeIs('product.index') ? '!border-zinc-700 dark:!border-zinc-300' : 'hover:border-transparent' }}
+                                       {{ request()->routeIs('product.index') ? 'border-zinc-700! dark:border-zinc-300!' : 'hover:border-transparent' }}
                                        after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:h-[2px] after:w-0
                                        after:bg-zinc-700 dark:after:bg-zinc-300
                                        after:transition-all after:duration-300 hover:after:w-full">
@@ -36,7 +36,7 @@
                 <div class="hidden space-x-8 sm:ml-10 sm:flex items-center">
                     <x-nav-link href="{{route('berita.index')}}" :active="request()->routeIs('berita.index')"
                                 class="relative text-gray-800 dark:text-white border-b-2 border-transparent
-                                       {{ request()->routeIs('berita.index') ? '!border-zinc-700 dark:!border-zinc-300' : 'hover:border-transparent' }}
+                                       {{ request()->routeIs('berita.index') ? 'border-zinc-700! dark:border-zinc-300!' : 'hover:border-transparent' }}
                                        after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:h-[2px] after:w-0
                                        after:bg-zinc-700 dark:after:bg-zinc-300
                                        after:transition-all after:duration-300 hover:after:w-full">
@@ -65,15 +65,15 @@
 
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')" class="text-gray-800 dark:text-white border-l-4 {{request()->routeIs('dashboard') ? '!border-zinc-700 dark:!border-zinc-300' : 'border-transparent'}}">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')" class="text-gray-800 dark:text-white border-l-4 {{request()->routeIs('dashboard') ? 'border-zinc-700! dark:border-zinc-300!' : 'border-transparent'}}">
                 {{ __('Beranda') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link href="{{ route('product.index') }}" :active="request()->routeIs('product.index')" class="text-gray-800 dark:text-white border-l-4 {{request()->routeIs('product.index') ? '!border-zinc-700 dark:!border-zinc-300' : 'border-transparent'}}">
+            <x-responsive-nav-link href="{{ route('product.index') }}" :active="request()->routeIs('product.index')" class="text-gray-800 dark:text-white border-l-4 {{request()->routeIs('product.index') ? 'border-zinc-700! dark:border-zinc-300!' : 'border-transparent'}}">
                 {{ __('Produk') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link href="{{ route('berita.index') }}" :active="request()->routeIs('berita.index')" class="text-gray-800 dark:text-white border-l-4 {{request()->routeIs('berita.index') ? '!border-zinc-700 dark:!border-zinc-300' : 'border-transparent'}}">
+            <x-responsive-nav-link href="{{ route('berita.index') }}" :active="request()->routeIs('berita.index')" class="text-gray-800 dark:text-white border-l-4 {{request()->routeIs('berita.index') ? 'border-zinc-700! dark:border-zinc-300!' : 'border-transparent'}}">
                 {{ __('Berita') }}
             </x-responsive-nav-link>
         </div>

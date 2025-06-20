@@ -6,7 +6,7 @@
         ])>
 
         {{-- Gambar --}}
-        <div class="w-full aspect-video sm:w-48 sm:aspect-auto sm:flex-shrink-0 relative">
+        <div class="w-full aspect-video sm:w-48 sm:aspect-auto sm:shrink-0 relative">
             <img src="{{ '/storage/' .  $product->image }}" alt="{{ $product->name }}"
                  class="object-cover w-full h-full rounded-t-md sm:rounded-l-md sm:rounded-tr-none"> {{-- Adjust rounding --}}
             <span class="absolute top-2 right-2 py-1 px-2 rounded-md bg-{{ $product->status === 'affiliated' ? 'green' : 'red' }}-500">
@@ -19,7 +19,7 @@
         </div>
 
         {{-- Konten --}}
-        <div class="p-4 flex flex-col gap-2 flex-grow">
+        <div class="p-4 flex flex-col gap-2 grow">
             <span class="text-xs bg-gray-200 dark:bg-gray-500/30 rounded px-2 py-1 w-fit">{{ $product->category?->name }}</span>
             <h1 class="font-bold text-lg sm:text-xl">{{ $product->name }}</h1>
             <div class="flex items-center gap-2 text-gray-500 text-sm">
