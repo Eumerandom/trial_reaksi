@@ -70,7 +70,7 @@ $classes = Flux::classes()
             : Flux::applyInset($inset, top: '-mt-1', right: '-me-2', bottom: '-mb-1', left: '-ms-2'),
     } : '')
     ->add(match ($variant) { // Background color...
-        'primary' => 'bg-[var(--color-accent)] hover:bg-[color-mix(in_oklab,_var(--color-accent),_transparent_10%)]',
+        'primary' => 'bg-(--color-accent) hover:bg-[color-mix(in_oklab,var(--color-accent),transparent_10%)]',
         'filled' => 'bg-zinc-800/5 hover:bg-zinc-800/10 dark:bg-white/10 dark:hover:bg-white/20',
         'outline' => 'bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75',
         'danger' => 'bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-500',
@@ -78,7 +78,7 @@ $classes = Flux::classes()
         'subtle' => 'bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15',
     })
     ->add(match ($variant) { // Text color...
-        'primary' => 'text-[var(--color-accent-foreground)]',
+        'primary' => 'text-(--color-accent-foreground)',
         'filled' => 'text-zinc-800 dark:text-white',
         'outline' => 'text-zinc-800 dark:text-white',
         'danger' => 'text-white',
@@ -103,10 +103,10 @@ $classes = Flux::classes()
     ->add(match ($variant) { // Grouped border treatments...
         'ghost' => '',
         'subtle' => '',
-        'outline' => '[[data-flux-button-group]_&]:border-s-0 [:is([data-flux-button-group]>&:first-child,_[data-flux-button-group]_:first-child>&)]:border-s-[1px]',
-        'filled' => '[[data-flux-button-group]_&]:border-e [:is([data-flux-button-group]>&:last-child,_[data-flux-button-group]_:last-child>&)]:border-e-0 [[data-flux-button-group]_&]:border-zinc-200/80 dark:[[data-flux-button-group]_&]:border-zinc-900/50',
-        'danger' => '[[data-flux-button-group]_&]:border-e [:is([data-flux-button-group]>&:last-child,_[data-flux-button-group]_:last-child>&)]:border-e-0 [[data-flux-button-group]_&]:border-red-600 dark:[[data-flux-button-group]_&]:border-red-900/25',
-        'primary' => '[[data-flux-button-group]_&]:border-e-0 [:is([data-flux-button-group]>&:last-child,_[data-flux-button-group]_:last-child>&)]:border-e-[1px] dark:[:is([data-flux-button-group]>&:last-child,_[data-flux-button-group]_:last-child>&)]:border-e-0 dark:[:is([data-flux-button-group]>&:last-child,_[data-flux-button-group]_:last-child>&)]:border-s-[1px] [:is([data-flux-button-group]>&:not(:first-child),_[data-flux-button-group]_:not(:first-child)>&)]:border-s-[color-mix(in_srgb,var(--color-accent-foreground),transparent_85%)]',
+        'outline' => 'in-data-flux-button-group:border-s-0 [:is([data-flux-button-group]>&:first-child,[data-flux-button-group]_:first-child>&)]:border-s',
+        'filled' => 'in-data-flux-button-group:border-e [:is([data-flux-button-group]>&:last-child,[data-flux-button-group]_:last-child>&)]:border-e-0 in-data-flux-button-group:border-zinc-200/80 dark:in-data-flux-button-group:border-zinc-900/50',
+        'danger' => 'in-data-flux-button-group:border-e [:is([data-flux-button-group]>&:last-child,[data-flux-button-group]_:last-child>&)]:border-e-0 in-data-flux-button-group:border-red-600 dark:in-data-flux-button-group:border-red-900/25',
+        'primary' => 'in-data-flux-button-group:border-e-0 [:is([data-flux-button-group]>&:last-child,[data-flux-button-group]_:last-child>&)]:border-e dark:[:is([data-flux-button-group]>&:last-child,[data-flux-button-group]_:last-child>&)]:border-e-0 dark:[:is([data-flux-button-group]>&:last-child,[data-flux-button-group]_:last-child>&)]:border-s [:is([data-flux-button-group]>&:not(:first-child),[data-flux-button-group]_:not(:first-child)>&)]:border-s-[color-mix(in_srgb,var(--color-accent-foreground),transparent_85%)]',
     })
     ->add($loading ? [ // Loading states...
         '*:transition-opacity',

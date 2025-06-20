@@ -73,7 +73,7 @@ $classes = Flux::classes()
     })
     ->add('relative isolate flex items-center justify-center')
     ->add('[:where(&)]:font-medium')
-    ->add('rounded-[var(--avatar-radius)]')
+    ->add('rounded-(--avatar-radius)')
     ->add($hasTextContent ? '[:where(&)]:bg-zinc-200 [:where(&)]:dark:bg-zinc-600 [:where(&)]:text-zinc-800 [:where(&)]:dark:text-white' : '')
     ->add(match($color) {
         'red' => 'bg-red-200 text-red-800',
@@ -121,7 +121,7 @@ $badgePosition = $attributes->pluck('badge:position') ?: (is_object($badge) ? $b
 $badgeVariant = $attributes->pluck('badge:variant') ?: (is_object($badge) ? $badge?->attributes?->pluck('variant') : null);
 
 $badgeClasses = Flux::classes()
-    ->add('absolute ring-[2px] ring-white dark:ring-zinc-900 z-10')
+    ->add('absolute ring-2 ring-white dark:ring-zinc-900 z-10')
     ->add(match($size) {
         default => 'h-3 min-w-3',
         'sm' => 'h-2 min-w-2',
@@ -171,7 +171,7 @@ $label = $alt ?? $name;
 <flux:with-tooltip :$tooltip :$attributes>
     <flux:button-or-link :attributes="$attributes->class($classes)->merge($circle ? ['data-circle' => 'true'] : [])" :$as :$href data-flux-avatar data-slot="avatar" data-size="{{ $size }}">
         <?php if ($src): ?>
-            <img src="{{ $src }}" alt="{{ $alt ?? $name }}" class="rounded-[var(--avatar-radius)]">
+            <img src="{{ $src }}" alt="{{ $alt ?? $name }}" class="rounded-(--avatar-radius)">
         <?php elseif ($icon): ?>
             <flux:icon :name="$icon" :variant="$iconVariant" :class="$iconClasses" />
         <?php elseif ($hasTextContent): ?>

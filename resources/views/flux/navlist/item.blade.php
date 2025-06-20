@@ -30,8 +30,8 @@ $classes = Flux::classes()
         'outline' => match ($accent) {
             true => [
                 'data-current:text-(--color-accent-content) hover:data-current:text-(--color-accent-content)',
-                'data-current:bg-white dark:data-current:bg-white/[7%] data-current:border data-current:border-zinc-200 dark:data-current:border-transparent',
-                'hover:text-zinc-800 dark:hover:text-white dark:hover:bg-white/[7%] hover:bg-zinc-800/5 ',
+                'data-current:bg-white dark:data-current:bg-white/7 data-current:border data-current:border-zinc-200 dark:data-current:border-transparent',
+                'hover:text-zinc-800 dark:hover:text-white dark:hover:bg-white/7 hover:bg-zinc-800/5 ',
                 'border border-transparent',
             ],
             false => [
@@ -43,13 +43,13 @@ $classes = Flux::classes()
         default => match ($accent) {
             true => [
                 'data-current:text-(--color-accent-content) hover:data-current:text-(--color-accent-content)',
-                'data-current:bg-zinc-800/[4%] dark:data-current:bg-white/[7%]',
-                'hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-800/[4%] dark:hover:bg-white/[7%]',
+                'data-current:bg-zinc-800/4 dark:data-current:bg-white/7',
+                'hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-800/4 dark:hover:bg-white/7',
             ],
             false => [
                 'data-current:text-zinc-800 dark:data-current:text-zinc-100',
-                'data-current:bg-zinc-800/[4%] dark:data-current:bg-white/10',
-                'hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-800/[4%] dark:hover:bg-white/10',
+                'data-current:bg-zinc-800/4 dark:data-current:bg-white/10',
+                'hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-800/4 dark:hover:bg-white/10',
             ],
         },
     })
@@ -74,7 +74,7 @@ $classes = Flux::classes()
     <?php endif; ?>
 
     <?php if ($slot->isNotEmpty()): ?>
-        <div class="flex-1 text-sm font-medium leading-none whitespace-nowrap [[data-nav-footer]_&]:hidden [[data-nav-sidebar]_[data-nav-footer]_&]:block" data-content>{{ $slot }}</div>
+        <div class="flex-1 text-sm font-medium leading-none whitespace-nowrap in-data-nav-footer:hidden [[data-nav-sidebar]_[data-nav-footer]_&]:block" data-content>{{ $slot }}</div>
     <?php endif; ?>
 
     <?php if (is_string($iconTrailing) && $iconTrailing !== ''): ?>

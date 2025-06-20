@@ -6,13 +6,13 @@
         </flux:breadcrumbs>
         <div id="filterHeader" class="flex flex-row gap-2 items-center pt-5 sticky top-5 z-50 transition-all duration-300 w-full">
             {{-- Search Bar --}}
-            <flux:field class="relative flex-grow bg-white dark:bg-black rounded-xl shadow-sm">
+            <flux:field class="relative grow bg-white dark:bg-black rounded-xl shadow-sm">
                 <flux:icon.search class="absolute right-2 z-50 top-2"></flux:icon.search>
                 <flux:input wire:model.live="search" placeholder="Masukan judul berita"/>
             </flux:field>
 
             {{-- Button Filter--}}
-            <div class="relative flex-shrink-0">
+            <div class="relative shrink-0">
                 <button
                     wire:click="toggle"
                     class="flex items-center border gap-2 px-3 py-2 text-black dark:text-white text-sm font-medium w-full bg-white dark:bg-neutral-900 dark:border-zinc-800 rounded-md hover:bg-slate-100"
@@ -47,7 +47,7 @@
             </div>
 
             {{-- Sort Options --}}
-            <div class="flex-shrink-0 ml-auto">
+            <div class="shrink-0 ml-auto">
                 <flux:dropdown class="bg-white dark:bg-black">
                     <flux:button class="bg-white dark:bg-black" icon:trailing="adjustments-horizontal"></flux:button>
                     <flux:menu>

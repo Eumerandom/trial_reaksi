@@ -81,9 +81,9 @@ $classes = Flux::classes()
     ->add('w-full border rounded-lg block disabled:shadow-none dark:shadow-none')
     ->add('appearance-none') // Without this, input[type="date"] on mobile doesn't respect w-full...
     ->add(match ($size) {
-        default => 'text-base sm:text-sm py-2 h-10 leading-[1.375rem]', // This makes the height of the input 40px (same as buttons and such...)
-        'sm' => 'text-sm py-1.5 h-8 leading-[1.125rem]',
-        'xs' => 'text-xs py-1.5 h-6 leading-[1.125rem]',
+        default => 'text-base sm:text-sm py-2 h-10 leading-5.5', // This makes the height of the input 40px (same as buttons and such...)
+        'sm' => 'text-sm py-1.5 h-8 leading-4.5',
+        'xs' => 'text-xs py-1.5 h-6 leading-4.5',
     })
     ->add(match ($hasLeadingIcon) {
         true => 'ps-10',
@@ -100,8 +100,8 @@ $classes = Flux::classes()
         6 => 'pe-44',
     })
     ->add(match ($variant) { // Background...
-        'outline' => 'bg-white dark:bg-white/10 dark:disabled:bg-white/[7%]',
-        'filled'  => 'bg-zinc-800/5 dark:bg-white/10 dark:disabled:bg-white/[7%]',
+        'outline' => 'bg-white dark:bg-white/10 dark:disabled:bg-white/7',
+        'filled'  => 'bg-zinc-800/5 dark:bg-white/10 dark:disabled:bg-white/7',
     })
     ->add(match ($variant) { // Text color
         'outline' => 'text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500',
