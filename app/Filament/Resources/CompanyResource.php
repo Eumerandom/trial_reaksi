@@ -66,6 +66,10 @@ class CompanyResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('No')
+                    ->getStateUsing(fn($record) => Company::orderBy('id')->pluck('id')
+                        ->search($record->id) + 1),
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),

@@ -41,13 +41,8 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                // ini aku ambil dari kode thithis, hehe
-                // id menjadi nomor urut berdasarkan id terkecil hingga terbesar, nggak bolong juga semisal 1 ke 3 kalo 2 dihapus
-                // ini sekadar di table filamentnya, pada database tetap sesuai dengan id yang tersimpan dan terhapus
                 Tables\Columns\TextColumn::make('id')
-                    ->label('No') // Ini kayak fieldnya, untuk memudahkan pengguna mengidentifikasi data
-                    ->getStateUsing(fn($record) => User::orderBy('id')->pluck('id')
-                    ->search($record->id) + 1),
+                    ->label('ID'),
                 Tables\Columns\TextColumn::make('name')->sortable(),
                 Tables\Columns\TextColumn::make('email')->sortable(),
                 Tables\Columns\TextColumn::make('roles.name')

@@ -80,10 +80,14 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Columns\TextColumn::make('id')
+                Columns\TextColumn::make('no')
                     ->label('No')
-                    ->getStateUsing(fn($record) => Product::orderBy('id')->pluck('id')
-                        ->search($record->id) + 1),
+                    ->getStateUsing(function ($record, $livewire) {
+                        $perPage = $livewire->getTableRecordsPerPage();
+                        $page = $livewire->getTablePage();
+                        $index = $livewire->getTableRecords()->search($record) + 1;
+                        return ($page - 1) * $perPage + $index;
+                    }),
                 Columns\TextColumn::make('name')->sortable()->searchable(),
                 Columns\TextColumn::make('company.name')->sortable()->searchable(),
                 Columns\TextColumn::make('category.name')->sortable()->searchable(),
