@@ -33,7 +33,7 @@ class CompanyResource extends Resource
                                             ->required()
                                             ->maxLength(255)
                                             ->live(true)
-                                            ->afterStateUpdated(fn (callable $set, $state) => $set('slug', Str::slug($state))),
+                                            ->afterStateUpdated(fn(callable $set, $state) => $set('slug', Str::slug($state))),
 
                                         Forms\Components\Hidden::make('slug'),
 
@@ -66,6 +66,16 @@ class CompanyResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('No')
+                    ->getStateUsing(function ($record, $livewire) {
+                        $perPage = (int) $livewire->getTableRecordsPerPage();
+                        $page = (int) $livewire->getTablePage();
+                        $index = $livewire->getTableRecords()->search($record) + 1;
+
+                        return ($page - 1) * $perPage + $index;
+                    }),
+
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
@@ -74,7 +84,7 @@ class CompanyResource extends Resource
                     ->label('Induk Perusahaan'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn ($state) => match ($state) {
+                    ->color(fn($state) => match ($state) {
                         'affiliated' => 'danger',
                         'unaffiliated' => 'success',
                     }),

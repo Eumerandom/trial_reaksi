@@ -30,7 +30,7 @@
                     <li>
                         <a href="{{ route('dashboard') }}"
                            class="relative hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors
-                                  after:content-[''] after:absolute after:bottom-[-1px] after:left-0 after:h-[1px] after:w-0
+                                  after:content-[''] after:absolute after:-bottom-px after:left-0 after:h-px after:w-0
                                   after:bg-zinc-600 dark:after:bg-zinc-300
                                   after:transition-all after:duration-300 hover:after:w-full">
                             Beranda
@@ -39,7 +39,7 @@
                     <li>
                         <a href="{{ route('product.index') }}"
                            class="relative hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors
-                                  after:content-[''] after:absolute after:bottom-[-1px] after:left-0 after:h-[1px] after:w-0
+                                  after:content-[''] after:absolute after:-bottom-px after:left-0 after:h-px after:w-0
                                   after:bg-zinc-600 dark:after:bg-zinc-300
                                   after:transition-all after:duration-300 hover:after:w-full">
                             Produk
@@ -48,7 +48,7 @@
                     <li>
                         <a href="{{ route('berita.index') }}"
                            class="relative hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors
-                                  after:content-[''] after:absolute after:bottom-[-1px] after:left-0 after:h-[1px] after:w-0
+                                  after:content-[''] after:absolute after:-bottom-px after:left-0 after:h-px after:w-0
                                   after:bg-zinc-600 dark:after:bg-zinc-300
                                   after:transition-all after:duration-300 hover:after:w-full">
                             Berita

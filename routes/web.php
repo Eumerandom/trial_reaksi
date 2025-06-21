@@ -28,4 +28,21 @@ Route::get('/product/{slug}', App\Livewire\Product\Show::class)->name('product.s
 Route::get('/berita', \App\Livewire\Post\Index::class)->name('berita.index');
 Route::get('/berita/{slug}', \App\Livewire\Post\Show::class)->name('berita.show');
 
+// Test Error Pages (hapus di production)
+Route::get('/test-500', function () {
+    abort(500);
+});
+
+Route::get('/test-403', function () {
+    abort(403);
+});
+
+Route::get('/test-419', function () {
+    abort(419);
+});
+
+Route::get('/test-404', function () {
+    abort(404);
+});
+
 

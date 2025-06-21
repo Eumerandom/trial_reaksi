@@ -8,7 +8,7 @@
 $classes = Flux::classes()
     ->add('font-medium')
     ->add(match ($accent) {
-        true => 'text-[var(--color-accent-content)]',
+        true => 'text-(--color-accent-content)',
         default => '[:where(&)]:text-zinc-800 [:where(&)]:dark:text-white',
     })
     ->add(match ($size) {

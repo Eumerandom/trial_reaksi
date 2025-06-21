@@ -30,8 +30,8 @@ class ProductResource extends Resource
                             ->schema([
                                 Components\TextInput::make('name')
                                     ->required()
-                                    ->live(onBlur:true)
-                                    ->afterStateUpdated(fn (callable $set, $state) => $set('slug', Str::slug($state))),
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn(callable $set, $state) => $set('slug', Str::slug($state))),
                                 Components\TextInput::make('slug')
                                     ->disabled()
                                     ->required(),
@@ -80,7 +80,16 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Columns\TextColumn::make('id')->label('No'),
+                Columns\TextColumn::make('no')
+                    ->label('No')
+                    ->getStateUsing(function ($record, $livewire) {
+                        $perPage = (int) $livewire->getTableRecordsPerPage();
+                        $page = (int) $livewire->getTablePage();
+                        $index = $livewire->getTableRecords()->search($record) + 1;
+
+                        return ($page - 1) * $perPage + $index;
+                    }),
+
                 Columns\TextColumn::make('name')->sortable()->searchable(),
                 Columns\TextColumn::make('company.name')->sortable()->searchable(),
                 Columns\TextColumn::make('category.name')->sortable()->searchable(),
@@ -88,7 +97,7 @@ class ProductResource extends Resource
                 Columns\TextColumn::make('status')
                     ->sortable()
                     ->badge()
-                    ->color(fn ($state) => match ($state) {
+                    ->color(fn($state) => match ($state) {
                         'affiliated' => 'danger',
                         'unaffiliated' => 'success',
                         default => 'danger',

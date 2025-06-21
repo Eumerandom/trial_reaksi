@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "09a0830bf25d3d54889e77be97882237",
+    "content-hash": "a39e10752994f3625b1a310180148994",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -490,6 +490,68 @@
                 }
             ],
             "time": "2024-02-09T16:56:22+00:00"
+        },
+        {
+            "name": "caseyamcl/toc",
+            "version": "v4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/caseyamcl/toc.git",
+                "reference": "63261d38616d6e53e5763a63d33535cc5d1f4c55"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/caseyamcl/toc/zipball/63261d38616d6e53e5763a63d33535cc5d1f4c55",
+                "reference": "63261d38616d6e53e5763a63d33535cc5d1f4c55",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "knplabs/knp-menu": "^3.5",
+                "masterminds/html5": "^2.9",
+                "php": "^8.2",
+                "symfony/string": "^6.0|^7.0",
+                "symfony/translation-contracts": "^3.0"
+            },
+            "require-dev": {
+                "jaschilz/php-coverage-badger": "^2.0",
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^11.0",
+                "squizlabs/php_codesniffer": "^3.5",
+                "twig/twig": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TOC\\": [
+                        "src",
+                        "tests"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Casey McLaughlin",
+                    "email": "caseyamcl@gmail.com",
+                    "homepage": "https://caseymclaughlin.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Simple Table-of-Contents Generator for PHP.  Generates TOCs based off H1...H6 tags",
+            "homepage": "https://github.com/caseyamcl/toc",
+            "keywords": [
+                "TOC",
+                "table of contents"
+            ],
+            "support": {
+                "issues": "https://github.com/caseyamcl/toc/issues",
+                "source": "https://github.com/caseyamcl/toc/tree/v4.0.0"
+            },
+            "time": "2024-12-20T23:15:12+00:00"
         },
         {
             "name": "danharrin/date-format-converter",
@@ -2213,6 +2275,80 @@
                 "source": "https://github.com/kirschbaum-development/eloquent-power-joins/tree/4.2.4"
             },
             "time": "2025-05-19T14:14:41+00:00"
+        },
+        {
+            "name": "knplabs/knp-menu",
+            "version": "v3.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/KnpMenu.git",
+                "reference": "79d325909a1d428a93f1a0f55e90177830e283bb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/79d325909a1d428a93f1a0f55e90177830e283bb",
+                "reference": "79d325909a1d428a93f1a0f55e90177830e283bb",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "conflict": {
+                "symfony/http-foundation": "<5.4",
+                "twig/twig": "<2.16"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.1",
+                "phpunit/phpunit": "^9.6",
+                "psr/container": "^1.0 || ^2.0",
+                "symfony/http-foundation": "^5.4 || ^6.0 || ^7.0",
+                "symfony/phpunit-bridge": "^7.0",
+                "symfony/routing": "^5.4 || ^6.0 || ^7.0",
+                "twig/twig": "^2.16 || ^3.0"
+            },
+            "suggest": {
+                "twig/twig": "for the TwigRenderer and the integration with your templates"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Knp\\Menu\\": "src/Knp/Menu"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KnpLabs",
+                    "homepage": "https://knplabs.com"
+                },
+                {
+                    "name": "Christophe Coevoet",
+                    "email": "stof@notk.org"
+                },
+                {
+                    "name": "The Community",
+                    "homepage": "https://github.com/KnpLabs/KnpMenu/contributors"
+                }
+            ],
+            "description": "An object oriented menu library",
+            "homepage": "https://knplabs.com",
+            "keywords": [
+                "menu",
+                "tree"
+            ],
+            "support": {
+                "issues": "https://github.com/KnpLabs/KnpMenu/issues",
+                "source": "https://github.com/KnpLabs/KnpMenu/tree/v3.8.0"
+            },
+            "time": "2025-06-13T15:03:33+00:00"
         },
         {
             "name": "laravel/fortify",
@@ -8011,6 +8147,67 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.3.0"
             },
             "time": "2024-12-21T16:25:41+00:00"
+        },
+        {
+            "name": "unicon-rocks/unicon-laravel",
+            "version": "v0.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/unicon-rocks/unicon-laravel.git",
+                "reference": "749be7045bd19242f375f094388a6aafcbca5272"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/unicon-rocks/unicon-laravel/zipball/749be7045bd19242f375f094388a6aafcbca5272",
+                "reference": "749be7045bd19242f375f094388a6aafcbca5272",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7",
+                "illuminate/console": "^12|^11|^10",
+                "illuminate/support": "^12|^11|^10",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.18",
+                "orchestra/testbench": "^8 || ^9 || ^10",
+                "phpunit/phpunit": "^11 || ^10"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Icon": "Unicon\\Facades\\Icon"
+                    },
+                    "providers": [
+                        "Unicon\\IconServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "Unicon\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Hedger",
+                    "email": "nicolas@hedger.ch"
+                }
+            ],
+            "description": "Universal icon component for Laravel",
+            "support": {
+                "issues": "https://github.com/unicon-rocks/unicon-laravel/issues",
+                "source": "https://github.com/unicon-rocks/unicon-laravel/tree/v0.4.2"
+            },
+            "time": "2025-04-11T07:54:40+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

@@ -14,26 +14,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-        Role::create([
-            'name' => 'super_admin',
-            'guard_name' => 'web'
-        ]);
-
-        $user = User::factory()->create([
-            'name' => 'Adminlia',
-            'email' => 'adminli@gmail.com',
-            'password' => bcrypt('adminLI4')
-        ]);
-
-        $user->assignRole('super_admin');
-
-        // Run PostSeeder after user creation as posts need an author
         $this->call([
-            PostSeeder::class,      // First: Create posts (needs users only)
             CompanySeeder::class,   // Second: Create companies (parent and child)
-            CategorySeeder::class,  // Third: Create categories (parent and child)
-            ProductSeeder::class,   // Last: Create products (needs companies and categories)
+            CategorySeeder::class,  
+            ProductSeeder::class,   
+            RoleSeeder::class,      
+            SuperUserSeeder::class, 
+            PostSeeder::class,      
         ]);
     }
 }

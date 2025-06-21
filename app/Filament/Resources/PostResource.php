@@ -30,39 +30,39 @@ class PostResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make()
-                ->schema([
-                    Forms\Components\Grid::make(2)
                     ->schema([
-                        TextInput::make('title')
-                        ->required()
-                        ->maxLength(255)
-                        ->columnSpan(1)
-                        ->afterStateUpdated(function (callable $set, $state){
-                            $set('slug', \Illuminate\Support\Str::slug($state));
-                        })
-                        ->live(true),
-                        Forms\Components\Hidden::make('slug')
-                        ->dehydrated(),
-                        Forms\Components\Select::make('status')
-                        ->options([
-                            'draft' => 'Draft',
-                            'published' => 'Published',
-                            'unpublished' => 'Unpublished',
-                        ])
-                        ->required()
-                        ->default('draft')
-                        ->columnSpan(1),
-                        FileUpload::make('thumbnail')
-                        ->columnSpan(2)
-                        ->image()
-                        ->directory('thumbnail_berita'),
-                        MarkdownEditor::make('content')
-                            ->required()
-                        ->columnSpan(2),
-                        Forms\Components\Hidden::make('author')
-                        ->default(fn () => auth()->id())
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                TextInput::make('title')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->columnSpan(1)
+                                    ->afterStateUpdated(function (callable $set, $state) {
+                                        $set('slug', \Illuminate\Support\Str::slug($state));
+                                    })
+                                    ->live(true),
+                                Forms\Components\Hidden::make('slug')
+                                    ->dehydrated(),
+                                Forms\Components\Select::make('status')
+                                    ->options([
+                                        'draft' => 'Draft',
+                                        'published' => 'Published',
+                                        'unpublished' => 'Unpublished',
+                                    ])
+                                    ->required()
+                                    ->default('draft')
+                                    ->columnSpan(1),
+                                FileUpload::make('thumbnail')
+                                    ->columnSpan(2)
+                                    ->image()
+                                    ->directory('thumbnail_berita'),
+                                MarkdownEditor::make('content')
+                                    ->required()
+                                    ->columnSpan(2),
+                                Forms\Components\Hidden::make('author')
+                                    ->default(fn() => auth()->id())
+                            ])
                     ])
-                ])
             ]);
     }
 
@@ -70,25 +70,38 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('no')
+                    ->label('No')
+                    ->getStateUsing(function ($record, $livewire) {
+                        $perPage = (int) $livewire->getTableRecordsPerPage();
+                        $page = (int) $livewire->getTablePage();
+                        $index = $livewire->getTableRecords()->search($record) + 1;
+
+                        return ($page - 1) * $perPage + $index;
+                    }),
+
                 Tables\Columns\TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('content')
-                    ->limit(50),
-                Tables\Columns\TextColumn::make('author')
-                ->sortable()
-                ->searchable(),
+                // Tables\Columns\TextColumn::make('content')
+                //     ->limit(30),
+                Tables\Columns\TextColumn::make('authorUser.name') // diambil berdasarkan relasi di model Post
+                    ->label('Author')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->date()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('status')
-                ->badge()
-                ->sortable()
-                ->color(fn ($state) => match ($state) {
-                    'published' => 'success',
-                    'draft' => 'gray',
-                    'unpublished' => 'warning',
-                })
-
-
+                    ->badge()
+                    ->sortable()
+                    ->color(fn($state) => match ($state) {
+                        'published' => 'success',
+                        'draft' => 'gray',
+                        'unpublished' => 'warning',
+                    }),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

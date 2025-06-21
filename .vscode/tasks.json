@@ -1,0 +1,66 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Composer: Dev",
+			"type": "shell",
+			"command": "composer run dev",
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "none",
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"focus": false
+			}
+		},
+		{
+			"label": "NPM: Build",
+			"type": "shell",
+			"command": "npm run build",
+			"problemMatcher": [],
+			"group": "build",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"focus": false
+			}
+		},
+		{
+			"label": "Composer: Install",
+			"type": "shell",
+			"command": "composer install",
+			"problemMatcher": [],
+			"group": "none",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"focus": false
+			}
+		},
+		{
+			"label": "Composer: Update",
+			"type": "shell",
+			"command": "composer update",
+			"problemMatcher": [],
+			"group": "none",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"focus": false
+			}
+		},
+		{
+			"label": "Composer: Build",
+			"type": "shell",
+			"command": "composer run build",
+			"problemMatcher": [],
+			"group": "build",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"focus": false
+			}
+		}
+	]
+}

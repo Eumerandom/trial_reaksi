@@ -53,9 +53,29 @@ class CategorySeeder extends Seeder
             'slug' => Str::slug('Alat Tulis Kantor'),
         ]);
 
+        $tas = Category::create([
+            'name' => 'Tas',
+            'slug' => Str::slug('Tas'),
+        ]);
+
+        $dompet = Category::create([
+            'name' => 'Dompet',
+            'slug' => Str::slug('Dompet'),
+        ]);
+
         $alatKebersihan = Category::create([
             'name' => 'Alat Kebersihan',
             'slug' => Str::slug('Alat Kebersihan'),
+        ]);
+
+        $alatMasak = Category::create([
+            'name' => 'Alat Masak',
+            'slug' => Str::slug('Alat Masak'),
+        ]);
+
+        $elektronik = Category::create([
+            'name' => 'Elektronik',
+            'slug' => Str::slug('Elektronik'),
         ]);
 
         // Create main categories
@@ -277,6 +297,41 @@ class CategorySeeder extends Seeder
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
                 'parent_id' => $detergen->id
+            ]);
+        }
+
+        $alatMasakSubs = [
+            'Stainless Steel',
+            'Steamer, Panci, Wajan',
+        ];
+
+        foreach ($alatMasakSubs as $sub) {
+            Category::create([
+                'name' => $sub,
+                'slug' => $this->generateUniqueSlug($sub),
+                'parent_id' => $alatMasak->id
+            ]);
+        }
+
+        $elektronikSubs = [
+            'Magic Com, Rice & Slow Cooker',
+            'Air Fryer, Chopper, Blender',
+            'Kipas Angin, AC, Air Purifier',
+            'Slow Juicer, Blender',
+            'AC, Mesin Cuci, Kompor',
+            'Dishwasher, Outdoor Kitchen, Kompor',
+            'Dishwasher, Vacuum Cleaner, Air Purifier',
+            'Water Heater, Vacuum Cleaner, Air Purifier',
+            'Water Heater, Vacuum Cleaner, Setrika',
+            'Water Heater, Vacuum Cleaner, Dispenser',
+            'Blender, Vacuum Cleaner, Kitchen'
+        ];
+
+        foreach ($elektronikSubs as $sub) {
+            Category::create([
+                'name' => $sub,
+                'slug' => $this->generateUniqueSlug($sub),
+                'parent_id' => $elektronik->id
             ]);
         }
 

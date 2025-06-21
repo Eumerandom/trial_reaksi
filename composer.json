@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "bezhansalleh/filament-shield": "3.2.6",
+        "caseyamcl/toc": "4.0",
         "filament/filament": "^3.2",
         "laravel/framework": "^12.0",
         "laravel/jetstream": "^5.3",
@@ -15,7 +16,8 @@
         "laravel/tinker": "^2.10.1",
         "livewire/flux": "^2.1",
         "livewire/livewire": "^3.0",
-        "predis/predis": "^2.3"
+        "predis/predis": "^2.3",
+        "unicon-rocks/unicon-laravel": "^0.4.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -57,7 +59,10 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names=server,queue,vite"
+        ],
+        "build": [
+            "npx vite build"
         ]
     },
     "extra": {
