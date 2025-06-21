@@ -519,7 +519,6 @@ class CategorySeeder extends Seeder
         }
 
         $makananSubs = [
-            'Snack',
             'Es Krim',
             'Gelato',
             'Es Krim & Gelato Bubuk',
