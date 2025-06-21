@@ -54,11 +54,13 @@ class CategoryResource extends Resource
                 Tables\Columns\TextColumn::make('no')
                     ->label('No')
                     ->getStateUsing(function ($record, $livewire) {
-                        $perPage = $livewire->getTableRecordsPerPage();
-                        $page = $livewire->getTablePage();
+                        $perPage = (int) $livewire->getTableRecordsPerPage();
+                        $page = (int) $livewire->getTablePage();
                         $index = $livewire->getTableRecords()->search($record) + 1;
+
                         return ($page - 1) * $perPage + $index;
                     }),
+
                 Tables\Columns\TextColumn::make('name')
                     ->label('Category')
                     ->sortable()
