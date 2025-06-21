@@ -1,108 +1,139 @@
-<div class="min-h-screen bg-gray-100 dark:bg-black">
+<div class="min-h-screen bg-gray-100 dark:bg-black"
+    x-data="{
+        allProducts: @js($products),
+        filteredProducts: @js($products),
+        search: '',
+        
+        filters: {
+            category: '',
+            company: '',
+            status: '',
+            localProduct: ''
+        },
+
+
+
+        filterProducts() {
+            let filtered = this.allProducts;
+
+            if (this.search.trim() !== '') {
+                const searchQuery = this.search.toLowerCase();
+                filtered = filtered.filter(product => 
+                    product.name.toLowerCase().includes(searchQuery) ||
+                    (product.company && product.company.name.toLowerCase().includes(searchQuery)) ||
+                    (product.category && product.category.name.toLowerCase().includes(searchQuery))
+                );
+            }
+
+            if (this.filters.category !== '') {
+                filtered = filtered.filter(product => 
+                    product.category && product.category.id == this.filters.category
+                );
+            }
+
+            if (this.filters.company !== '') {
+                filtered = filtered.filter(product => 
+                    product.company && product.company.id == this.filters.company
+                );
+            }
+
+            if (this.filters.status !== '') {
+                filtered = filtered.filter(product => 
+                    product.status === this.filters.status
+                );
+            }
+
+            if (this.filters.localProduct !== '') {
+                const isLocal = this.filters.localProduct === 'true';
+                filtered = filtered.filter(product => 
+                    product.local_product === isLocal
+                );
+            }
+
+            this.filteredProducts = filtered;
+        },
+
+        clearFilters() {
+            this.filters = {
+                category: '',
+                company: '',
+                status: '',
+                localProduct: ''
+            };
+            this.filterProducts();
+        },
+
+        getActiveFiltersCount() {
+            return Object.values(this.filters).filter(value => value !== '').length;
+        }
+    }"
+    @filtersapplied.window="filters = $event.detail; filterProducts()"
+    @filterscleared.window="filters = $event.detail; filterProducts()">
     <div class="mx-auto container sm:px-4">
         <flux:breadcrumbs class="pt-5">
             <flux:breadcrumbs.item :href="route('dashboard')" separator="slash">Home</flux:breadcrumbs.item>
             <flux:breadcrumbs.item separator="slash">Produk</flux:breadcrumbs.item>
         </flux:breadcrumbs>
-        <div id="filterHeader" class="flex flex-row gap-2 items-center pt-5 sticky top-5 z-50 transition-all duration-300 w-full">
+
+        <div id="filterHeader" 
+             class="flex flex-row gap-2 items-center pt-5 sticky top-5 z-50 transition-all duration-300 w-full"
+             x-data="{ scrolled: false }"
+             x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 100 })"
+             :class="{ 'px-5': scrolled }">
             {{-- Search Bar --}}
-            <flux:field class="relative grow bg-white dark:bg-black rounded-xl shadow-sm">
+            <div class="relative grow bg-white dark:bg-black rounded-xl shadow-sm"> 
                 <flux:icon.search class="absolute right-2 z-50 top-2"></flux:icon.search>
-                <flux:input wire:model.live="search" placeholder="Masukan nama produk "/>
-            </flux:field>
+                <flux:input 
+                    placeholder="Cari di REAKSI" 
+                    x-model="search" 
+                    x-on:input="filterProducts()"
+                    />
+            </div>
 
-            {{-- Button Filter--}}
-            <div class="relative shrink-0">
-                <button
-                    wire:click="toggle"
-                    class="flex items-center border gap-2 px-3 py-2 text-black dark:text-white text-sm font-medium w-full bg-white dark:bg-neutral-900 dark:border-zinc-800 rounded-md hover:bg-slate-100"
-                >
-                    <flux:icon.funnel class="text-black dark:text-white"></flux:icon.funnel>
+            {{-- Filter Button --}}
+            <flux:modal.trigger name="filter-modal">
+                <flux:button 
+                    variant="outline" 
+                    class="relative flex items-center gap-2 bg-white dark:bg-black rounded-xl shadow-sm">
+                    <flux:icon.funnel class="size-4" />
                     Filter
-                </button>
-
-                {{-- Dropdown Filter --}}
-                @if ($open)
-                    <div class="absolute z-10 w-64 sm:w-80 right-0 top-12 bg-white dark:bg-black border dark:border-zinc-800 rounded-lg p-4 shadow-lg">
-                        <div class="space-y-4">
-                            <flux:field label="Status Afiliasi">
-                                <flux:select wire:model.live="filterStatus">
-                                    <option value="">Semua</option>
-                                    <option value="affiliated">Terafiliasi</option>
-                                    <option value="unaffiliated">Tidak Terafiliasi</option>
-                                </flux:select>
-                            </flux:field>
-
-                            <flux:field label="Kategori">
-                                <flux:select wire:model.live="filterCategory">
-                                     <option value="">Semua Kategori</option>
-                                     @foreach($categories as $kategori)
-                                         <option value="{{$kategori->name}}">{{$kategori->name}}</option>
-                                     @endforeach
-                                 </flux:select>
-
-                            </flux:field>
-                        </div>
-                    </div>
-                @endif
-            </div>
-
-            {{-- Sort Options --}}
-            <div class="shrink-0 ml-auto">
-                <flux:dropdown class="bg-white dark:bg-black">
-                    <flux:button class="bg-white dark:bg-black" icon:trailing="adjustments-horizontal"></flux:button> {{-- Icon diganti --}}
-                    <flux:menu>
-                        <div class="p-2">
-                            <h4 class="text-black dark:text-white mb-2 font-medium">Urutkan</h4>
-                            <div class="flex gap-2">
-                                <button wire:click="setSort('asc')" class="flex items-center gap-1 p-2 rounded {{ $sort === 'asc' ? 'bg-black/10 dark:bg-gray-900' : '' }} hover:bg-black/5 dark:hover:bg-gray-800">
-                                    <flux:icon.arrow-down-a-z class="size-4 mr-1"/>
-                                    <span class="text-sm">A-Z</span>
-                                </button>
-                                <button wire:click="setSort('desc')" class="flex items-center gap-1 p-2 rounded {{ $sort === 'desc' ? 'bg-black/10 dark:bg-gray-900' : '' }} hover:bg-black/5 dark:hover:bg-gray-800">
-                                     <flux:icon.arrow-up-z-a class="size-4 mr-1"/>
-                                    <span class="text-sm">Z-A</span>
-                                </button>
-                            </div>
-                        </div>
-                    </flux:menu>
-                </flux:dropdown>
-            </div>
+                    <span x-show="getActiveFiltersCount() > 0" 
+                          class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                          x-text="getActiveFiltersCount()"></span>
+                </flux:button>
+            </flux:modal.trigger>
         </div>
 
+        <livewire:product.filter-modal wire:key="filter-modal" />
+            
         <div class="mt-6 mb-8">
             <p class="text-sm text-gray-600 dark:text-gray-400">
-                Menampilkan <span class="font-medium text-gray-900 dark:text-white">{{ $products->count() }}</span>
-                dari <span class="font-medium text-gray-900 dark:text-white">{{ $products->total() }}</span> produk
+                Menampilkan <span class="font-medium text-gray-900 dark:text-white" x-text="filteredProducts.length"></span>
+                dari <span class="font-medium text-gray-900 dark:text-white" x-text="allProducts.length"></span> produk
+                <span x-show="search.trim() !== ''" class="text-blue-600 dark:text-blue-400">
+                    untuk "<span x-text="search"></span>"
+                </span>
             </p>
         </div>
 
-        {{-- Pastikan variabel $layout masih ada di komponen Livewire meskipun tidak bisa dipilih dari UI --}}
-        <div class="{{ $layout === 'grid' ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6' : 'space-y-6' }}">
-            @foreach($products as $product)
-                {{-- Logika untuk menampilkan grid/list tetap ada, bisa diatur defaultnya di controller --}}
-                @if($layout === 'grid')
-                    <x-product.grid-card :product="$product" />
-                @else
-                    <x-product.list-card :product="$product" />
-                @endif
-            @endforeach
+        {{-- Empty State --}}
+        <div x-show="filteredProducts.length === 0" class="text-center py-12">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-3-8a8 8 0 108 8 8 8 0 00-8-8z"></path>
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Tidak ada produk ditemukan</h3>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                Coba ubah kata kunci pencarian Anda.
+            </p>
+        </div>
 
-            @if($products->hasPages())
-                <div class="col-span-full mt-8">
-                    {{ $products->links() }}
+        {{-- Products --}}
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            @foreach($products as $product)
+                <div x-show="filteredProducts.some(fp => fp.id === {{ $product->id }})">
+                    <x-product.grid-card :product="$product" />
                 </div>
-            @endif
+            @endforeach
         </div>
     </div>
 </div>
-<script>
-    const filterHeader = document.getElementById("filterHeader");
-    window.addEventListener("scroll", function() {
-        if (window.scrollY > 100) {
-            filterHeader.classList.add("px-5");
-        } else {
-            filterHeader.classList.remove("px-5");
-        }
-    });
-</script>

@@ -1,4 +1,3 @@
-
 <div class="fade-up w-full transform-gpu sm:px-3 md:px-3" wire:click="viewDetail('{{$product->slug}}')">
     <div @class([
             'relative flex flex-col gap-1 bg-white dark:bg-black dark:shadow-md dark:shadow-zinc-900 rounded-lg transition-all duration-300 shadow-lg hover:shadow-md origin-top hover:scale-[1.03]',
