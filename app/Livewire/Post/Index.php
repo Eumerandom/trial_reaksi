@@ -47,9 +47,9 @@ class Index extends Component
             })
             ->when($this->filterStatus, function ($query, $filterStatus) {
                 if ($filterStatus == 'affiliated') {
-                    $query->where('status', 'affiliated'); // Sesuaikan dengan kolom status yang sesuai
+                    $query->where('status', 'affiliated'); 
                 } else {
-                    $query->where('status', 'unaffiliated'); // Sesuaikan dengan kolom status yang sesuai
+                    $query->where('status', 'unaffiliated'); 
                 }
             })
             ->when($this->filterCategory, function ($query, $filterCategory) {

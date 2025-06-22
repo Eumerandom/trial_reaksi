@@ -9,14 +9,18 @@ class Show extends Component
 {
     public $product;
     public $company;
+    public $parents = [];
     public $showShareModal = false;
 
     public function mount($slug)
     {
         $products = Product::with('company')->where('slug', $slug)->first();
         $company = $products->company;
+        $parents = $company->getParents();
+        $this->parents = $parents;
         $this->company = $company;
         $this->product = $products;
+
     }
 
     public function toggleShareModal()

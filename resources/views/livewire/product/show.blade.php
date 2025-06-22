@@ -91,6 +91,8 @@
                             </p>
                         </div>
                     </div>
+
+                    <x-product.stepper-company :parents="$parents" :company="$company" />
                 </div>
             @endif
         </div>

@@ -26,4 +26,16 @@ class Company extends Model
         return $this->hasMany(Company::class, 'parent_id', 'id');
     }
 
+    public function getParents()
+    {
+        $parents = [];
+        $current = $this;
+        while ($current->parent) {
+            $parents[] = $current->parent;
+            $current = $current->parent;
+        }
+        return $parents;
+    }
+
+
 }

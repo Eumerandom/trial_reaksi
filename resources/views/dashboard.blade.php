@@ -4,7 +4,7 @@
     <div class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-100 dark:bg-black">
         <div class="max-w-4xl mx-auto">
             {{-- Card 1 --}}
-            <div class="mb-16 p-6 sm:p-8 bg-white dark:bg-zinc-800 rounded-lg shadow-md text-center transform transition duration-700 ease-in-out"
+            <div class="mb-16 p-6 sm:p-8 bg-white dark:bg-zinc-800 rounded-lg shadow-md text-center transform transition"
                 x-data="{show: false}"
                 x-init="setTimeout(() => show = true, 300)"
                 :class="{'opacity-0 translate-y-4': !show, 'opacity-100 translate-y-0': show}">
@@ -42,7 +42,7 @@
                         </a>
                         <a href="https://www.instagram.com/rekomendasibebasafiliasi/" target="_blank" rel="noopener noreferrer"
                            class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-center text-pink-700 dark:text-pink-300 bg-slate-100 shadow-md dark:bg-zinc-700 rounded-lg hover:bg-pink-500/75 focus:ring-4 focus:ring-pink-300/50 dark:focus:ring-pink-800/50 transition duration-150 ease-in-out">
-                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"> {{-- Simple Instagram icon --}}
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8A3.6 3.6 0 0 0 20 16.4V7.6A3.6 3.6 0 0 0 16.4 4H7.6m9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"></path>
                             </svg>
                             Instagram
@@ -52,7 +52,7 @@
             </div>
 
             {{-- Card 2 --}}
-            <div class="mb-16 p-6 sm:p-8 bg-white dark:bg-zinc-800 rounded-lg shadow-md transform transition duration-700 ease-in-out hover:shadow-lg"
+            <div class="mb-16 p-6 sm:p-8 bg-white dark:bg-zinc-800 rounded-lg shadow-md transform transition ease-in-out hover:shadow-lg"
                 x-data="{
                     show: false,
                     openPanels: {1: false, 2: false, 3: false},
@@ -155,17 +155,4 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
         </svg>
     </button>
-
-    <script>
-        window.addEventListener('scroll', function() {
-            var backToTop = document.getElementById('back-to-top');
-            if (window.pageYOffset > 300) {
-                backToTop.classList.remove('opacity-0', 'invisible');
-                backToTop.classList.add('opacity-100', 'visible');
-            } else {
-                backToTop.classList.add('opacity-0', 'invisible');
-                backToTop.classList.remove('opacity-100', 'visible');
-            }
-        });
-    </script>
 </div>
