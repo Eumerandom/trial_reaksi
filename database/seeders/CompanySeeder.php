@@ -18,7 +18,7 @@ class CompanySeeder extends Seeder
         ]);
 
         // Create child companies
-        $companies = [
+        $wingsCompanies = [
             [
                 'name' => 'Wings Food',
                 'status' => 'affiliated',
@@ -29,7 +29,7 @@ class CompanySeeder extends Seeder
             ],
         ];
 
-        foreach ($companies as $company) {
+        foreach ($wingsCompanies as $company) {
             Company::create([
                 'name' => $company['name'],
                 'slug' => Str::slug($company['name']),
@@ -37,5 +37,31 @@ class CompanySeeder extends Seeder
                 'parent_id' => $wings->id,
             ]);
         }
+
+
+
+
+        $companies = [
+            [
+                'name' => 'Danone',
+                'status' => 'affiliated',
+            ],
+            [
+                'name' => 'PT Sido Muncul Tbk',
+                'status' => 'affiliated',
+            ],
+            [
+                'name' => 'PT Dua Kelinci',
+                'status' => 'unaffiliated',
+            ],
+        ];
+
+        foreach ($companies as $company) {
+            Company::create([
+                'name' => $company['name'],
+                'slug' => Str::slug($company['name']),
+                'status' => $company['status'],
+            ]);
+        }       
     }
 }
