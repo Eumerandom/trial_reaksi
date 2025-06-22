@@ -54,8 +54,7 @@
                     class="relative p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
                     aria-label="Toggle dark mode"
                 >
-                    <!-- Sun icon - show in dark mode -->
-                    <span class="icon-[solar--sun-linear] w-5 h-5 hidden dark:block"></span>
+                    <span class="icon-[line-md--moon-filled-to-sunny-filled-loop-transition] w-5 h-5 hidden dark:block"></span>
                     
                     <span class="icon-[line-md--sunny-filled-loop-to-moon-filled-transition] w-5 h-5 block dark:hidden"></span>
                 </button>
