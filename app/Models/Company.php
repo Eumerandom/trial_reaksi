@@ -37,5 +37,14 @@ class Company extends Model
         return $parents;
     }
 
+    public function getTotalChildren()
+    {
+        $total = $this->children->count();
+        foreach ($this->children as $child) {
+            $total += $child->getTotalChildren();
+        }
+        return $total;
+    }
+    
 
 }
