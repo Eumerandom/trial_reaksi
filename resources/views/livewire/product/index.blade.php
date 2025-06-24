@@ -27,13 +27,13 @@
 
             if (this.filters.category !== '') {
                 filtered = filtered.filter(product => 
-                    product.category && product.category.id == this.filters.category
+                    product.category && String(product.category.id) === String(this.filters.category)
                 );
             }
 
             if (this.filters.company !== '') {
                 filtered = filtered.filter(product => 
-                    product.company && product.company.id == this.filters.company
+                    product.company && String(product.company.id) === String(this.filters.company)
                 );
             }
 
@@ -46,7 +46,7 @@
             if (this.filters.localProduct !== '') {
                 const isLocal = this.filters.localProduct === 'true';
                 filtered = filtered.filter(product => 
-                    product.local_product === isLocal
+                    Boolean(product.local_product) === isLocal
                 );
             }
 
@@ -69,8 +69,9 @@
         }
     }"
     x-init="
-        window.addEventListener('filtersApplied', e => { $data.filters = e.detail; $data.filterProducts(); });
-        window.addEventListener('filtersCleared', e => { $data.filters = e.detail; $data.search = ''; $data.filteredProducts = $data.allProducts; });
+        window.addEventListener('filtersApplied', e => { $data.filters = Array.isArray(e.detail) ? e.detail[0] : e.detail; $data.filterProducts(); });
+        window.addEventListener('filtersCleared', e => { $data.filters = Array.isArray(e.detail) ? e.detail[0] : e.detail; $data.search = ''; $data.filteredProducts = $data.allProducts; });
+        window.alpineProduct = $data;
     ">
     {{-- @dd($products) --}}
     <div class="mx-auto container sm:px-4">
