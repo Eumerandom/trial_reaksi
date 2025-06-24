@@ -24,7 +24,9 @@ class FilterModal extends Component
             'categories' => $categories,
             'companies' => $companies,
         ]);
-    }    public function clearFilters()
+    }    
+    
+    public function clearFilters()
     {
         $this->filters = [
             'category' => '',
@@ -32,20 +34,16 @@ class FilterModal extends Component
             'status' => '',
             'localProduct' => ''
         ];
-        
-        $this->js("
-            window.dispatchEvent(new CustomEvent('filtersCleared', { 
-                detail: " . json_encode($this->filters) . " 
-            }));
-        ");
-    }public function applyFilters()
+
+        $this->dispatch('filtersCleared', $this->filters);
+    }
+
+    public function applyFilters()
     {
-        $this->js("
-            window.dispatchEvent(new CustomEvent('filtersApplied', { 
-                detail: " . json_encode($this->filters) . " 
-            }));
-        ");
-    }    public function updated($property, $value)
+        $this->dispatch('filtersApplied', $this->filters);
+    }
+
+    public function updated($property, $value)
     {
         if (str_starts_with($property, 'filters.')) {
             $this->applyFilters();

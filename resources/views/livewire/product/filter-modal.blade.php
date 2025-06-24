@@ -164,7 +164,7 @@
                 options: [
                     { id: '', name: 'Semua Status' },
                     { id: 'affiliated', name: 'Terafiliasi' },
-                    { id: 'not_affiliated', name: 'Tidak Terafiliasi' }
+                    { id: 'unaffiliated', name: 'Tidak Terafiliasi' }
                 ],
                 
                 selectOption(id, name) {

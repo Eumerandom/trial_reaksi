@@ -60,15 +60,19 @@
                 status: '',
                 localProduct: ''
             };
-            this.filterProducts();
+            this.search = '';
+            this.filteredProducts = this.allProducts;
         },
 
         getActiveFiltersCount() {
             return Object.values(this.filters).filter(value => value !== '').length;
         }
     }"
-    @filtersapplied.window="filters = $event.detail; filterProducts()"
-    @filterscleared.window="filters = $event.detail; filterProducts()">
+    x-init="
+        window.addEventListener('filtersApplied', e => { $data.filters = e.detail; $data.filterProducts(); });
+        window.addEventListener('filtersCleared', e => { $data.filters = e.detail; $data.search = ''; $data.filteredProducts = $data.allProducts; });
+    ">
+    {{-- @dd($products) --}}
     <div class="mx-auto container sm:px-4">
         <flux:breadcrumbs class="pt-5">
             <flux:breadcrumbs.item :href="route('dashboard')" separator="slash">Home</flux:breadcrumbs.item>
