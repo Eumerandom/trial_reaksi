@@ -54,10 +54,13 @@ class ProductResource extends Resource
                                     ->default('unaffiliated'),
                                 Components\Select::make('company_id')
                                     ->relationship('company', 'name')
+                                    ->searchable()
+                                    ->preload()
                                     ->required(),
                                 Components\Select::make('categories_id')
                                     ->relationship('category', 'name')
-                                    ->required(),
+                                    ->searchable()
+                                    ->preload(),
                                 Components\Toggle::make('local_product')
                                     ->label('Local Product')
                                     ->default(false),
@@ -66,12 +69,16 @@ class ProductResource extends Resource
                         Components\Tabs\Tab::make('Media')
                             ->schema([
                                 Components\FileUpload::make('image')
-                                    ->required()
+                                    ->label('Upload Image (opsional, atau isi URL di bawah)')
                                     ->image()
                                     ->directory('product_images')
                                     ->disk('public')
                                     ->preserveFilenames(),
-                            ]),
+                                Components\TextInput::make('image')
+                                    ->label('CDN Image URL (opsional, atau upload file di atas)')
+                                    ->url()
+                                    ->columnSpanFull(),
+                        ]),
                     ])
             ]);
     }
@@ -137,4 +144,5 @@ class ProductResource extends Resource
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
+
 }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id('id');
-            $table->string('name');
-            $table->foreignId('parent_id')->nullable()->constrained('categories');
+            $table->string('name')->index();
+            $table->foreignId('parent_id')->nullable()->constrained('categories')->index();
             $table->string('slug')->unique();
             $table->timestamps();
             $table->softDeletes();
