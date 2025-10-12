@@ -21,13 +21,9 @@ class Show extends Component
 
     private function generateTocAndContent()
     {
-        $this->htmlContent = \Illuminate\Support\Str::markdown($this->post->content);
-        
-        $markupFixer = new MarkupFixer();
-        $tocGenerator = new TocGenerator();
-        $fixedContent = $markupFixer->fix($this->htmlContent);
-    
-        $this->toc = $tocGenerator->getHtmlMenu($fixedContent); 
+        $markdown = $this->post->content;
+        $this->toc = extractToc($markdown);
+        $this->htmlContent = renderWithAnchor($markdown);
     }
 
     public function render()
