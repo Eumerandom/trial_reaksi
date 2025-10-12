@@ -3,21 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
-use App\Filament\Resources\PostResource\RelationManagers;
 use App\Models\Post;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
-use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Auth;
-use Psy\Util\Str;
 
 class PostResource extends Resource
 {
@@ -60,9 +54,9 @@ class PostResource extends Resource
                                     ->required()
                                     ->columnSpan(2),
                                 Forms\Components\Hidden::make('author')
-                                    ->default(fn() => auth()->id())
-                            ])
-                    ])
+                                    ->default(fn () => auth()->id()),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -95,7 +89,7 @@ class PostResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->sortable()
-                    ->color(fn($state) => match ($state) {
+                    ->color(fn ($state) => match ($state) {
                         'published' => 'success',
                         'draft' => 'gray',
                         'unpublished' => 'warning',

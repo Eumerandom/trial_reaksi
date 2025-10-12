@@ -3,25 +3,19 @@
 use Illuminate\Support\Str;
 use Spatie\LaravelMarkdown\MarkdownRenderer;
 
-/**
- * @param string $markdown
- * @return string
- */
 function renderWithAnchor(string $markdown): string
 {
     $html = app(MarkdownRenderer::class)->toHtml($markdown);
+
     return preg_replace_callback('/<h([1-6])>(.*?)<\/h\1>/', function ($matches) {
         $level = $matches[1];
         $text = strip_tags($matches[2]);
         $id = Str::slug($text);
+
         return "<h{$level} id=\"{$id}\">{$matches[2]}</h{$level}>";
     }, $html);
 }
 
-/**
- * @param string $markdown
- * @return array
- */
 function extractToc(string $markdown): array
 {
     $headings = [];
@@ -34,11 +28,12 @@ function extractToc(string $markdown): array
             $id = Str::slug($text);
 
             $headings[] = [
-                'level' => (int)$level,
+                'level' => (int) $level,
                 'text' => $text,
                 'id' => $id,
             ];
         }
     }
+
     return $headings;
 }

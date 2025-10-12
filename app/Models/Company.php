@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Company extends Model
 {
     use SoftDeletes;
+
     protected $table = 'companies';
+
     protected $fillable = ['name', 'slug', 'parent_id', 'status', 'logo'];
 
     public function products()
@@ -34,6 +36,7 @@ class Company extends Model
             $parents[] = $current->parent;
             $current = $current->parent;
         }
+
         return $parents;
     }
 
@@ -43,8 +46,7 @@ class Company extends Model
         foreach ($this->children as $child) {
             $total += $child->getTotalChildren();
         }
+
         return $total;
     }
-    
-
 }

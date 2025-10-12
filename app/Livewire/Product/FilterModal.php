@@ -12,7 +12,7 @@ class FilterModal extends Component
         'category' => '',
         'company' => '',
         'status' => '',
-        'localProduct' => ''
+        'localProduct' => '',
     ];
 
     public function render()
@@ -24,15 +24,15 @@ class FilterModal extends Component
             'categories' => $categories,
             'companies' => $companies,
         ]);
-    }    
-    
+    }
+
     public function clearFilters()
     {
         $this->filters = [
             'category' => '',
             'company' => '',
             'status' => '',
-            'localProduct' => ''
+            'localProduct' => '',
         ];
 
         $this->dispatch('filtersCleared', $this->filters);

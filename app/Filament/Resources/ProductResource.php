@@ -4,19 +4,19 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Models\Product;
-use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Forms\Components;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Tables\Columns;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
     public static function form(Form $form): Form
@@ -31,7 +31,7 @@ class ProductResource extends Resource
                                 Components\TextInput::make('name')
                                     ->required()
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn(callable $set, $state) => $set('slug', Str::slug($state))),
+                                    ->afterStateUpdated(fn (callable $set, $state) => $set('slug', Str::slug($state))),
                                 Components\TextInput::make('slug')
                                     ->disabled()
                                     ->required(),
@@ -49,7 +49,7 @@ class ProductResource extends Resource
                                     ->required()
                                     ->options([
                                         'affiliated' => 'Affiliated',
-                                        'unaffiliated' => 'Unaffiliated'
+                                        'unaffiliated' => 'Unaffiliated',
                                     ])
                                     ->default('unaffiliated'),
                                 Components\Select::make('company_id')
@@ -78,8 +78,8 @@ class ProductResource extends Resource
                                     ->label('CDN Image URL (opsional, atau upload file di atas)')
                                     ->url()
                                     ->columnSpanFull(),
-                        ]),
-                    ])
+                            ]),
+                    ]),
             ]);
     }
 
@@ -104,7 +104,7 @@ class ProductResource extends Resource
                 Columns\TextColumn::make('status')
                     ->sortable()
                     ->badge()
-                    ->color(fn($state) => match ($state) {
+                    ->color(fn ($state) => match ($state) {
                         'affiliated' => 'danger',
                         'unaffiliated' => 'success',
                         default => 'danger',
@@ -117,7 +117,7 @@ class ProductResource extends Resource
             ->filters([
                 SelectFilter::make('status')->options([
                     'affiliated' => 'Affiliated',
-                    'unaffiliated' => 'Unaffiliated'
+                    'unaffiliated' => 'Unaffiliated',
                 ]),
                 SelectFilter::make('company')->relationship('company', 'name'),
                 SelectFilter::make('category')->relationship('category', 'name'),
@@ -144,5 +144,4 @@ class ProductResource extends Resource
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
-
 }

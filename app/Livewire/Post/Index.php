@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Post;
 
-use Livewire\Component;
 use App\Models\Post;
+use Livewire\Component;
 use Livewire\WithPagination;
 
 class Index extends Component
@@ -11,10 +11,15 @@ class Index extends Component
     use WithPagination;
 
     public $search = '';
+
     public $filterStatus = '';
+
     public $filterCategory = '';
+
     public $sort = 'asc';
+
     public $open = false;
+
     public $layout = 'grid';
 
     protected $queryString = [
@@ -26,7 +31,7 @@ class Index extends Component
 
     public function toggle()
     {
-        $this->open = !$this->open;
+        $this->open = ! $this->open;
     }
 
     public function setSort($sort)
@@ -43,13 +48,13 @@ class Index extends Component
     {
         $posts = Post::query()
             ->when($this->search, function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%');
+                $query->where('title', 'like', '%'.$this->search.'%');
             })
             ->when($this->filterStatus, function ($query, $filterStatus) {
                 if ($filterStatus == 'affiliated') {
-                    $query->where('status', 'affiliated'); 
+                    $query->where('status', 'affiliated');
                 } else {
-                    $query->where('status', 'unaffiliated'); 
+                    $query->where('status', 'unaffiliated');
                 }
             })
             ->when($this->filterCategory, function ($query, $filterCategory) {

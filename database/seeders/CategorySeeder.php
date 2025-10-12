@@ -9,18 +9,19 @@ use Illuminate\Support\Str;
 class CategorySeeder extends Seeder
 {
     public function generateUniqueSlug($name)
-{
-    $slug = Str::slug($name);
-    $originalSlug = $slug;
-    $count = 1;
+    {
+        $slug = Str::slug($name);
+        $originalSlug = $slug;
+        $count = 1;
 
-    while (Category::where('slug', $slug)->exists()) {
-        $slug = $originalSlug . '-' . $count;
-        $count++;
+        while (Category::where('slug', $slug)->exists()) {
+            $slug = $originalSlug.'-'.$count;
+            $count++;
+        }
+
+        return $slug;
     }
 
-    return $slug;
-}
     public function run(): void
     {
         $makeupSkincare = Category::create([
@@ -137,30 +138,30 @@ class CategorySeeder extends Seeder
         $makeupSkincareSubs = [
             'Wewangian',
         ];
-        
+
         $sunscreen = Category::create([
             'name' => 'Sunscreen',
             'slug' => Str::slug('Sunscreen'),
-            'parent_id' => $makeupSkincare->id
+            'parent_id' => $makeupSkincare->id,
         ]);
-        
+
         $balm = Category::create([
             'name' => 'Balm',
             'slug' => Str::slug('Balm'),
-            'parent_id' => $makeupSkincare->id
+            'parent_id' => $makeupSkincare->id,
         ]);
-        
+
         $firstCleanser = Category::create([
             'name' => 'First Cleanser',
             'slug' => Str::slug('First Cleanser'),
-            'parent_id' => $makeupSkincare->id
+            'parent_id' => $makeupSkincare->id,
         ]);
 
         foreach ($makeupSkincareSubs as $sub) {
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $makeupSkincare->id
+                'parent_id' => $makeupSkincare->id,
             ]);
         }
 
@@ -182,7 +183,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $sunscreen->id
+                'parent_id' => $sunscreen->id,
             ]);
         }
 
@@ -190,74 +191,74 @@ class CategorySeeder extends Seeder
             'Multipurpose Balm',
             'Healing Salve Balm',
             'Lip Balm',
-            'Ointment Balm'
+            'Ointment Balm',
         ];
 
         foreach ($balmSubs as $sub) {
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $balm->id
+                'parent_id' => $balm->id,
             ]);
         }
 
         $deodoran = Category::create([
             'name' => 'Deodoran',
             'slug' => Str::slug('Deodoran'),
-            'parent_id' => $bodycare->id
+            'parent_id' => $bodycare->id,
         ]);
 
         $babycareSubs = [
             'Baby Stuff',
             'Popok Bayi',
-            'Sabun Lerak'
+            'Sabun Lerak',
         ];
 
         foreach ($babycareSubs as $sub) {
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $babycare->id
+                'parent_id' => $babycare->id,
             ]);
         }
 
         $sepatu = Category::create([
             'name' => $sub,
             'slug' => $this->generateUniqueSlug($sub),
-            'parent_id' => $pakaian->id
+            'parent_id' => $pakaian->id,
         ]);
 
         $cuciPiring = Category::create([
             'name' => 'Sabun Cuci Piring',
             'slug' => Str::slug('Sabun Cuci Piring'),
-            'parent_id' => $alatKebersihan->id
+            'parent_id' => $alatKebersihan->id,
         ]);
 
         $cuciPiringSubs = [
             'Sabun Cuci Piring',
             'Sabun Cuci Baby Safe',
             'Sabun Pencuci Sayur & Buah',
-            'Sabun Lerak'
+            'Sabun Lerak',
         ];
 
         foreach ($cuciPiringSubs as $sub) {
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $cuciPiring->id
+                'parent_id' => $cuciPiring->id,
             ]);
         }
 
         $detergen = Category::create([
             'name' => 'Detergen',
             'slug' => Str::slug('Detergen'),
-            'parent_id' => $alatKebersihan->id
+            'parent_id' => $alatKebersihan->id,
         ]);
 
         $dentalCare = Category::create([
             'name' => 'Dental Care',
             'slug' => Str::slug('Dental Care'),
-            'parent_id' => $alatKebersihan->id
+            'parent_id' => $alatKebersihan->id,
         ]);
 
         $detergenSubs = [
@@ -277,7 +278,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $detergen->id
+                'parent_id' => $detergen->id,
             ]);
         }
 
@@ -296,7 +297,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $detergen->id
+                'parent_id' => $detergen->id,
             ]);
         }
 
@@ -309,7 +310,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $alatMasak->id
+                'parent_id' => $alatMasak->id,
             ]);
         }
 
@@ -324,14 +325,14 @@ class CategorySeeder extends Seeder
             'Water Heater, Vacuum Cleaner, Air Purifier',
             'Water Heater, Vacuum Cleaner, Setrika',
             'Water Heater, Vacuum Cleaner, Dispenser',
-            'Blender, Vacuum Cleaner, Kitchen'
+            'Blender, Vacuum Cleaner, Kitchen',
         ];
 
         foreach ($elektronikSubs as $sub) {
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $elektronik->id
+                'parent_id' => $elektronik->id,
             ]);
         }
 
@@ -355,20 +356,20 @@ class CategorySeeder extends Seeder
         $tepung = Category::create([
             'name' => 'Tepung',
             'slug' => Str::slug('Tepung'),
-            'parent_id' => $bahanKue->id
+            'parent_id' => $bahanKue->id,
         ]);
 
         $cokelat = Category::create([
             'name' => 'Cokelat',
             'slug' => Str::slug('Cokelat'),
-            'parent_id' => $bahanKue->id
+            'parent_id' => $bahanKue->id,
         ]);
 
         foreach ($bahanKueSubs as $sub) {
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $bahanKue->id
+                'parent_id' => $bahanKue->id,
             ]);
         }
 
@@ -378,14 +379,14 @@ class CategorySeeder extends Seeder
             'Tepung Tapioka',
             'Tepung Maizena',
             'Tepung Beras & Ketan',
-            'Tepung Premix'
+            'Tepung Premix',
         ];
 
         foreach ($tepungSubs as $sub) {
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $tepung->id
+                'parent_id' => $tepung->id,
             ]);
         }
 
@@ -396,14 +397,14 @@ class CategorySeeder extends Seeder
             'Cokelat Drinks',
             'Cokelat Glaze',
             'Cokelat Filling',
-            'Cokelat Spread'
+            'Cokelat Spread',
         ];
 
         foreach ($cokelatSubs as $sub) {
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $cokelat->id
+                'parent_id' => $cokelat->id,
             ]);
         }
 
@@ -423,7 +424,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $bumbu->id
+                'parent_id' => $bumbu->id,
             ]);
         }
 
@@ -442,14 +443,14 @@ class CategorySeeder extends Seeder
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $minyak->id
+                'parent_id' => $minyak->id,
             ]);
         }
 
         $beras = Category::create([
             'name' => 'Beras',
             'slug' => Str::slug('Beras'),
-            'parent_id' => $sembako->id
+            'parent_id' => $sembako->id,
         ]);
 
         $minumanSubs = [
@@ -468,21 +469,21 @@ class CategorySeeder extends Seeder
             'Minuman Rasa Buah',
             'Larutan Penyegar',
             'Minuman Soda',
-            'Minuman Olahan Kurma'
+            'Minuman Olahan Kurma',
         ];
 
         foreach ($minumanSubs as $sub) {
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $minuman->id
+                'parent_id' => $minuman->id,
             ]);
         }
 
         $susu = Category::create([
             'name' => 'Susu',
             'slug' => Str::slug('Susu'),
-            'parent_id' => $minuman->id
+            'parent_id' => $minuman->id,
         ]);
 
         $susuSubs = [
@@ -514,7 +515,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $susu->id
+                'parent_id' => $susu->id,
             ]);
         }
 
@@ -528,26 +529,26 @@ class CategorySeeder extends Seeder
             'Frozen Food',
             'Frozen Seafood',
             'Frozen Food Kids Friendly',
-            'Kurma'
+            'Kurma',
         ];
 
         $mie = Category::create([
             'name' => 'Mie',
             'slug' => Str::slug('Mie'),
-            'parent_id' => $makanan->id
+            'parent_id' => $makanan->id,
         ]);
 
         $snack = Category::create([
             'name' => 'Snack',
             'slug' => Str::slug('Snack'),
-            'parent_id' => $makanan->id
+            'parent_id' => $makanan->id,
         ]);
 
         foreach ($makananSubs as $sub) {
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $makanan->id
+                'parent_id' => $makanan->id,
             ]);
         }
 
@@ -556,14 +557,14 @@ class CategorySeeder extends Seeder
             'Mie Sehat',
             'Bihun',
             'Sohun',
-            'Mie Telor & Mie Kering'
+            'Mie Telor & Mie Kering',
         ];
 
         foreach ($mieSubs as $sub) {
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $mie->id
+                'parent_id' => $mie->id,
             ]);
         }
 
@@ -593,7 +594,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $snack->id
+                'parent_id' => $snack->id,
             ]);
         }
 
@@ -615,16 +616,15 @@ class CategorySeeder extends Seeder
             'Restoran Asia & Western',
             'Restoran Bakso',
             'Restoran Fast Food',
-            'Restoran Middle East Cuisine'
-            ,
-            'Kuliner Lainnya'
+            'Restoran Middle East Cuisine',
+            'Kuliner Lainnya',
         ];
 
         foreach ($kulinerSubs as $sub) {
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $kuliner->id
+                'parent_id' => $kuliner->id,
             ]);
         }
 
@@ -646,7 +646,7 @@ class CategorySeeder extends Seeder
             'Tetes Mata',
             'Bedak Gatal',
             'Vitamin Anak',
-            'Multivitamin', 
+            'Multivitamin',
             'Vitamin Tulang',
             'Vitamin Saraf & Kulit',
             'Vitamin Ibu Hamil & Menyusui',
@@ -659,11 +659,11 @@ class CategorySeeder extends Seeder
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $obatAlkes->id
+                'parent_id' => $obatAlkes->id,
             ]);
         }
 
-         $pembalutPopokSubs = [
+        $pembalutPopokSubs = [
             'Pembalut Sekali Pakai',
             'Pembalut Organik',
             'Pembalut Bersalin',
@@ -679,7 +679,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 'name' => $sub,
                 'slug' => $this->generateUniqueSlug($sub),
-                'parent_id' => $pembalutPopok->id
+                'parent_id' => $pembalutPopok->id,
             ]);
         }
 
@@ -688,14 +688,14 @@ class CategorySeeder extends Seeder
             'Tisu Basah',
             'Tisu Bambu',
             'Kapas Bola',
-            'Wash Glove'
+            'Wash Glove',
         ];
 
         foreach ($tisuSubs as $sub) {
             Category::create([
                 'name' => $sub,
-                'slug' => Str::slug( $sub),
-                'parent_id' => $tisu->id
+                'slug' => Str::slug($sub),
+                'parent_id' => $tisu->id,
             ]);
         }
 

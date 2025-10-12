@@ -38,9 +38,6 @@ class CompanySeeder extends Seeder
             ]);
         }
 
-
-
-
         $companies = [
             [
                 'name' => 'Danone',
@@ -62,6 +59,6 @@ class CompanySeeder extends Seeder
                 'slug' => Str::slug($company['name']),
                 'status' => $company['status'],
             ]);
-        }       
+        }
     }
 }
