@@ -63,6 +63,10 @@
         ],
         "build": [
             "npx vite build"
+        ],
+        "pint": "./vendor/bin/pint",
+        "format": [
+        "npm run format"
         ]
     },
     "extra": {
