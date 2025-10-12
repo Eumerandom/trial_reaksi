@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gray-100 dark:bg-black"
+<div class="min-h-screen bg-gray-100"
     x-data="{
         allProducts: @js($products),
         filteredProducts: @js($products),
@@ -86,7 +86,7 @@
              x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 100 })"
              :class="{ 'px-5': scrolled }">
             {{-- Search Bar --}}
-            <div class="relative grow bg-white dark:bg-black rounded-xl shadow-sm"> 
+            <div class="relative grow bg-white rounded-xl shadow-sm"> 
                 <flux:icon.search class="absolute right-2 z-50 top-2"></flux:icon.search>
                 <flux:input 
                     placeholder="Cari di REAKSI" 
@@ -99,7 +99,7 @@
             <flux:modal.trigger name="filter-modal">
                 <flux:button 
                     variant="outline" 
-                    class="relative flex items-center gap-2 bg-white dark:bg-black rounded-xl shadow-sm">
+                    class="relative flex items-center gap-2 bg-white rounded-xl shadow-sm">
                     <flux:icon.funnel class="size-4" />
                     Filter
                     <span x-show="getActiveFiltersCount() > 0" 
@@ -112,10 +112,10 @@
         <livewire:product.filter-modal wire:key="filter-modal" />
             
         <div class="mt-6 mb-8">
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-                Menampilkan <span class="font-medium text-gray-900 dark:text-white" x-text="filteredProducts.length"></span>
-                dari <span class="font-medium text-gray-900 dark:text-white" x-text="allProducts.length"></span> produk
-                <span x-show="search.trim() !== ''" class="text-blue-600 dark:text-blue-400">
+            <p class="text-sm text-gray-600">
+                Menampilkan <span class="font-medium text-gray-900" x-text="filteredProducts.length"></span>
+                dari <span class="font-medium text-gray-900" x-text="allProducts.length"></span> produk
+                <span x-show="search.trim() !== ''" class="text-blue-600">
                     untuk "<span x-text="search"></span>"
                 </span>
             </p>
@@ -126,8 +126,8 @@
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-3-8a8 8 0 108 8 8 8 0 00-8-8z"></path>
             </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Tidak ada produk ditemukan</h3>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak ada produk ditemukan</h3>
+            <p class="mt-1 text-sm text-gray-500">
                 Coba ubah kata kunci pencarian Anda.
             </p>
         </div>
