@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
@@ -13,7 +12,7 @@ class Product extends Model
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['status','company_id', 'categories_id', 'name', 'description', 'source', 'image', 'slug', 'local_product', 'updated_at'];
+    protected $fillable = ['status', 'company_id', 'categories_id', 'name', 'description', 'source', 'image', 'slug', 'local_product', 'updated_at'];
 
     public function company()
     {
@@ -31,7 +30,7 @@ class Product extends Model
 
         static::creating(function ($model) { // $model adalah objek dari model product.
             // Buat slug dari name sebelum disimpan
-            if (!$model->slug) { // Mengecek apakah kolom slug belum terisi
+            if (! $model->slug) { // Mengecek apakah kolom slug belum terisi
                 $model->slug = Str::slug($model->name);
                 // Jika kolom slug kosong, maka slug diisi dengan hasil Str::slug($model->name)
                 // Fungsi Str::slug() mengubah nilai name menjadi format slug

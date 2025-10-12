@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
 use App\Models\Category;
 use App\Models\Company;
+use App\Models\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -17,25 +17,25 @@ class ProductSeeder extends Seeder
         $airCategory = Category::where('name', 'Air Mineral')->first();
         $obatCategory = Category::where('name', 'Obat & Alat Kesehatan')->first();
 
-        if (!$sodaCategory) {
+        if (! $sodaCategory) {
             $sodaCategory = Category::firstOrCreate(
                 ['slug' => Str::slug('Minuman Soda')],
                 ['name' => 'Minuman Soda']
             );
         }
-        if (!$mieCategory) {
+        if (! $mieCategory) {
             $mieCategory = Category::firstOrCreate(
                 ['slug' => Str::slug('Mie Instan')],
                 ['name' => 'Mie Instan']
             );
         }
-        if (!$airCategory) {
+        if (! $airCategory) {
             $airCategory = Category::firstOrCreate(
                 ['slug' => Str::slug('Air Mineral')],
                 ['name' => 'Air Mineral']
             );
         }
-        if (!$obatCategory) {
+        if (! $obatCategory) {
             $obatCategory = Category::firstOrCreate(
                 ['slug' => Str::slug('Obat & Alat Kesehatan')],
                 ['name' => 'Obat & Alat Kesehatan']
@@ -72,7 +72,7 @@ class ProductSeeder extends Seeder
                 'status' => 'affiliated',
                 'local_product' => false,
                 'source' => 'https://www.instagram.com/reel/C4jx-lCBeke/?utm_source=ig_web_copy_link&igsh=azk2YjlubXJ5anBq',
-                'image' => 'product_images/Coacola.jpeg'
+                'image' => 'product_images/Coacola.jpeg',
             ],
             [
                 'name' => 'Indomie',
@@ -82,7 +82,7 @@ class ProductSeeder extends Seeder
                 'status' => 'affiliated',
                 'local_product' => true,
                 'source' => 'https://www.instagram.com/p/CzToTc9LlH-/?utm_source=ig_web_copy_link',
-                'image' => 'product_images/Indomie.webp'
+                'image' => 'product_images/Indomie.webp',
             ],
             [
                 'name' => 'Aqua',
@@ -92,7 +92,7 @@ class ProductSeeder extends Seeder
                 'status' => 'affiliated',
                 'local_product' => true,
                 'source' => 'https://www.instagram.com/p/C2zofAHyOhj/?utm_source=ig_web_copy_link&igsh=MW52d2g0Nno4MmI3eA==',
-                'image' => 'product_images/aqua.png'
+                'image' => 'product_images/aqua.png',
             ],
             [
                 'name' => 'Tolak Angin',
@@ -102,7 +102,7 @@ class ProductSeeder extends Seeder
                 'status' => 'affiliated',
                 'local_product' => true,
                 'source' => 'https://www.instagram.com/p/CzToTc9LlH-/?utm_source=ig_web_copy_link',
-                'image' => 'product_images/tolak_angin.png'
+                'image' => 'product_images/tolak_angin.png',
             ],
             [
                 'name' => 'Deka Wafer Roll',
@@ -112,13 +112,13 @@ class ProductSeeder extends Seeder
                 'status' => 'unaffiliated',
                 'local_product' => true,
                 'source' => 'https://www.instagram.com/p/DAxI2TKPeJN/?utm_source=ig_web_copy_link&igsh=NmR2dnduaGs1MnV2',
-                'image' => 'product_images/deka.png'
-            ]
+                'image' => 'product_images/deka.png',
+            ],
         ];
 
         foreach ($products as $product) {
             Product::updateOrCreate(
-                ['slug' => Str::slug($product['name'])], 
+                ['slug' => Str::slug($product['name'])],
                 [
                     'name' => $product['name'],
                     'description' => $product['description'],

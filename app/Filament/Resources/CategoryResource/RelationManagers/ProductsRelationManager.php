@@ -14,11 +14,11 @@ class ProductsRelationManager extends RelationManager
 {
     protected static string $relationship = 'products';
 
-protected static ?string $inverseRelationship = 'category';
+    protected static ?string $inverseRelationship = 'category';
 
-protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $recordTitleAttribute = 'name';
 
-protected static ?string $foreignKey = 'categories_id';
+    protected static ?string $foreignKey = 'categories_id';
 
     public function form(Form $form): Form
     {
@@ -38,7 +38,7 @@ protected static ?string $foreignKey = 'categories_id';
                 Tables\Columns\TextColumn::make('name'),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make()
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

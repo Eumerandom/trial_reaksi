@@ -11,11 +11,13 @@ use Filament\Widgets\TableWidget as BaseWidget;
 class PostList extends BaseWidget
 {
     protected int|string|array $columnSpan = 'full';
+
     protected static ?string $heading = 'Postingan Terakhir';
+
     public function table(Table $table): Table
     {
         return $table
-            ->query( function () {
+            ->query(function () {
                 return PostResource::getEloquentQuery();
             })
             ->columns([
@@ -25,6 +27,7 @@ class PostList extends BaseWidget
                         $perPage = $livewire->getTableRecordsPerPage();
                         $page = $livewire->getTablePage();
                         $index = $livewire->getTableRecords()->search($record) + 1;
+
                         return ($page - 1) * $perPage + $index;
                     }),
                 Tables\Columns\TextColumn::make('title')
@@ -42,13 +45,12 @@ class PostList extends BaseWidget
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->sortable()
-                    ->color(fn($state) => match ($state) {
+                    ->color(fn ($state) => match ($state) {
                         'published' => 'success',
                         'draft' => 'gray',
                         'unpublished' => 'warning',
                     }),
             ])
-            ->defaultSort('created_at', 'desc')
-
-    ;}
+            ->defaultSort('created_at', 'desc');
+    }
 }

@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Post;
-use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
 
 class PostSeeder extends Seeder
 {
@@ -156,7 +155,7 @@ MARKDOWN,
                 'status' => 'published',
                 'author' => 1,
                 'thumbnail' => 'https://picsum.photos/800/400',
-                'slug' => 'panduan-lengkap-format-markdown'
+                'slug' => 'panduan-lengkap-format-markdown',
             ],
             [
                 'title' => 'Tutorial Penggunaan Markdown di Laravel',
@@ -223,8 +222,8 @@ MARKDOWN,
                 'status' => 'published',
                 'author' => 1,
                 'thumbnail' => 'https://picsum.photos/800/400',
-                'slug' => 'tutorial-penggunaan-markdown-di-laravel'
-            ]
+                'slug' => 'tutorial-penggunaan-markdown-di-laravel',
+            ],
         ];
 
         foreach ($posts as $post) {

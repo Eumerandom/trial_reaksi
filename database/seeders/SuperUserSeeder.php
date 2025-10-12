@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class SuperUserSeeder extends Seeder
 {
@@ -16,9 +15,9 @@ class SuperUserSeeder extends Seeder
         $liley = User::create([
             'name' => 'Adminlia',
             'email' => 'adminli@gmail.com',
-            'password' => bcrypt('adminLI4')
+            'password' => bcrypt('adminLI4'),
         ]);
 
         $liley->assignRole('super_admin');
-    }   
+    }
 }

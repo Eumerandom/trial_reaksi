@@ -8,8 +8,11 @@ use Livewire\Component;
 class Show extends Component
 {
     public $product;
+
     public $company;
+
     public $parents = [];
+
     public $showShareModal = false;
 
     public function mount($slug)
@@ -24,7 +27,7 @@ class Show extends Component
 
     public function toggleShareModal()
     {
-        $this->showShareModal = !$this->showShareModal;
+        $this->showShareModal = ! $this->showShareModal;
     }
 
     public function render()

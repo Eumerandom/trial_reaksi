@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Product;
 
+use App\Models\Category;
 use App\Models\Company;
 use App\Models\Product;
-use App\Models\Category;
 use Livewire\Component;
 
 class Index extends Component
@@ -13,7 +13,7 @@ class Index extends Component
 
     public function toggle()
     {
-        $this->open = !$this->open;
+        $this->open = ! $this->open;
     }
 
     public function viewDetail($slug)
@@ -35,11 +35,11 @@ class Index extends Component
                     'status_label' => $product->status === 'affiliated' ? 'Terafiliasi' : 'Tidak Terafiliasi',
                     'category' => $product->category ? (object) [
                         'id' => $product->category->id,
-                        'name' => $product->category->name
+                        'name' => $product->category->name,
                     ] : null,
                     'company' => $product->company ? (object) [
                         'id' => $product->company->id,
-                        'name' => $product->company->name
+                        'name' => $product->company->name,
                     ] : null,
                     'slug' => $product->slug,
                     'image' => $product->image,
