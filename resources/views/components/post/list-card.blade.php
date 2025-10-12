@@ -4,8 +4,8 @@
     </a>
     <div>
         <a href="{{ route('berita.show', $post->slug) }}">
-            <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ $post->title }}</h3>
+            <h3 class="text-lg font-medium text-gray-900">{{ $post->title }}</h3>
         </a>
-        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $post->excerpt }}</p>
+        <p class="text-sm text-gray-500">{{ $post->excerpt }}</p>
     </div>
 </div>
