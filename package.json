@@ -5,7 +5,8 @@
         "build": "vite build",
         "dev": "vite",
         "format": "prettier --write resources/**/*.blade.php",
-        "pint": "./vendor/bin/pint"
+        "pint": "./vendor/bin/pint",
+        "lint": "./vendor/bin/pint --test"
     },
     "devDependencies": {
         "@iconify-json/icon-park-twotone": "^1.2.2",

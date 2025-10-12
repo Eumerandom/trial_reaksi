@@ -1,44 +1,75 @@
-<div align="center">
-    <div style="border-radius: 50%; overflow: hidden; width: 150px; height: 150px; margin: 0 auto;">
-        <img src="https://ugc.production.linktr.ee/0dfad2d7-f8ce-4ee7-b582-dad733d02cee_PASS-REAKSI-NEW-LOGO-08.jpeg?io=true&size=avatar-v3_0" alt="REAKSI Logo" width="150" height="150" style="object-fit: cover;"/>
-    </div>
-    <h1>REAKSI - Rekomendasi Bebas Afiliasi</h1>
-</div>
+## System Requirement
 
-<p align="center">
-    <em>BUY recommend CUT affiliate</em>
-</p>
+- PHP ^8.2
+- Composer
+- Node.js & npm/pnpm
+- MySQL
 
-<p align="center">
-    <a href="https://linktr.ee/reksi.id"><strong>Linktree</strong></a> | 
-    <a href="https://www.instagram.com/rekomendasibebasafiliasi/"><strong>Instagram</strong></a>
-</p>
+## Setup Local Development
 
-<p align="center">
-Sebuah inisiatif untuk menyajikan daftar produk rekomendasi yang bebas dari afiliasi Zionis, sebagai respons terhadap aksi boikot.
-</p>
+1. **Clone repository**
+   ```bash
+   git clone https://github.com/Eumerandom/trial_reaksi.git
+   cd trial_reaksi
+   ```
 
-## Tentang REAKSI
+2. **Install dependencies PHP**
+   ```bash
+   composer install
+   ```
 
-REAKSI (Rekomendasi Bebas Afiliasi) hadir sebagai solusi bagi pengguna yang mencari alternatif produk pengganti yang tidak terafiliasi dengan Zionis. Kami menyediakan daftar produk yang telah dikurasi berdasarkan Fatwa MUI No 14/Ijtima' Ulama/VII/2024 tentang "Prioritas Penggunaan Produk dalam Negeri".
+3. **Install dependencies JavaScript**
+   ```bash
+   npm install
+   # atau
+   pnpm install
+   ```
 
-Kami menyajikan rekomendasi untuk berbagai kategori produk, termasuk:
-*   Makanan & Minuman (Susu, Mie, Minyak Goreng, dll.)
-*   Perawatan Tubuh (Body Care, Hair Care, Skin Care, dll.)
-*   Kebutuhan Rumah Tangga
-*   Produk Bayi
-*   Dan banyak lagi!
+4. **Setup environment**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-Temukan daftar lengkap dan rekomendasi terbaru kami melalui:
-*   **[Linktree REAKSI](https://linktr.ee/reksi.id)**
-*   **[Instagram REAKSI](https://www.instagram.com/rekomendasibebasafiliasi/)**
+5. **Setup database**
+   ```bash
+   # Konfigurasi .env untuk database
+   php artisan migrate
+   php artisan db:seed
+   ```
 
+6. **Build assets**
+   ```bash
+   npm run build
+   # atau untuk development
+   npm run dev
+   ```
 
+## Menjalankan Aplikasi
 
-## Sumber Informasi 
+### Development Server
+```bash
+composer run dev
+```
+### Production Build
+```bash
+composer run build
+```
 
-Rekomendasi produk didasarkan pada riset dan Fatwa MUI. 
+## Code Quality
 
-Untuk saran terkait konten rekomendasi, silakan kunjungi tautan di [Linktree REAKSI](https://linktr.ee/reksi.id).
+Proyek ini menggunakan Laravel Pint untuk PHP dan Prettier untuk Blade templates.
+**PENTING:** Selalu jalankan format kode sebelum commit dan push. Ini memastikan semua kode PHP dan Blade template mengikuti standar coding yang konsisten.
 
+### Format Kode
+```bash
+# Format hanya Blade
+composer run format
 
+# Format hanya PHP
+composer run pint
+
+# Chek format
+composer run lint
+
+```
