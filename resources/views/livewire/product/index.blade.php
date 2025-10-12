@@ -89,7 +89,7 @@
             <div class="relative grow bg-white rounded-xl shadow-sm"> 
                 <flux:icon.search class="absolute right-2 z-50 top-2"></flux:icon.search>
                 <flux:input 
-                    placeholder="Cari di REAKSI" 
+                    placeholder="Cari ..." 
                     x-model="search" 
                     x-on:input="filterProducts()"
                     />
