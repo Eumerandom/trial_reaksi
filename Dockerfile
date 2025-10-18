@@ -2,7 +2,8 @@ FROM composer:2 AS composer-builder
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y libicu-dev && docker-php-ext-install intl
+RUN apk add --no-cache icu-dev \
+    && docker-php-ext-install intl
 
 COPY . /app
 
