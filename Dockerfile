@@ -1,15 +1,8 @@
 FROM composer:2 AS composer-builder
-
 WORKDIR /app
-
-RUN apt-get update && apt-get install -y \
-    libicu-dev \
-    && docker-php-ext-install intl
-
+RUN apk add --no-cache icu-dev && docker-php-ext-install intl
 COPY . /app
-
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
-
 
 FROM node:20-alpine AS node-builder
 
