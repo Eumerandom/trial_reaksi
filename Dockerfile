@@ -2,6 +2,8 @@ FROM composer:2 AS composer-builder
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y libicu-dev && docker-php-ext-install intl
+
 COPY . /app
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
@@ -22,7 +24,7 @@ WORKDIR /app
 
 COPY --from=node-builder /app /app
 
-RUN install-php-extensions pcntl pdo_mysql redis opcache
+RUN install-php-extensions intl pcntl pdo_mysql redis opcache
 
 RUN php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan migrate --force && php artisan db:seed --force
 
