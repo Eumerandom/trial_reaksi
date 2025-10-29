@@ -21,4 +21,11 @@ class EditPost extends EditRecord
     {
         return $this->getResource()::getUrl('index');
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['thumbnail'] = PostResource::convertThumbnailToWebp($data['thumbnail'] ?? null);
+
+        return $data;
+    }
 }
