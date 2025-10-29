@@ -4,22 +4,27 @@
             <flux:breadcrumbs.item :href="route('dashboard')" separator="slash">Home</flux:breadcrumbs.item>
             <flux:breadcrumbs.item separator="slash">Berita</flux:breadcrumbs.item>
         </flux:breadcrumbs>
-        <div id="filterHeader" class="flex flex-row gap-2 items-center pt-5 sticky top-5 z-50 transition-all duration-300 w-full">
+        <div id="filterHeader" 
+             class="flex flex-row gap-2 items-center pt-5 sticky top-5 z-50 transition-all duration-300 w-full"
+             x-data="{ scrolled: false }"
+             x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 100 })"
+             :class="{ 'px-5': scrolled }">
             {{-- Search Bar --}}
-            <flux:field class="relative grow bg-white rounded-xl shadow-sm">
+            <div class="relative grow bg-white rounded-xl shadow-sm">
                 <flux:icon.search class="absolute right-2 z-50 top-2"></flux:icon.search>
                 <flux:input wire:model.live="search" placeholder="Masukan judul berita"/>
-            </flux:field>
+            </div>
 
             {{-- Button Filter--}}
             <div class="relative shrink-0">
-                <button
+                <flux:button
                     wire:click="toggle"
-                    class="flex items-center border gap-2 px-3 py-2 text-black text-sm font-medium w-full bg-white rounded-md hover:bg-slate-100"
+                    variant="outline"
+                    class="relative flex items-center gap-2 bg-white rounded-xl shadow-sm"
                 >
-                    <flux:icon.funnel class="text-black"></flux:icon.funnel>
+                    <flux:icon.funnel class="size-4"></flux:icon.funnel>
                     Filter
-                </button>
+                </flux:button>
 
                 {{-- Dropdown Filter --}}
                 @if ($open)
@@ -45,28 +50,6 @@
                     </div>
                 @endif
             </div>
-
-            {{-- Sort Options --}}
-            <div class="shrink-0 ml-auto">
-                <flux:dropdown class="bg-white">
-                    <flux:button class="bg-white" icon:trailing="adjustments-horizontal"></flux:button>
-                    <flux:menu>
-                        <div class="p-2">
-                            <h4 class="text-black mb-2 font-medium">Urutkan</h4>
-                            <div class="flex gap-2">
-                                <button wire:click="setSort('asc')" class="flex items-center gap-1 p-2 rounded {{ $sort === 'asc' ? 'bg-black/10' : '' }} hover:bg-black/5">
-                                    <flux:icon.arrow-down-a-z class="size-4 mr-1"/>
-                                    <span class="text-sm">A-Z</span>
-                                </button>
-                                <button wire:click="setSort('desc')" class="flex items-center gap-1 p-2 rounded {{ $sort === 'desc' ? 'bg-black/10' : '' }} hover:bg-black/5">
-                                     <flux:icon.arrow-up-z-a class="size-4 mr-1"/>
-                                    <span class="text-sm">Z-A</span>
-                                </button>
-                            </div>
-                        </div>
-                    </flux:menu>
-                </flux:dropdown>
-            </div>
         </div>
 
         <div class="mt-6 mb-8">
@@ -76,7 +59,7 @@
             </p>
         </div>
 
-        <div class="{{ $layout === 'grid' ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6' : 'space-y-6' }}">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             @foreach($posts as $post)
                 <x-post.grid-card :post="$post" />
             @endforeach
@@ -89,13 +72,3 @@
         </div>
     </div>
 </div>
-<script>
-    const filterHeader = document.getElementById("filterHeader");
-    window.addEventListener("scroll", function() {
-        if (window.scrollY > 100) {
-            filterHeader.classList.add("px-5");
-        } else {
-            filterHeader.classList.remove("px-5");
-        }
-    });
-</script>
