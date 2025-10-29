@@ -1,6 +1,6 @@
 FROM composer:2 AS composer-builder
 WORKDIR /app
-RUN apk add --no-cache icu-dev && docker-php-ext-install intl
+RUN apk add --no-cache icu-dev && docker-php-ext-install intl exif
 COPY . /app
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
@@ -20,7 +20,7 @@ WORKDIR /app
 
 COPY --from=node-builder /app /app
 
-RUN install-php-extensions bcmath intl pcntl pdo_mysql redis opcache zip
+RUN install-php-extensions bcmath intl pcntl pdo_mysql redis opcache zip exif
 
 RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
 
