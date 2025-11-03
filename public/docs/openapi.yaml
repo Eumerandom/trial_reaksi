@@ -30,6 +30,12 @@ paths:
             type: integer
             minimum: 1
             maximum: 100
+        - name: refresh
+          in: query
+          description: Set to true to fetch fresh data from Yahoo Finance and store a new snapshot.
+          required: false
+          schema:
+            type: boolean
       responses:
         '200':
           description: Shareholding information retrieved successfully.

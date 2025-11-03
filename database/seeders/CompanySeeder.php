@@ -51,6 +51,11 @@ class CompanySeeder extends Seeder
                 'name' => 'PT Dua Kelinci',
                 'status' => 'unaffiliated',
             ],
+            [
+                'name' => 'Microsoft Corporation',
+                'status' => 'affiliated',
+                'symbol' => 'MSFT',
+            ],
         ];
 
         foreach ($companies as $company) {
@@ -58,6 +63,7 @@ class CompanySeeder extends Seeder
                 'name' => $company['name'],
                 'slug' => Str::slug($company['name']),
                 'status' => $company['status'],
+                'symbol' => $company['symbol'] ?? null,
             ]);
         }
     }

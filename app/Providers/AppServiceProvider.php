@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('viewScalar', function(?User $user){
-            return in_array($user->email, [
+            return $user && in_array($user->email, [
                 "adminli@gmail.com"
             ]);
         });
