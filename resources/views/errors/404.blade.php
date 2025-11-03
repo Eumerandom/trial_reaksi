@@ -3,7 +3,7 @@
 @section('title', 'Page Not Found')
 
 @section('content')
-    <div class="min-h-[50vh] flex items-center justify-center text-white">
+    <div class="min-h-[50vh] flex items-center justify-center text-black">
         <section class="flex flex-col md:flex-row items-center gap-6 md:gap-10 px-6">
             <h1 class="text-6xl md:text-8xl font-bold text-red-500 font-mono border-r-4 border-zinc-700 pr-6">
                 404
