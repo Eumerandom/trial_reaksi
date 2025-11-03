@@ -89,6 +89,8 @@ class ShareholdingsRelationManager extends RelationManager
                     ->color('secondary')
                     ->modalHeading('Detail Shareholding')
                     ->modalWidth('3xl')
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Tutup')
                     ->modalContent(function ($record) {
                         return view('filament.shareholdings.detail-modal', [
                             'record' => $record,
