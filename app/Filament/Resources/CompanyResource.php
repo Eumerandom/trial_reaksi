@@ -36,6 +36,13 @@ class CompanyResource extends Resource
 
                                         Forms\Components\Hidden::make('slug'),
 
+                                        Forms\Components\TextInput::make('symbol')
+                                            ->label('Ticker Symbol')
+                                            ->maxLength(20)
+                                            ->helperText('Contoh: MSFT')
+                                            ->formatStateUsing(fn ($state) => is_string($state) ? strtoupper($state) : $state)
+                                            ->dehydrateStateUsing(fn ($state) => is_string($state) ? strtoupper($state) : $state),
+
                                         Forms\Components\Select::make('parent_id')
                                             ->relationship('parent', 'name')
                                             ->placeholder('Induk Perusahaan'),
@@ -78,6 +85,11 @@ class CompanyResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('symbol')
+                    ->label('Symbol')
+                    ->sortable()
+                    ->searchable()
+                    ->placeholder('-'),
                 Tables\Columns\TextColumn::make('parent.name')
                     ->sortable()
                     ->label('Induk Perusahaan'),
@@ -110,6 +122,7 @@ class CompanyResource extends Resource
         return [
             CompanyResource\RelationManagers\ParentRelationManager::class,
             CompanyResource\RelationManagers\ChildrenRelationManager::class,
+            CompanyResource\RelationManagers\ShareholdingsRelationManager::class,
         ];
     }
 
