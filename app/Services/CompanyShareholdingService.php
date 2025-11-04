@@ -5,12 +5,17 @@ namespace App\Services;
 use App\Exceptions\ShareholdingProviderException;
 use App\Models\Company;
 use App\Models\CompanyShareholding;
+use App\Models\CompanyShareholderPosition;
+use App\Models\ShareholderEntity;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Response as ClientResponse;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -84,7 +89,7 @@ class CompanyShareholdingService
 
         [$payload, $meta] = $this->requestShareholding($symbol, $region, $lang);
 
-        return $company->shareholdings()->create([
+        $record = $company->shareholdings()->create([
             'symbol' => $symbol,
             'payload' => $payload,
             'source' => 'yahoo_finance',
@@ -92,6 +97,237 @@ class CompanyShareholdingService
             'cache_store' => $meta['cache_store'] ?? null,
             'cache_key' => $meta['cache_key'] ?? null,
         ]);
+
+        $this->syncShareholderPositions($record, $payload);
+
+        return $record;
+    }
+
+    private function syncShareholderPositions(CompanyShareholding $shareholding, array $payload): void
+    {
+        $entries = $this->extractHolderEntries($payload);
+
+        DB::transaction(function () use ($shareholding, $entries) {
+            $companyId = $shareholding->company_id;
+
+            if ($entries === []) {
+                CompanyShareholderPosition::query()
+                    ->where('company_id', $companyId)
+                    ->delete();
+
+                return;
+            }
+
+            $timestamp = now();
+            $rows = [];
+            $entityIds = [];
+
+            foreach ($entries as $entry) {
+                $entity = ShareholderEntity::query()->firstOrCreate(
+                    ['normalized_name' => $entry['normalized_name']],
+                    [
+                        'name' => $entry['holder_name'],
+                        'type' => $entry['holder_type'],
+                        'status' => 'unknown',
+                    ]
+                );
+
+                $updates = [];
+                $wasRecentlyCreated = $entity->wasRecentlyCreated;
+
+                if ($wasRecentlyCreated && $entity->name !== $entry['holder_name']) {
+                    $updates['name'] = $entry['holder_name'];
+                }
+
+                if ($entry['holder_type'] !== null && $entity->type === null) {
+                    $updates['type'] = $entry['holder_type'];
+                }
+
+                $meta = $entity->meta ?? [];
+                $meta['last_seen_at'] = $timestamp->toDateTimeString();
+
+                if ($meta !== ($entity->meta ?? [])) {
+                    $updates['meta'] = $meta;
+                }
+
+                if ($updates !== []) {
+                    $entity->fill($updates)->save();
+                }
+
+                $entityIds[] = $entity->id;
+
+                $rows[] = [
+                    'company_id' => $companyId,
+                    'shareholder_entity_id' => $entity->id,
+                    'company_shareholding_id' => $shareholding->id,
+                    'relationship_type' => $entry['holder_type'],
+                    'percent_held' => $entry['percent_held'],
+                    'position' => $entry['position'],
+                    'market_value' => $entry['market_value'],
+                    'percent_change' => $entry['percent_change'],
+                    'report_date' => $entry['report_date'],
+                    'meta' => $this->encodeMeta($entry['meta']),
+                    'created_at' => $timestamp,
+                    'updated_at' => $timestamp,
+                ];
+            }
+
+            $entityIds = array_values(array_unique($entityIds));
+
+            CompanyShareholderPosition::query()->upsert(
+                $rows,
+                ['company_id', 'shareholder_entity_id'],
+                [
+                    'company_shareholding_id',
+                    'relationship_type',
+                    'percent_held',
+                    'position',
+                    'market_value',
+                    'percent_change',
+                    'report_date',
+                    'meta',
+                    'updated_at',
+                ]
+            );
+
+            CompanyShareholderPosition::query()
+                ->where('company_id', $companyId)
+                ->whereNotIn('shareholder_entity_id', $entityIds)
+                ->delete();
+        });
+    }
+
+    /**
+     * @return array<int, array{
+     *     normalized_name: string,
+     *     holder_name: string,
+     *     holder_type: string|null,
+     *     percent_held: float|null,
+     *     position: int|null,
+     *     market_value: float|null,
+     *     percent_change: float|null,
+     *     report_date: string|null,
+     *     meta: array|null,
+     * }>
+     */
+    private function extractHolderEntries(array $payload): array
+    {
+        $holders = [];
+
+        $paths = [
+            'institutionOwnership.ownershipList' => 'institution',
+            'fundOwnership.ownershipList' => 'fund',
+        ];
+
+        foreach ($paths as $path => $type) {
+            $list = Arr::get($payload, $path, []);
+            if (! is_array($list)) {
+                continue;
+            }
+
+            foreach ($list as $item) {
+                if (! is_array($item)) {
+                    continue;
+                }
+
+                $name = trim((string) Arr::get($item, 'organization', ''));
+                if ($name === '') {
+                    continue;
+                }
+
+                $holders[] = [
+                    'normalized_name' => $this->normalizeHolderName($name),
+                    'holder_name' => $name,
+                    'holder_type' => $type,
+                    'percent_held' => $this->extractFloat($item, 'pctHeld.raw'),
+                    'position' => $this->extractInteger($item, 'position.raw'),
+                    'market_value' => $this->extractFloat($item, 'value.raw'),
+                    'percent_change' => $this->extractFloat($item, 'pctChange.raw'),
+                    'report_date' => $this->extractReportDate($item, 'reportDate.raw', Arr::get($item, 'reportDate.fmt')),
+                    'meta' => $this->extractHolderMeta($item),
+                ];
+            }
+        }
+
+        return $holders;
+    }
+
+    private function normalizeHolderName(string $name): string
+    {
+        $normalized = trim(Str::lower($name));
+        $normalized = preg_replace('/\s+/', ' ', $normalized) ?? $normalized;
+        $normalized = preg_replace('/[^a-z0-9\s.&-]/', '', $normalized) ?? $normalized;
+
+        return mb_substr($normalized, 0, 191);
+    }
+
+    private function encodeMeta(?array $meta): ?string
+    {
+        if ($meta === null) {
+            return null;
+        }
+
+        return json_encode($meta, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+
+    private function extractFloat(array $item, string $path): ?float
+    {
+        $value = Arr::get($item, $path);
+
+        return is_numeric($value) ? (float) $value : null;
+    }
+
+    private function extractInteger(array $item, string $path): ?int
+    {
+        $value = Arr::get($item, $path);
+
+        return is_numeric($value) ? (int) round((float) $value) : null;
+    }
+
+    private function extractReportDate(array $item, string $rawPath, ?string $formatted = null): ?string
+    {
+        $raw = Arr::get($item, $rawPath);
+
+        if (is_numeric($raw)) {
+            try {
+                return Carbon::createFromTimestamp((int) $raw)->toDateString();
+            } catch (Throwable) {
+                // ignore invalid timestamps
+            }
+        }
+
+        if (is_string($raw) && $raw !== '') {
+            try {
+                return Carbon::parse($raw)->toDateString();
+            } catch (Throwable) {
+                // ignore parse failures
+            }
+        }
+
+        if (is_string($formatted) && $formatted !== '') {
+            try {
+                return Carbon::parse($formatted)->toDateString();
+            } catch (Throwable) {
+                // ignore parse failures
+            }
+        }
+
+        return null;
+    }
+
+    private function extractHolderMeta(array $item): ?array
+    {
+        $meta = array_filter([
+            'pct_held_fmt' => Arr::get($item, 'pctHeld.fmt'),
+            'position_fmt' => Arr::get($item, 'position.fmt'),
+            'position_long_fmt' => Arr::get($item, 'position.longFmt'),
+            'value_fmt' => Arr::get($item, 'value.fmt'),
+            'value_long_fmt' => Arr::get($item, 'value.longFmt'),
+            'pct_change_fmt' => Arr::get($item, 'pctChange.fmt'),
+            'report_date_fmt' => Arr::get($item, 'reportDate.fmt'),
+        ], static fn ($value) => $value !== null);
+
+        return $meta === [] ? null : $meta;
     }
 
     /**
