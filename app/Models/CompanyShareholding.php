@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class CompanyShareholding extends Model
@@ -24,5 +25,10 @@ class CompanyShareholding extends Model
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function positions(): HasMany
+    {
+        return $this->hasMany(CompanyShareholderPosition::class, 'company_shareholding_id');
     }
 }

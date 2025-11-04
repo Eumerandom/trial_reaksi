@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -55,6 +56,25 @@ class Company extends Model
     public function shareholdings(): HasMany
     {
         return $this->hasMany(CompanyShareholding::class);
+    }
+
+    public function shareholderPositions(): HasMany
+    {
+        return $this->hasMany(CompanyShareholderPosition::class);
+    }
+
+    public function shareholderEntities(): BelongsToMany
+    {
+        return $this->belongsToMany(ShareholderEntity::class, 'company_shareholder_positions')
+            ->withPivot([
+                'percent_held',
+                'market_value',
+                'percent_change',
+                'report_date',
+                'relationship_type',
+                'company_shareholding_id',
+            ])
+            ->withTimestamps();
     }
 
     public function latestShareholding(): HasOne
