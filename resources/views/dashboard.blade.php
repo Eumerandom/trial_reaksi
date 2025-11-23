@@ -5,9 +5,9 @@
                 x-data="{ show: false }" x-init="setTimeout(() => show = true, 300)"
                 :class="{ 'opacity-0 translate-y-4': !show, 'opacity-100 translate-y-0': show }">
                 <h1 class="mb-4 text-3xl font-extrabold text-gray-900 md:text-4xl lg:text-5xl">
-                    Apa itu BUYCUT?</h1>
+                    Apa itu Pisah.in?</h1>
                 <p class="mb-8 text-lg font-normal text-zinc-600 max-w-2xl mx-auto">
-                    BUYCUT adalah gerakan kemanusiaan yang bertujuan mengurangi atau setidaknya memperburuk ekonomi
+                    Pisah.in adalah gerakan kemanusiaan yang bertujuan mengurangi atau setidaknya memperburuk ekonomi
                     pihak-pihak tertentu sebagai bentuk protes atau tekanan sosial.
                     Gerakan ini merupakan bagian dari aksi boikot atau pemulauan, yakni tindakan tidak menggunakan,
                     membeli, atau berurusan dengan produk atau organisasi tertentu sebagai wujud protes terhadap
@@ -26,11 +26,11 @@
                 <!-- <div class="mt-8 mb-12 text-center">
                     <p class="mb-4 text-sm text-gray-600">Selengkapnya:</p>
                     <div class="flex flex-row justify-center items-center space-x-4">
-                        <a href="https://linktr.ee/buycut.id" target="_blank" rel="noopener noreferrer"
+                        <a href="https://linktr.ee/Pisah.in.id" target="_blank" rel="noopener noreferrer"
                            class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-center text-green-700 bg-slate-100 shadow-md rounded-lg hover:bg-green-500/75 focus:ring-4 focus:ring-green-300/50 transition duration-150 ease-in-out">
                            Linktree
                         </a>
-                        <a href="https://www.instagram.com/buycut.official/" target="_blank" rel="noopener noreferrer"
+                        <a href="https://www.instagram.com/Pisah.in.official/" target="_blank" rel="noopener noreferrer"
                            class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-center text-pink-700 bg-slate-100 shadow-md rounded-lg hover:bg-pink-500/75 focus:ring-4 focus:ring-pink-300/50 transition duration-150 ease-in-out">
                             Instagram
                         </a>
@@ -56,7 +56,7 @@
                 }" x-init="setTimeout(() => show = true, 600)"
                 :class="{ 'opacity-0 translate-y-4': !show, 'opacity-100 translate-y-0': show }">
                 <h2 class="mb-4 text-2xl font-bold leading-tight tracking-tight text-center text-gray-900 md:text-3xl">
-                    Mengapa BUYCUT Penting?
+                    Mengapa Pisah.in Penting?
                 </h2>
 
                 <div class="mb-4">
@@ -87,7 +87,7 @@
                 <div class="mb-4">
                     <button @click="togglePanel(2)"
                         class="flex justify-between items-center w-full p-4 font-medium text-left bg-gray-50 rounded-t-lg hover:bg-gray-100 text-gray-700">
-                        <span class="text-lg font-semibold">Solusi BUYCUT</span>
+                        <span class="text-lg font-semibold">Solusi Pisah.in</span>
                         <svg :class="{ 'rotate-180': openPanels[2] }" class="w-5 h-5 transition-transform"
                             fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"

@@ -2,9 +2,9 @@
     <div class="flex flex-col text-black mx-auto container py-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 md:divide-x md:divide-zinc-300">
             <div class="pr-0 md:pr-8">
-                <h2 class="text-2xl font-bold mb-2">BUYCUT</h2>
+                <h2 class="text-2xl font-bold mb-2">Pisah.in</h2>
                 <p class="text-sm font-light mb-4">
-BUYCUT adalah inisiatif yang bertujuan membantu mencari produk pengganti yang bebas dari afiliasi Zionis sebagai respons terhadap aksi boikot produk-produk tertentu.
+Pisah.in adalah inisiatif yang bertujuan membantu mencari produk pengganti yang bebas dari afiliasi Zionis sebagai respons terhadap aksi boikot produk-produk tertentu.
         Inisiatif ini mendukung konsumen untuk memilih produk sesuai nilai kemanusiaan dan solidaritas.                </p>
                 <!-- <div class="flex gap-3">
                     <a
@@ -61,7 +61,7 @@ BUYCUT adalah inisiatif yang bertujuan membantu mencari produk pengganti yang be
 
         <flux:separator />
         <div class="text-center text-sm text-zinc-800 mt-8">
-            &copy; <span id="year"></span> BUYCUT. All rights reserved. Made with love.
+            &copy; <span id="year"></span> Pisah.in. All rights reserved. Made with love.
         </div>
     </div>
 </footer>
