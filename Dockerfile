@@ -1,4 +1,4 @@
-FROM composer:2 AS composer-builder
+FROM composer:2-php8.4 AS composer-builder
 WORKDIR /app
 RUN apk add --no-cache icu-dev && docker-php-ext-install intl exif
 COPY . /app
@@ -14,7 +14,7 @@ RUN npm install
 
 RUN npm run build
 
-FROM dunglas/frankenphp:latest
+FROM dunglas/frankenphp:1-php8.4
 
 WORKDIR /app
 
