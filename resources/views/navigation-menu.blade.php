@@ -1,14 +1,8 @@
 <nav id="navbar" x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="flex items-center">
-
-                    </a>
-                </div>
-
-                <div class="hidden space-x-8 sm:ml-10 sm:flex items-center">
+        <div class="flex justify-center h-16">
+            <div class="flex items-center">
+                <div class="hidden space-x-8 sm:flex items-center">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')"
                         class="relative text-gray-800 border-b-2 border-transparent
                                {{ request()->routeIs('dashboard') ? 'border-zinc-700!' : 'hover:border-transparent' }}
@@ -17,9 +11,7 @@
                                after:transition-all after:duration-300 hover:after:w-full">
                         {{ __('Beranda') }}
                     </x-nav-link>
-                </div>
 
-                <div class="hidden space-x-8 sm:ml-10 sm:flex items-center">
                     <x-nav-link href="{{ route('product.index') }}" :active="request()->routeIs('product.index')"
                         class="relative text-gray-800 border-b-2 border-transparent
                                {{ request()->routeIs('product.index') ? 'border-zinc-700!' : 'hover:border-transparent' }}
@@ -28,9 +20,7 @@
                                after:transition-all after:duration-300 hover:after:w-full">
                         {{ __('Produk') }}
                     </x-nav-link>
-                </div>
 
-                <div class="hidden space-x-8 sm:ml-10 sm:flex items-center">
                     <x-nav-link href="{{ route('berita.index') }}" :active="request()->routeIs('berita.index')"
                         class="relative text-gray-800 border-b-2 border-transparent
                                {{ request()->routeIs('berita.index') ? 'border-zinc-700!' : 'hover:border-transparent' }}
@@ -42,7 +32,7 @@
                 </div>
             </div>
 
-            <div class="-mr-2 flex items-center sm:hidden">
+            <div class="absolute right-4 top-0 h-16 flex items-center sm:hidden">
                 <button @click="open = ! open"
                     class="inline-flex items-center justify-center p-2 rounded-md text-zinc-800 hover:text-white hover:bg-zinc-700 focus:outline-none focus:bg-zinc-700 focus:text-white transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">

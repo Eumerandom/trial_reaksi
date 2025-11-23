@@ -15,12 +15,14 @@
         "filament/filament": "^3.2",
         "laravel/framework": "^12.0",
         "laravel/jetstream": "^5.3",
+        "laravel/octane": "^2.13",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "livewire/flux": "^2.1",
         "livewire/livewire": "^3.0",
-        "predis/predis": "^2.3",
+        "scalar/laravel": "^0.2.0",
         "spatie/laravel-markdown": "^2.7",
+        "spatie/laravel-medialibrary": "^11.17",
         "unicon-rocks/unicon-laravel": "^0.4.2"
     },
     "require-dev": {

@@ -10,8 +10,10 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens;
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -71,5 +73,20 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if (app()->environment('local')) {
+            return true;
+        }
+
+        if ($panel->getId() === 'admin') {
+            return $this->hasVerifiedEmail() && (
+                $this->hasAnyRole(['admin', 'super_admin'])
+            );
+        }
+
+        return true;
     }
 }

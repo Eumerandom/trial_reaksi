@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Company extends Model
@@ -11,7 +14,7 @@ class Company extends Model
 
     protected $table = 'companies';
 
-    protected $fillable = ['name', 'slug', 'parent_id', 'status', 'logo'];
+    protected $fillable = ['name', 'slug', 'symbol', 'parent_id', 'status', 'logo'];
 
     public function products()
     {
@@ -48,5 +51,34 @@ class Company extends Model
         }
 
         return $total;
+    }
+
+    public function shareholdings(): HasMany
+    {
+        return $this->hasMany(CompanyShareholding::class);
+    }
+
+    public function shareholderPositions(): HasMany
+    {
+        return $this->hasMany(CompanyShareholderPosition::class);
+    }
+
+    public function shareholderEntities(): BelongsToMany
+    {
+        return $this->belongsToMany(ShareholderEntity::class, 'company_shareholder_positions')
+            ->withPivot([
+                'percent_held',
+                'market_value',
+                'percent_change',
+                'report_date',
+                'relationship_type',
+                'company_shareholding_id',
+            ])
+            ->withTimestamps();
+    }
+
+    public function latestShareholding(): HasOne
+    {
+        return $this->hasOne(CompanyShareholding::class)->latestOfMany('fetched_at');
     }
 }

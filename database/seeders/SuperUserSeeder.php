@@ -16,6 +16,7 @@ class SuperUserSeeder extends Seeder
             'name' => 'Adminlia',
             'email' => 'adminli@gmail.com',
             'password' => bcrypt('adminLI4'),
+            'email_verified_at' => now()
         ]);
 
         $liley->assignRole('super_admin');

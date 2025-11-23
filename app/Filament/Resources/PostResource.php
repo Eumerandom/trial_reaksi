@@ -12,6 +12,10 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Spatie\Image\Image;
 
 class PostResource extends Resource
 {
@@ -49,12 +53,14 @@ class PostResource extends Resource
                                 FileUpload::make('thumbnail')
                                     ->columnSpan(2)
                                     ->image()
-                                    ->directory('thumbnail_berita'),
+                                    ->disk('public')
+                                    ->directory('thumbnail_berita')
+                                    ->preserveFilenames(),
                                 MarkdownEditor::make('content')
                                     ->required()
                                     ->columnSpan(2),
                                 Forms\Components\Hidden::make('author')
-                                    ->default(fn () => auth()->id()),
+                                    ->default(fn () => Auth::id()),
                             ]),
                     ]),
             ]);
@@ -123,5 +129,34 @@ class PostResource extends Resource
             'create' => Pages\CreatePost::route('/create'),
             'edit' => Pages\EditPost::route('/{record}/edit'),
         ];
+    }
+    public static function convertThumbnailToWebp(?string $path): ?string
+    {
+        if (blank($path)) {
+            return $path;
+        }
+
+        $disk = Storage::disk('public');
+
+        if (! $disk->exists($path) || Str::endsWith(strtolower($path), '.webp')) {
+            return $path;
+        }
+
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+        $webpPath = $extension
+            ? Str::of($path)->replaceLast('.'.$extension, '.webp')->toString()
+            : $path.'.webp';
+
+        $imageDriver = config('media-library.image_driver', 'gd');
+
+        Image::useImageDriver($imageDriver)
+            ->loadFile($disk->path($path))
+            ->format('webp')
+            ->quality(85)
+            ->save($disk->path($webpPath));
+
+        $disk->delete($path);
+
+        return $webpPath;
     }
 }

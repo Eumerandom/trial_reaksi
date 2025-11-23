@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    'yahoo_finance' => [
+        'api_key' => env('YAHOO_FINANCE_API_KEY'),
+        'host' => env('YAHOO_FINANCE_API_HOST', 'yahoo-finance-real-time1.p.rapidapi.com'),
+        'timeout' => env('YAHOO_FINANCE_TIMEOUT', 10),
+        'region' => env('YAHOO_FINANCE_DEFAULT_REGION', 'US'),
+        'lang' => env('YAHOO_FINANCE_DEFAULT_LANGUAGE', 'en-US'),
+        'cache_store' => env('YAHOO_FINANCE_CACHE_STORE'),
+        'cache_ttl' => env('YAHOO_FINANCE_CACHE_TTL', 900),
+    ],
+
 ];

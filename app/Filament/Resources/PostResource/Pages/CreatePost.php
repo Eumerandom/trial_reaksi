@@ -13,4 +13,11 @@ class CreatePost extends CreateRecord
     {
         return $this->getResource()::getUrl('index');
     }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['thumbnail'] = PostResource::convertThumbnailToWebp($data['thumbnail'] ?? null);
+
+        return $data;
+    }
 }
