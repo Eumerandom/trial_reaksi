@@ -1,6 +1,11 @@
-FROM composer:2-php8.4 AS composer-builder
+FROM composer:2 AS composer-binary
+
+FROM php:8.4-cli-alpine AS composer-builder
 WORKDIR /app
-RUN apk add --no-cache icu-dev && docker-php-ext-install intl exif
+COPY --from=composer-binary /usr/bin/composer /usr/bin/composer
+RUN apk add --no-cache icu-dev git zip unzip libzip-dev zlib-dev \
+	&& docker-php-ext-configure zip \
+	&& docker-php-ext-install intl exif zip
 COPY . /app
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
@@ -10,9 +15,9 @@ WORKDIR /app
 
 COPY --from=composer-builder /app /app
 
-RUN npm install
+RUN corepack enable && pnpm install --frozen-lockfile
 
-RUN npm run build
+RUN pnpm run build
 
 FROM dunglas/frankenphp:1-php8.4
 
