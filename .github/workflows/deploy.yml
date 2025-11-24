@@ -44,6 +44,22 @@ jobs:
           --health-retries=3 \
           $IMAGE_NAME:$IMAGE_TAG
 
+      - name: Remove Previous Commit Images
+        run: |
+          IMAGE_NAME="pisahin-app"
+          CURRENT_TAG="${{ github.sha }}"
+          docker images "$IMAGE_NAME" --format '{{.Repository}} {{.Tag}} {{.ID}}' | while read -r repo tag image_id; do
+            if [ "$repo" != "$IMAGE_NAME" ]; then
+              continue
+            fi
+
+            if [ "$tag" = "$CURRENT_TAG" ]; then
+              continue
+            fi
+
+            docker rmi "$image_id" || true
+          done
+
       - name: Cleanup Old Docker Images
         run: |
           docker image prune -f
