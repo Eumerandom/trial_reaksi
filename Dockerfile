@@ -29,6 +29,6 @@ RUN install-php-extensions bcmath intl pcntl pdo_mysql redis opcache zip exif
 
 RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
 
-ENTRYPOINT ["php", "artisan", "octane:frankenphp"]
+ENTRYPOINT ["frankenphp", "php-cli", "artisan", "octane:frankenphp"]
 
 EXPOSE 8000
