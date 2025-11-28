@@ -34,7 +34,28 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-shopping-bag';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'slug', 'description', 'company.name', 'company.symbol', 'category.name'];
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            'Perusahaan' => $record->company?->name,
+            'Kategori' => $record->category?->name,
+            'Status' => $record->status === 'affiliated' ? 'Afiliasi' : 'Tidak Afiliasi',
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['company', 'category']);
+    }
 
     public static function form(Schema $schema): Schema
     {
