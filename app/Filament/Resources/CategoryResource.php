@@ -26,7 +26,22 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-tag';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'slug'];
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            'Slug' => $record->slug,
+            'Jumlah Produk' => $record->products()->count(),
+        ];
+    }
 
     public static function form(Schema $schema): Schema
     {
