@@ -2,10 +2,28 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Grid;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\CompanyResource\RelationManagers\ParentRelationManager;
+use App\Filament\Resources\CompanyResource\RelationManagers\ChildrenRelationManager;
+use App\Filament\Resources\CompanyResource\RelationManagers\ShareholdingsRelationManager;
+use App\Filament\Resources\CompanyResource\Pages\ListCompanies;
+use App\Filament\Resources\CompanyResource\Pages\CreateCompany;
+use App\Filament\Resources\CompanyResource\Pages\EditCompany;
 use App\Filament\Resources\CompanyResource\Pages;
 use App\Models\Company;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -15,39 +33,39 @@ class CompanyResource extends Resource
 {
     protected static ?string $model = Company::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-building-office-2';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make('Company Details')
+        return $schema
+            ->components([
+                Tabs::make('Company Details')
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('General')
+                        Tab::make('General')
                             ->schema([
-                                Forms\Components\Grid::make(2)
+                                Grid::make(2)
                                     ->schema([
-                                        Forms\Components\TextInput::make('name')
+                                        TextInput::make('name')
                                             ->required()
                                             ->maxLength(255)
                                             ->live(true)
                                             ->afterStateUpdated(fn (callable $set, $state) => $set('slug', Str::slug($state))),
 
-                                        Forms\Components\Hidden::make('slug'),
+                                        Hidden::make('slug'),
 
-                                        Forms\Components\TextInput::make('symbol')
+                                        TextInput::make('symbol')
                                             ->label('Ticker Symbol')
                                             ->maxLength(20)
                                             ->helperText('Contoh: MSFT')
                                             ->formatStateUsing(fn ($state) => is_string($state) ? strtoupper($state) : $state)
                                             ->dehydrateStateUsing(fn ($state) => is_string($state) ? strtoupper($state) : $state),
 
-                                        Forms\Components\Select::make('parent_id')
+                                        Select::make('parent_id')
                                             ->relationship('parent', 'name')
                                             ->placeholder('Induk Perusahaan'),
 
-                                        Forms\Components\Select::make('status')
+                                        Select::make('status')
                                             ->options([
                                                 'affiliated' => 'Affiliated',
                                                 'unaffiliated' => 'Unaffiliated',
@@ -56,9 +74,9 @@ class CompanyResource extends Resource
                                     ]),
                             ]),
 
-                        Forms\Components\Tabs\Tab::make('Media')
+                        Tab::make('Media')
                             ->schema([
-                                Forms\Components\FileUpload::make('logo')
+                                FileUpload::make('logo')
                                     ->label('Company Logo')
                                     ->image()
                                     ->directory('comapny_logos')
@@ -72,7 +90,7 @@ class CompanyResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
+                TextColumn::make('id')
                     ->label('No')
                     ->getStateUsing(function ($record, $livewire) {
                         $perPage = (int) $livewire->getTableRecordsPerPage();
@@ -82,18 +100,18 @@ class CompanyResource extends Resource
                         return ($page - 1) * $perPage + $index;
                     }),
 
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('symbol')
+                TextColumn::make('symbol')
                     ->label('Symbol')
                     ->sortable()
                     ->searchable()
                     ->placeholder('-'),
-                Tables\Columns\TextColumn::make('parent.name')
+                TextColumn::make('parent.name')
                     ->sortable()
                     ->label('Induk Perusahaan'),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->badge()
                     ->color(fn ($state) => match ($state) {
                         'affiliated' => 'danger',
@@ -101,18 +119,18 @@ class CompanyResource extends Resource
                     }),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('status')
+                SelectFilter::make('status')
                     ->options([
                         'affiliated' => 'Affiliated',
                         'unaffiliated' => 'Unaffiliated',
                     ]),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -120,18 +138,18 @@ class CompanyResource extends Resource
     public static function getRelations(): array
     {
         return [
-            CompanyResource\RelationManagers\ParentRelationManager::class,
-            CompanyResource\RelationManagers\ChildrenRelationManager::class,
-            CompanyResource\RelationManagers\ShareholdingsRelationManager::class,
+            ParentRelationManager::class,
+            ChildrenRelationManager::class,
+            ShareholdingsRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCompanies::route('/'),
-            'create' => Pages\CreateCompany::route('/create'),
-            'edit' => Pages\EditCompany::route('/{record}/edit'),
+            'index' => ListCompanies::route('/'),
+            'create' => CreateCompany::route('/create'),
+            'edit' => EditCompany::route('/{record}/edit'),
         ];
     }
 }

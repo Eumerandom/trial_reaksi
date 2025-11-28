@@ -2,10 +2,25 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\ProductResource\Pages\ListProducts;
+use App\Filament\Resources\ProductResource\Pages\CreateProduct;
+use App\Filament\Resources\ProductResource\Pages\EditProduct;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Models\Product;
 use Filament\Forms\Components;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns;
@@ -17,64 +32,64 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-shopping-bag';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Components\Tabs\Tab::make('General Information')
+                        Tab::make('General Information')
                             ->schema([
-                                Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->required()
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(fn (callable $set, $state) => $set('slug', Str::slug($state))),
-                                Components\TextInput::make('slug')
+                                TextInput::make('slug')
                                     ->disabled()
                                     ->required(),
-                                Components\TextInput::make('description')
+                                TextInput::make('description')
                                     ->required()
                                     ->columnSpanFull(),
-                                Components\TextInput::make('source')
+                                TextInput::make('source')
                                     ->url()
                                     ->required(),
                             ]),
 
-                        Components\Tabs\Tab::make('Association')
+                        Tab::make('Association')
                             ->schema([
-                                Components\Select::make('status')
+                                Select::make('status')
                                     ->required()
                                     ->options([
                                         'affiliated' => 'Affiliated',
                                         'unaffiliated' => 'Unaffiliated',
                                     ])
                                     ->default('unaffiliated'),
-                                Components\Select::make('company_id')
+                                Select::make('company_id')
                                     ->relationship('company', 'name')
                                     ->searchable()
                                     ->preload()
                                     ->required(),
-                                Components\Select::make('categories_id')
+                                Select::make('categories_id')
                                     ->relationship('category', 'name')
                                     ->searchable()
                                     ->preload(),
-                                Components\Toggle::make('local_product')
+                                Toggle::make('local_product')
                                     ->label('Local Product')
                                     ->default(false),
                             ]),
 
-                        Components\Tabs\Tab::make('Media')
+                        Tab::make('Media')
                             ->schema([
-                                Components\FileUpload::make('image')
+                                FileUpload::make('image')
                                     ->label('Upload Image (opsional, atau isi URL di bawah)')
                                     ->image()
                                     ->directory('product_images')
                                     ->disk('public')
                                     ->preserveFilenames(),
-                                Components\TextInput::make('image')
+                                TextInput::make('image')
                                     ->label('CDN Image URL (opsional, atau upload file di atas)')
                                     ->url()
                                     ->columnSpanFull(),
@@ -87,7 +102,7 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Columns\TextColumn::make('no')
+                TextColumn::make('no')
                     ->label('No')
                     ->getStateUsing(function ($record, $livewire) {
                         $perPage = (int) $livewire->getTableRecordsPerPage();
@@ -97,11 +112,11 @@ class ProductResource extends Resource
                         return ($page - 1) * $perPage + $index;
                     }),
 
-                Columns\TextColumn::make('name')->sortable()->searchable(),
-                Columns\TextColumn::make('company.name')->sortable()->searchable(),
-                Columns\TextColumn::make('category.name')->sortable()->searchable(),
+                TextColumn::make('name')->sortable()->searchable(),
+                TextColumn::make('company.name')->sortable()->searchable(),
+                TextColumn::make('category.name')->sortable()->searchable(),
 
-                Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->sortable()
                     ->badge()
                     ->color(fn ($state) => match ($state) {
@@ -110,9 +125,9 @@ class ProductResource extends Resource
                         default => 'danger',
                     }),
 
-                Columns\IconColumn::make('local_product')->boolean(),
-                Columns\ImageColumn::make('image')->square(),
-                Columns\TextColumn::make('updated_at')->date()->sortable(),
+                IconColumn::make('local_product')->boolean(),
+                ImageColumn::make('image')->square(),
+                TextColumn::make('updated_at')->date()->sortable(),
             ])
             ->filters([
                 SelectFilter::make('status')->options([
@@ -122,12 +137,12 @@ class ProductResource extends Resource
                 SelectFilter::make('company')->relationship('company', 'name'),
                 SelectFilter::make('category')->relationship('category', 'name'),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                DeleteBulkAction::make(),
             ]);
     }
 
@@ -139,9 +154,9 @@ class ProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProducts::route('/'),
-            'create' => Pages\CreateProduct::route('/create'),
-            'edit' => Pages\EditProduct::route('/{record}/edit'),
+            'index' => ListProducts::route('/'),
+            'create' => CreateProduct::route('/create'),
+            'edit' => EditProduct::route('/{record}/edit'),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Contracts\Cache\Repository;
 use App\Exceptions\ShareholdingProviderException;
 use App\Models\Company;
 use App\Models\CompanyShareholding;
@@ -435,7 +436,7 @@ class CompanyShareholdingService
     }
 
     /**
-     * @return array{0: \Illuminate\Contracts\Cache\Repository, 1: string}
+     * @return array{0: Repository, 1: string}
      */
     private function resolveCacheRepository(): array
     {

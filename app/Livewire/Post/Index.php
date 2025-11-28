@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Post;
 
+use App\Models\Category;
 use App\Models\Post;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -65,7 +66,7 @@ class Index extends Component
             ->orderBy('title', $this->sort)
             ->paginate(12);
 
-        $categories = \App\Models\Category::all();
+        $categories = Category::all();
 
         return view('livewire.post.index', [
             'posts' => $posts,

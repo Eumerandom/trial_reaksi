@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PostResource\Widgets;
 
+use Filament\Tables\Columns\TextColumn;
 use App\Filament\Resources\PostResource;
 use App\Models\Post;
 use Filament\Tables;
@@ -21,7 +22,7 @@ class PostList extends BaseWidget
                 return PostResource::getEloquentQuery();
             })
             ->columns([
-                Tables\Columns\TextColumn::make('no')
+                TextColumn::make('no')
                     ->label('No')
                     ->getStateUsing(function ($record, $livewire) {
                         $perPage = $livewire->getTableRecordsPerPage();
@@ -30,19 +31,19 @@ class PostList extends BaseWidget
 
                         return ($page - 1) * $perPage + $index;
                     }),
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
                 // Tables\Columns\TextColumn::make('content')
                 //     ->limit(30),
-                Tables\Columns\TextColumn::make('authorUser.name') // diambil berdasarkan relasi di model Post
+                TextColumn::make('authorUser.name') // diambil berdasarkan relasi di model Post
                     ->label('Author')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->badge()
                     ->sortable()
                     ->color(fn ($state) => match ($state) {

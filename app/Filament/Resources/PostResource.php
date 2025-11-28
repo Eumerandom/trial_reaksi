@@ -2,13 +2,24 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Grid;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\PostResource\Pages\ListPosts;
+use App\Filament\Resources\PostResource\Pages\CreatePost;
+use App\Filament\Resources\PostResource\Pages\EditPost;
 use App\Filament\Resources\PostResource\Pages;
 use App\Models\Post;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -21,27 +32,27 @@ class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-newspaper';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make()
+        return $schema
+            ->components([
+                Section::make()
                     ->schema([
-                        Forms\Components\Grid::make(2)
+                        Grid::make(2)
                             ->schema([
                                 TextInput::make('title')
                                     ->required()
                                     ->maxLength(255)
                                     ->columnSpan(1)
                                     ->afterStateUpdated(function (callable $set, $state) {
-                                        $set('slug', \Illuminate\Support\Str::slug($state));
+                                        $set('slug', Str::slug($state));
                                     })
                                     ->live(true),
-                                Forms\Components\Hidden::make('slug')
+                                Hidden::make('slug')
                                     ->dehydrated(),
-                                Forms\Components\Select::make('status')
+                                Select::make('status')
                                     ->options([
                                         'draft' => 'Draft',
                                         'published' => 'Published',
@@ -59,7 +70,7 @@ class PostResource extends Resource
                                 MarkdownEditor::make('content')
                                     ->required()
                                     ->columnSpan(2),
-                                Forms\Components\Hidden::make('author')
+                                Hidden::make('author')
                                     ->default(fn () => Auth::id()),
                             ]),
                     ]),
@@ -70,7 +81,7 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('no')
+                TextColumn::make('no')
                     ->label('No')
                     ->getStateUsing(function ($record, $livewire) {
                         $perPage = (int) $livewire->getTableRecordsPerPage();
@@ -80,19 +91,19 @@ class PostResource extends Resource
                         return ($page - 1) * $perPage + $index;
                     }),
 
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
                 // Tables\Columns\TextColumn::make('content')
                 //     ->limit(30),
-                Tables\Columns\TextColumn::make('authorUser.name') // diambil berdasarkan relasi di model Post
+                TextColumn::make('authorUser.name') // diambil berdasarkan relasi di model Post
                     ->label('Author')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->badge()
                     ->sortable()
                     ->color(fn ($state) => match ($state) {
@@ -105,12 +116,12 @@ class PostResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -125,9 +136,9 @@ class PostResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPosts::route('/'),
-            'create' => Pages\CreatePost::route('/create'),
-            'edit' => Pages\EditPost::route('/{record}/edit'),
+            'index' => ListPosts::route('/'),
+            'create' => CreatePost::route('/create'),
+            'edit' => EditPost::route('/{record}/edit'),
         ];
     }
     public static function convertThumbnailToWebp(?string $path): ?string

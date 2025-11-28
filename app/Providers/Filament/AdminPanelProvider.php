@@ -2,6 +2,10 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Pages\Dashboard;
+use App\Filament\Resources\ProductResource\Widgets\AfiliatedProducts;
+use App\Filament\Resources\PostResource\Widgets\PostList;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use App\Filament\Resources\PostResource;
 use App\Filament\Resources\ProductResource;
 use Filament\Http\Middleware\Authenticate;
@@ -25,7 +29,11 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        URL::forceScheme('https');
+        // Hanya force HTTPS di production
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
+        
         return $panel
             ->default()
             ->id('admin')
@@ -39,14 +47,14 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
-                ProductResource\Widgets\AfiliatedProducts::class,
-                PostResource\Widgets\PostList::class,
+                AfiliatedProducts::class,
+                PostList::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -63,7 +71,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
-                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                FilamentShieldPlugin::make(),
             ]);
     }
 }

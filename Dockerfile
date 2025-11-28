@@ -1,49 +1,56 @@
-FROM composer:2 AS composer-binary
-
 FROM php:8.4-cli-alpine AS composer-builder
+
 WORKDIR /app
-COPY --from=composer-binary /usr/bin/composer /usr/bin/composer
-RUN apk add --no-cache icu-dev git zip unzip libzip-dev zlib-dev \
-	&& docker-php-ext-configure zip \
-	&& docker-php-ext-install intl exif zip
+
+RUN apk add --no-cache icu-dev libzip-dev libexif-dev g++ make autoconf libc-dev pkgconf
+
+RUN docker-php-ext-configure intl \
+    && docker-php-ext-install intl zip exif
+
+RUN apk del g++ make autoconf libc-dev pkgconf
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist --no-scripts
+
 COPY . /app
-RUN composer dump-autoload --optimize --no-interaction
-RUN cp vendor/laravel/octane/src/Commands/stubs/frankenphp-worker.php public/frankenphp-worker.php
+RUN composer dump-autoload --optimize
+
 
 FROM node:20-alpine AS node-builder
 
 WORKDIR /app
 
+RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh - \
+    && ln -s $HOME/.local/share/pnpm/pnpm /usr/local/bin/pnpm
+
 COPY package.json pnpm-lock.yaml ./
-RUN corepack enable && pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 COPY --from=composer-builder /app /app
 
 RUN pnpm run build
 
-FROM dunglas/frankenphp:1-php8.4
+
+FROM dunglas/frankenphp:php8.4-alpine
 
 WORKDIR /app
 
 COPY --from=node-builder /app /app
 
-RUN install-php-extensions bcmath intl pcntl pdo_mysql redis opcache zip exif
+RUN install-php-extensions intl zip exif pcntl pdo_mysql redis opcache
 
-RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
+RUN php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache \
+    && php artisan filament:upgrade
 
-ENV APP_ENV=production \
-	APP_DEBUG=false \
-	APP_BASE_PATH=/app \
-	APP_PUBLIC_PATH=/app/public \
-	CADDY_SERVER_SERVER_NAME=":8000" \
-	CADDY_SERVER_ADMIN_HOST=127.0.0.1 \
-	CADDY_SERVER_ADMIN_PORT=2019 \
-	CADDY_SERVER_LOG_LEVEL=INFO \
-	CADDY_SERVER_LOGGER=json \
-	CADDY_GLOBAL_OPTIONS="auto_https disable_redirects"
-
-ENTRYPOINT ["frankenphp", "run", "-c", "/app/vendor/laravel/octane/src/Commands/stubs/Caddyfile"]
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 
 EXPOSE 8000
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8000/up || exit 1
+
+ENTRYPOINT ["php", "artisan", "octane:frankenphp", "--host=0.0.0.0", "--port=8000"]

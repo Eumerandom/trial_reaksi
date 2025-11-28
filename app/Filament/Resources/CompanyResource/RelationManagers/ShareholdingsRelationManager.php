@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\CompanyResource\RelationManagers;
 
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\Action;
 use App\Services\CompanyShareholdingService;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -23,7 +25,7 @@ class ShareholdingsRelationManager extends RelationManager
             ->heading('Data Shareholding')
             ->recordTitleAttribute('symbol')
             ->columns([
-                Tables\Columns\TextColumn::make('fetched_at')
+                TextColumn::make('fetched_at')
                     ->label('Diambil Pada')
                     ->dateTime('d M Y H:i'),
                 // Tables\Columns\TextColumn::make('payload->symbol')
@@ -36,14 +38,14 @@ class ShareholdingsRelationManager extends RelationManager
                 // Tables\Columns\TextColumn::make('payload->fundOwnership->ownershipList')
                 //     ->label('Fund Holders')
                 //     ->formatStateUsing(fn ($state) => $this->formatCount($state)),
-                Tables\Columns\TextColumn::make('source')
+                TextColumn::make('source')
                     ->badge()
                     ->color('success')
                     ->label('Sumber'),
             ])
             ->defaultSort('fetched_at', 'desc')
             ->headerActions([
-                Tables\Actions\Action::make('fetchShareholding')
+                Action::make('fetchShareholding')
                     ->label('Ambil Data Terbaru')
                     ->icon('heroicon-o-arrow-path')
                     ->color('primary')
@@ -82,8 +84,8 @@ class ShareholdingsRelationManager extends RelationManager
                         }
                     }),
             ])
-            ->actions([
-                Tables\Actions\Action::make('viewShareholding')
+            ->recordActions([
+                Action::make('viewShareholding')
                     ->label('Lihat Detail')
                     ->icon('heroicon-o-eye')
                     ->color('secondary')

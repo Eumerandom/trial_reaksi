@@ -14,15 +14,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Login to Docker (Optional if registry needed)
-        if: false
-        run: echo "Skip registry login for now"
-
       - name: Build Docker Image
         run: |
           IMAGE_NAME="pisahin-app"
           IMAGE_TAG="${{ github.sha }}"
-          docker build -t $IMAGE_NAME:$IMAGE_TAG .
+          docker build -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest .
 
       - name: Stop Existing Container
         run: |
@@ -36,31 +32,44 @@ jobs:
           IMAGE_NAME="pisahin-app"
           IMAGE_TAG="${{ github.sha }}"
           docker run -d \
-          --name pisahin-app \
-          -p 8000:8000 \
-          --env-file /var/www/pisahin/.env \
-          --health-cmd="curl --fail http://localhost:8000/health || exit 1" \
-          --health-interval=10s \
-          --health-retries=3 \
-          $IMAGE_NAME:$IMAGE_TAG
+            --name pisahin-app \
+            --restart unless-stopped \
+            -p 8000:8000 \
+            --env-file /var/www/pisahin/.env \
+            -e APP_ENV=production \
+            -e OCTANE_HTTPS=true \
+            --health-cmd="curl --fail http://localhost:8000/up || exit 1" \
+            --health-interval=30s \
+            --health-timeout=3s \
+            --health-retries=3 \
+            --health-start-period=10s \
+            $IMAGE_NAME:$IMAGE_TAG
 
-      - name: Remove Previous Commit Images
+      - name: Wait for Container Health
         run: |
-          IMAGE_NAME="pisahin-app"
-          CURRENT_TAG="${{ github.sha }}"
-          docker images "$IMAGE_NAME" --format '{{.Repository}} {{.Tag}} {{.ID}}' | while read -r repo tag image_id; do
-            if [ "$repo" != "$IMAGE_NAME" ]; then
-              continue
+          echo "Waiting for container to be healthy..."
+          for i in {1..30}; do
+            STATUS=$(docker inspect --format='{{.State.Health.Status}}' pisahin-app 2>/dev/null || echo "starting")
+            if [ "$STATUS" = "healthy" ]; then
+              echo "Container is healthy!"
+              exit 0
             fi
-
-            if [ "$tag" = "$CURRENT_TAG" ]; then
-              continue
-            fi
-
-            docker rmi "$image_id" || true
+            echo "Status: $STATUS - waiting..."
+            sleep 2
           done
+          echo "Container failed to become healthy"
+          docker logs pisahin-app --tail 50
+          exit 1
 
       - name: Cleanup Old Docker Images
         run: |
+          IMAGE_NAME="pisahin-app"
+          CURRENT_TAG="${{ github.sha }}"
+          # Keep latest and current, remove others
+          docker images "$IMAGE_NAME" --format '{{.Tag}}' | while read tag; do
+            if [ "$tag" != "$CURRENT_TAG" ] && [ "$tag" != "latest" ]; then
+              docker rmi "$IMAGE_NAME:$tag" || true
+            fi
+          done
           docker image prune -f
 
