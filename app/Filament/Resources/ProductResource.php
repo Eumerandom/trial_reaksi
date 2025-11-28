@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\ProductExporter;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -15,6 +16,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\ExportBulkAction;
 use App\Filament\Resources\ProductResource\Pages\ListProducts;
 use App\Filament\Resources\ProductResource\Pages\CreateProduct;
 use App\Filament\Resources\ProductResource\Pages\EditProduct;
@@ -142,6 +144,9 @@ class ProductResource extends Resource
                 DeleteAction::make(),
             ])
             ->toolbarActions([
+                ExportBulkAction::make()
+                    ->exporter(ProductExporter::class)
+                    ->label('Export Terpilih'),
                 DeleteBulkAction::make(),
             ]);
     }

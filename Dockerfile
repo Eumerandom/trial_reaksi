@@ -20,10 +20,12 @@ RUN composer dump-autoload --optimize
 
 FROM node:20-alpine AS node-builder
 
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
 WORKDIR /app
 
-RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh - \
-    && ln -s $HOME/.local/share/pnpm/pnpm /usr/local/bin/pnpm
+RUN wget -qO- https://get.pnpm.io/install.sh | SHELL="$(which sh)" sh -
 
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
