@@ -28,9 +28,28 @@ class ShareholderEntityResource extends Resource
 {
     protected static ?string $model = ShareholderEntity::class;
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $navigationLabel = 'Shareholder';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'type'];
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            'Tipe' => match($record->type) {
+                'institution' => 'Institusi',
+                'fund' => 'Dana',
+                'insider' => 'Insider',
+                default => $record->type,
+            },
+        ];
+    }
 
     public static function form(Schema $schema): Schema
     {
