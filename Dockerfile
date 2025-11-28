@@ -34,6 +34,8 @@ RUN pnpm run build
 
 FROM dunglas/frankenphp:php8.4-alpine
 
+RUN apk add --no-cache nodejs npm && npm install -g pnpm
+
 WORKDIR /app
 
 COPY --from=node-builder /app /app
