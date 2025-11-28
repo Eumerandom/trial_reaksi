@@ -32,7 +32,27 @@ class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
+    protected static ?string $recordTitleAttribute = 'title';
+
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-newspaper';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'slug', 'content', 'authorUser.name'];
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            'Penulis' => $record->authorUser?->name,
+            'Dibuat' => $record->created_at?->format('d M Y'),
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['authorUser']);
+    }
 
     public static function form(Schema $schema): Schema
     {
