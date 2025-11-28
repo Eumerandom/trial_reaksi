@@ -33,7 +33,22 @@ class CompanyResource extends Resource
 {
     protected static ?string $model = Company::class;
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-building-office-2';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'slug', 'symbol'];
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            'Simbol' => $record->symbol,
+            'Jumlah Produk' => $record->products()->count(),
+        ];
+    }
 
     public static function form(Schema $schema): Schema
     {
