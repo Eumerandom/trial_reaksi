@@ -3,7 +3,6 @@
 namespace App\Providers\Filament;
 
 use Filament\Pages\Dashboard;
-use App\Http\Middleware\VerifyCsrfToken;
 use App\Filament\Resources\ProductResource\Widgets\AfiliatedProducts;
 use App\Filament\Resources\PostResource\Widgets\PostList;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -20,6 +19,7 @@ use Filament\Support\Colors\Color;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\URL;

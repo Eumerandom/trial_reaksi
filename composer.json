@@ -21,6 +21,7 @@
         "livewire/flux": "^2.1",
         "livewire/livewire": "^3.0",
         "scalar/laravel": "^0.2.0",
+        "sentry/sentry-laravel": "^4.19",
         "spatie/laravel-markdown": "^2.7",
         "spatie/laravel-medialibrary": "^11.17",
         "unicon-rocks/unicon-laravel": "^0.4.2"
