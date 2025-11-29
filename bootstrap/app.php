@@ -19,8 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
                 Request::HEADER_X_FORWARDED_HOST |
                 Request::HEADER_X_FORWARDED_PORT |
                 Request::HEADER_X_FORWARDED_PROTO
-        );
+        )->validateCsrfTokens(['https://pisah.in/admin/login', 'admin/login']);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         Integration::handles($exceptions);
     })->create();
+    
