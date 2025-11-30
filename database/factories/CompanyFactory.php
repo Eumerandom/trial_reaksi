@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Support\StatusLevel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -22,7 +23,7 @@ class CompanyFactory extends Factory
             'slug' => Str::slug($this->faker->unique()->company()).'-'.$this->faker->unique()->numerify('##'),
             'symbol' => strtoupper($this->faker->unique()->lexify('????')),
             'parent_id' => null,
-            'status' => $this->faker->randomElement(['affiliated', 'unaffiliated']),
+            'status' => $this->faker->randomElement(StatusLevel::values()),
             'logo' => null,
         ];
     }

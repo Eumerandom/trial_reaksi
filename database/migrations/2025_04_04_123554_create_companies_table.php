@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\StatusLevel;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->foreignId('parent_id')->nullable()->constrained('companies')->onDelete('cascade');
             $table->string('slug')->unique();
             $table->string('logo')->nullable();
-            $table->enum('status', ['affiliated', 'unaffiliated'])->nullable();
+            $table->enum('status', StatusLevel::values())->default(StatusLevel::DIRECT_SUPPORT)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

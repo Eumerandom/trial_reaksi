@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Category;
 use App\Models\Company;
+use App\Support\StatusLevel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -22,7 +23,7 @@ class ProductFactory extends Factory
         $name = $this->faker->unique()->words(3, true);
 
         return [
-            'status' => $this->faker->randomElement(['affiliated', 'unaffiliated']),
+            'status' => $this->faker->randomElement(StatusLevel::values()),
             'company_id' => Company::factory(),
             'categories_id' => Category::factory(),
             'name' => $name,

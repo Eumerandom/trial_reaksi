@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\Product;
+use App\Support\StatusLevel;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -44,23 +45,23 @@ class ProductSeeder extends Seeder
 
         $cocaColaCompany = Company::firstOrCreate(
             ['slug' => Str::slug('The Coca-Cola Company')],
-            ['name' => 'The Coca-Cola Company', 'status' => 'affiliated']
+            ['name' => 'The Coca-Cola Company', 'status' => StatusLevel::DIRECT_SUPPORT]
         );
         $indofoodCompany = Company::firstOrCreate(
             ['slug' => Str::slug('Indofood')],
-            ['name' => 'Indofood', 'status' => 'unaffiliated']
+            ['name' => 'Indofood', 'status' => StatusLevel::INDIRECT_SUPPORT]
         );
         $danoneCompany = Company::firstOrCreate(
             ['slug' => Str::slug('Danone')],
-            ['name' => 'Danone', 'status' => 'affiliated']
+            ['name' => 'Danone', 'status' => StatusLevel::DIRECT_SUPPORT]
         );
         $sidomunculCompany = Company::firstOrCreate(
             ['slug' => Str::slug('PT Sido Muncul Tbk')],
-            ['name' => 'PT Sido Muncul Tbk', 'status' => 'affiliated']
+            ['name' => 'PT Sido Muncul Tbk', 'status' => StatusLevel::PUBLIC_COMPANY]
         );
         $dekaCompany = Company::firstOrCreate(
             ['slug' => Str::slug('PT Dua Kelinci')],
-            ['name' => 'PT Dua Kelinci', 'status' => 'unaffiliated']
+            ['name' => 'PT Dua Kelinci', 'status' => StatusLevel::LOCAL_INDEPENDENT]
         );
 
         $products = [
@@ -69,7 +70,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Minuman berkarbonasi rasa kola.',
                 'categories_id' => $sodaCategory->id,
                 'company_id' => $cocaColaCompany->id,
-                'status' => 'affiliated',
+                'status' => StatusLevel::DIRECT_SUPPORT,
                 'local_product' => false,
                 'source' => 'https://www.instagram.com/reel/C4jx-lCBeke/?utm_source=ig_web_copy_link&igsh=azk2YjlubXJ5anBq',
                 'image' => 'product_images/Coacola.jpeg',
@@ -79,7 +80,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Mie instan populer dari Indonesia dengan berbagai varian rasa.',
                 'categories_id' => $mieCategory->id,
                 'company_id' => $indofoodCompany->id,
-                'status' => 'affiliated',
+                'status' => StatusLevel::INDIRECT_SUPPORT,
                 'local_product' => true,
                 'source' => 'https://www.instagram.com/p/CzToTc9LlH-/?utm_source=ig_web_copy_link',
                 'image' => 'product_images/Indomie.webp',
@@ -89,7 +90,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Aqua adalah merek air minum dalam kemasan (AMDK) yang diproduksi oleh PT. Aqua Golden Mississippi, yang merupakan bagian dari Grup Danone.',
                 'categories_id' => $airCategory->id,
                 'company_id' => $danoneCompany->id,
-                'status' => 'affiliated',
+                'status' => StatusLevel::DIRECT_SUPPORT,
                 'local_product' => true,
                 'source' => 'https://www.instagram.com/p/C2zofAHyOhj/?utm_source=ig_web_copy_link&igsh=MW52d2g0Nno4MmI3eA==',
                 'image' => 'product_images/aqua.png',
@@ -99,7 +100,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Tolak Angin adalah produk herbal yang diproduksi oleh PT Sido Muncul Tbk, dikenal sebagai suplemen kesehatan tradisional Indonesia.',
                 'categories_id' => $obatCategory->id,
                 'company_id' => $sidomunculCompany->id,
-                'status' => 'affiliated',
+                'status' => StatusLevel::PUBLIC_COMPANY,
                 'local_product' => true,
                 'source' => 'https://www.instagram.com/p/CzToTc9LlH-/?utm_source=ig_web_copy_link',
                 'image' => 'product_images/tolak_angin.png',
@@ -109,7 +110,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Deka Wafer Roll adalah produk wafer gulung yang diproduksi oleh PT Dua Kelinci, dikenal dengan rasa yang lezat dan renyah.',
                 'categories_id' => $obatCategory->id,
                 'company_id' => $dekaCompany->id,
-                'status' => 'unaffiliated',
+                'status' => StatusLevel::LOCAL_INDEPENDENT,
                 'local_product' => true,
                 'source' => 'https://www.instagram.com/p/DAxI2TKPeJN/?utm_source=ig_web_copy_link&igsh=NmR2dnduaGs1MnV2',
                 'image' => 'product_images/deka.png',

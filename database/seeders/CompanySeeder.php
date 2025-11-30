@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Company;
+use App\Support\StatusLevel;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -14,18 +15,18 @@ class CompanySeeder extends Seeder
         $wings = Company::create([
             'name' => 'Wings Group',
             'slug' => Str::slug('Wings Group'),
-            'status' => 'affiliated',
+            'status' => StatusLevel::DIRECT_SUPPORT,
         ]);
 
         // Create child companies
         $wingsCompanies = [
             [
                 'name' => 'Wings Food',
-                'status' => 'affiliated',
+                'status' => StatusLevel::INDIRECT_SUPPORT,
             ],
             [
                 'name' => 'Wings Care',
-                'status' => 'affiliated',
+                'status' => StatusLevel::DIRECT_SUPPORT,
             ],
         ];
 
@@ -41,19 +42,19 @@ class CompanySeeder extends Seeder
         $companies = [
             [
                 'name' => 'Danone',
-                'status' => 'affiliated',
+                'status' => StatusLevel::DIRECT_SUPPORT,
             ],
             [
                 'name' => 'PT Sido Muncul Tbk',
-                'status' => 'affiliated',
+                'status' => StatusLevel::PUBLIC_COMPANY,
             ],
             [
                 'name' => 'PT Dua Kelinci',
-                'status' => 'unaffiliated',
+                'status' => StatusLevel::LOCAL_INDEPENDENT,
             ],
             [
                 'name' => 'Microsoft Corporation',
-                'status' => 'affiliated',
+                'status' => StatusLevel::DIRECT_SUPPORT,
                 'symbol' => 'MSFT',
             ],
         ];
