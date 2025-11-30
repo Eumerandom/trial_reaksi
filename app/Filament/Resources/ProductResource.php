@@ -7,6 +7,7 @@ use App\Filament\Resources\ProductResource\Pages\CreateProduct;
 use App\Filament\Resources\ProductResource\Pages\EditProduct;
 use App\Filament\Resources\ProductResource\Pages\ListProducts;
 use App\Models\Product;
+use App\Support\StatusLevel;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -44,7 +45,7 @@ class ProductResource extends Resource
         return [
             'Perusahaan' => $record->company?->name,
             'Kategori' => $record->category?->name,
-            'Status' => $record->status === 'affiliated' ? 'Afiliasi' : 'Tidak Afiliasi',
+            'Status' => StatusLevel::label($record->status),
         ];
     }
 
@@ -80,12 +81,10 @@ class ProductResource extends Resource
                         Tab::make('Association')
                             ->schema([
                                 Select::make('status')
+                                    ->label('Status Boikot')
                                     ->required()
-                                    ->options([
-                                        'affiliated' => 'Affiliated',
-                                        'unaffiliated' => 'Unaffiliated',
-                                    ])
-                                    ->default('unaffiliated'),
+                                    ->options(StatusLevel::options())
+                                    ->default(StatusLevel::DIRECT_SUPPORT),
                                 Select::make('company_id')
                                     ->relationship('company', 'name')
                                     ->searchable()
@@ -139,13 +138,11 @@ class ProductResource extends Resource
                 TextColumn::make('category.name')->sortable()->searchable(),
 
                 TextColumn::make('status')
+                    ->label('Status')
                     ->sortable()
                     ->badge()
-                    ->color(fn ($state) => match ($state) {
-                        'affiliated' => 'danger',
-                        'unaffiliated' => 'success',
-                        default => 'danger',
-                    }),
+                    ->formatStateUsing(fn (?string $state): string => StatusLevel::label($state))
+                    ->color(fn (?string $state): string => StatusLevel::filamentColor($state)),
 
                 IconColumn::make('local_product')->boolean(),
                 ImageColumn::make('image_url')
@@ -155,10 +152,9 @@ class ProductResource extends Resource
                 TextColumn::make('updated_at')->date()->sortable(),
             ])
             ->filters([
-                SelectFilter::make('status')->options([
-                    'affiliated' => 'Affiliated',
-                    'unaffiliated' => 'Unaffiliated',
-                ]),
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options(StatusLevel::options()),
                 SelectFilter::make('company')->relationship('company', 'name'),
                 SelectFilter::make('category')->relationship('category', 'name'),
             ])

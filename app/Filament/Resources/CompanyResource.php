@@ -2,30 +2,28 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
-use Filament\Schemas\Components\Grid;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\FileUpload;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Actions\EditAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use App\Filament\Resources\CompanyResource\RelationManagers\ParentRelationManager;
-use App\Filament\Resources\CompanyResource\RelationManagers\ChildrenRelationManager;
-use App\Filament\Resources\CompanyResource\RelationManagers\ShareholdingsRelationManager;
-use App\Filament\Resources\CompanyResource\Pages\ListCompanies;
 use App\Filament\Resources\CompanyResource\Pages\CreateCompany;
 use App\Filament\Resources\CompanyResource\Pages\EditCompany;
-use App\Filament\Resources\CompanyResource\Pages;
+use App\Filament\Resources\CompanyResource\Pages\ListCompanies;
+use App\Filament\Resources\CompanyResource\RelationManagers\ChildrenRelationManager;
+use App\Filament\Resources\CompanyResource\RelationManagers\ParentRelationManager;
+use App\Filament\Resources\CompanyResource\RelationManagers\ShareholdingsRelationManager;
 use App\Models\Company;
-use Filament\Forms;
+use App\Support\StatusLevel;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
@@ -35,7 +33,7 @@ class CompanyResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-building-office-2';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-building-office-2';
 
     public static function getGloballySearchableAttributes(): array
     {
@@ -81,10 +79,9 @@ class CompanyResource extends Resource
                                             ->placeholder('Induk Perusahaan'),
 
                                         Select::make('status')
-                                            ->options([
-                                                'affiliated' => 'Affiliated',
-                                                'unaffiliated' => 'Unaffiliated',
-                                            ])
+                                            ->label('Status Boikot')
+                                            ->options(StatusLevel::options())
+                                            ->default(StatusLevel::DIRECT_SUPPORT)
                                             ->required(),
                                     ]),
                             ]),
@@ -127,18 +124,15 @@ class CompanyResource extends Resource
                     ->sortable()
                     ->label('Induk Perusahaan'),
                 TextColumn::make('status')
+                    ->label('Status')
                     ->badge()
-                    ->color(fn ($state) => match ($state) {
-                        'affiliated' => 'danger',
-                        'unaffiliated' => 'success',
-                    }),
+                    ->formatStateUsing(fn (?string $state): string => StatusLevel::label($state))
+                    ->color(fn (?string $state): string => StatusLevel::filamentColor($state)),
             ])
             ->filters([
                 SelectFilter::make('status')
-                    ->options([
-                        'affiliated' => 'Affiliated',
-                        'unaffiliated' => 'Unaffiliated',
-                    ]),
+                    ->label('Status')
+                    ->options(StatusLevel::options()),
             ])
             ->recordActions([
                 EditAction::make(),
