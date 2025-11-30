@@ -15,10 +15,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CompanySeeder::class,   // Second: Create companies (parent and child)
             CategorySeeder::class,
-            ProductSeeder::class,
             RoleSeeder::class,
             SuperUserSeeder::class,
-            PostSeeder::class,
         ]);
     }
 }

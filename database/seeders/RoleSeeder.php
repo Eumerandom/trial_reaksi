@@ -13,8 +13,15 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $superAdmin = Role::create(['name' => 'super_admin', 'guard_name' => 'web']);
-        $superAdmin->givePermissionTo(\Spatie\Permission\Models\Permission::all());
-        Artisan::call('shield:generate', ['--all' => true]);
+        Artisan::call('shield:generate', [
+            '--all' => true,
+            '--panel' => 'admin',
+            '--option' => 'policies_and_permissions',
+        ]);
+
+        $superAdmin = Role::firstOrCreate(
+            ['name' => 'super_admin', 'guard_name' => 'web']
+        );
+        $superAdmin->syncPermissions(\Spatie\Permission\Models\Permission::all());
     }
 }
