@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Spatie\Image\Enums\Fit;
+use Spatie\Image\Image;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -59,35 +59,17 @@ class Product extends Model implements HasMedia
         $this->addMediaCollection('product_images')->singleFile();
     }
 
-    public function registerMediaConversions(?Media $media = null): void
-    {
-        $previewQuality = (int) config('media-library.conversions.product_preview_webp_quality', 80);
-
-        $this->addMediaConversion('preview')
-            ->performOnCollections('product_images')
-            ->fit(Fit::Crop, 600, 600)
-            ->keepOriginalImageFormat()
-            ->nonQueued();
-
-        $this->addMediaConversion('preview_webp')
-            ->performOnCollections('product_images')
-            ->fit(Fit::Crop, 600, 600)
-            ->format('webp')
-            ->quality($previewQuality)
-            ->nonQueued();
-    }
-
     protected function imageUrl(): Attribute
     {
         return Attribute::make(
             get: function (?string $value, array $attributes): ?string {
-                $mediaUrl = $this->getFirstMediaUrl('product_images', 'preview')
-                    ?: $this->getFirstMediaUrl('product_images');
+                $media = $this->ensureProductImageWebp();
 
-                if ($mediaUrl) {
-                    return $mediaUrl;
+                if ($media) {
+                    return $media->getUrl();
                 }
 
+                // Fallback ke external image URL jika ada
                 $imagePath = $attributes['image'] ?? null;
 
                 if (blank($imagePath)) {
@@ -105,12 +87,89 @@ class Product extends Model implements HasMedia
 
     public function syncImageColumnFromMedia(): void
     {
-        $mediaUrl = $this->getFirstMediaUrl('product_images');
+        $media = $this->ensureProductImageWebp();
 
-        if (! $mediaUrl || $this->image === $mediaUrl) {
+        if (! $media) {
+            return;
+        }
+
+        $mediaUrl = $media->getUrl();
+
+        if ($this->image === $mediaUrl) {
             return;
         }
 
         $this->forceFill(['image' => $mediaUrl])->saveQuietly();
+    }
+
+    protected function ensureProductImageWebp(?Media $media = null): ?Media
+    {
+        $media ??= $this->getFirstMedia('product_images');
+
+        if (! $media) {
+            return null;
+        }
+
+        $this->deletePreviewConversion($media);
+
+        if (Str::of($media->file_name)->lower()->endsWith('.webp')) {
+            return $media->refresh();
+        }
+
+        try {
+            $disk = Storage::disk($media->disk);
+
+            $originalRelativePath = $media->getPathRelativeToRoot();
+            $originalAbsolutePath = $media->getPath();
+
+            $extension = pathinfo($media->file_name, PATHINFO_EXTENSION);
+            $webpFileName = $extension
+                ? Str::of($media->file_name)->replaceLast('.'.$extension, '.webp')->toString()
+                : $media->file_name.'.webp';
+
+            $webpRelativePath = Str::of($originalRelativePath)
+                ->replaceLast($media->file_name, $webpFileName)
+                ->toString();
+
+            $webpAbsolutePath = $disk->path($webpRelativePath);
+
+            Image::useImageDriver(config('media-library.image_driver', 'gd'))
+                ->loadFile($originalAbsolutePath)
+                ->format('webp')
+                ->quality(90)
+                ->save($webpAbsolutePath);
+
+            $disk->delete($originalRelativePath);
+
+            $media->forceFill([
+                'file_name' => $webpFileName,
+                'mime_type' => 'image/webp',
+                'size' => $disk->size($webpRelativePath),
+                'generated_conversions' => [],
+            ])->save();
+
+            return $media->fresh();
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return $media;
+        }
+    }
+
+    protected function deletePreviewConversion(Media $media): void
+    {
+        $conversionDisk = $media->conversions_disk ?? $media->disk;
+        $disk = Storage::disk($conversionDisk);
+
+        $baseName = pathinfo($media->file_name, PATHINFO_FILENAME);
+        $previewFileName = $baseName.'-preview.webp';
+
+        $previewRelativePath = Str::of($media->getPathRelativeToRoot())
+            ->replace($media->file_name, $previewFileName)
+            ->toString();
+
+        if ($disk->exists($previewRelativePath)) {
+            $disk->delete($previewRelativePath);
+        }
     }
 }
