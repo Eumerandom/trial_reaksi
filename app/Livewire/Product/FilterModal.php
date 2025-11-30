@@ -4,6 +4,7 @@ namespace App\Livewire\Product;
 
 use App\Models\Category;
 use App\Models\Company;
+use App\Support\StatusLevel;
 use Livewire\Component;
 
 class FilterModal extends Component
@@ -23,6 +24,7 @@ class FilterModal extends Component
         return view('livewire.product.filter-modal', [
             'categories' => $categories,
             'companies' => $companies,
+            'statusOptions' => StatusLevel::dropdownItems(),
         ]);
     }
 

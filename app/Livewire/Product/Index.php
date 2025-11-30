@@ -5,6 +5,7 @@ namespace App\Livewire\Product;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\Product;
+use App\Support\StatusLevel;
 use Livewire\Component;
 
 class Index extends Component
@@ -27,12 +28,18 @@ class Index extends Component
             ->select(['id', 'name', 'description', 'status', 'categories_id', 'company_id', 'slug', 'image', 'source', 'local_product'])
             ->get()
             ->map(function ($product) {
+                $status = StatusLevel::definition($product->status);
+
                 return (object) [
                     'id' => $product->id,
                     'name' => $product->name,
                     'description' => $product->description,
                     'status' => $product->status,
-                    'status_label' => $product->status === 'affiliated' ? 'Terafiliasi' : 'Tidak Terafiliasi',
+                    'status_label' => $status['label'],
+                    'status_cta' => $status['cta'],
+                    'status_description' => $status['description'],
+                    'status_tone' => $status['tone'],
+                    'status_level' => $status['level'],
                     'category' => $product->category ? (object) [
                         'id' => $product->category->id,
                         'name' => $product->category->name,

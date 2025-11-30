@@ -4,13 +4,14 @@ namespace App\Livewire;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Support\StatusLevel;
 use Livewire\Component;
 
 class Dashboard extends Component
 {
     public function render()
     {
-        $alternativeProductCount = Product::where('status', 'unaffiliated')->count();
+        $alternativeProductCount = Product::whereIn('status', StatusLevel::safeValues())->count();
 
         $categoryCount = Category::count();
 
