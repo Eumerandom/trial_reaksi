@@ -1,0 +1,35 @@
+services:
+  app:
+    build: .
+    image: pisahin-app:${IMAGE_TAG:-latest}
+    container_name: pisahin-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - APP_ENV=production
+      - OCTANE_HTTPS=true
+    volumes:
+      - storage_app:/app/storage/app
+      - storage_logs:/app/storage/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/up"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    networks:
+      - pisahin-network
+
+volumes:
+  storage_app:
+    name: pisahin-storage-app
+  storage_logs:
+    name: pisahin-storage-logs
+
+networks:
+  pisahin-network:
+    name: pisahin-network
+    driver: bridge

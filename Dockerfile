@@ -45,9 +45,12 @@ RUN install-php-extensions intl zip exif pcntl pdo_mysql redis opcache
 RUN php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache \
-    && php artisan filament:upgrade
+    && php artisan filament:upgrade \
+    && php artisan storage:link
 
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
+
+VOLUME ["/app/storage/app", "/app/storage/logs"]
 
 EXPOSE 8000
 
