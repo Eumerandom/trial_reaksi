@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -27,6 +28,7 @@ Route::get('/product', App\Livewire\Product\Index::class)->name('product.index')
 Route::get('/product/{slug}', App\Livewire\Product\Show::class)->name('product.show');
 Route::get('/berita', \App\Livewire\Post\Index::class)->name('berita.index');
 Route::get('/berita/{slug}', \App\Livewire\Post\Show::class)->name('berita.show');
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // Test Error Pages (hapus di production)
 Route::get('/test-500', function () {
