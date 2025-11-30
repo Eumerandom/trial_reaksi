@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,13 +13,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser, HasMedia
+class User extends Authenticatable implements FilamentUser, HasAvatar, HasMedia
 {
     use HasApiTokens;
 
@@ -40,6 +39,7 @@ class User extends Authenticatable implements FilamentUser, HasMedia
         'name',
         'email',
         'password',
+        'email_verified_at',
     ];
 
     /**
@@ -79,15 +79,9 @@ class User extends Authenticatable implements FilamentUser, HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('profile_photos')
+            ->useDisk('public')
             ->useFallbackUrl($this->defaultProfilePhotoUrl())
             ->singleFile();
-    }
-
-    public function registerMediaConversions(?Media $media = null): void
-    {
-        $this->addMediaConversion('avatar')
-            ->fit(Fit::Crop, 256, 256)
-            ->nonQueued();
     }
 
     public function posts()
@@ -100,10 +94,21 @@ class User extends Authenticatable implements FilamentUser, HasMedia
         if ($this->hasMedia('profile_photos')) {
             $media = $this->getFirstMedia('profile_photos');
 
-            return $media?->getUrl('avatar') ?? $media?->getUrl() ?? $this->defaultProfilePhotoUrl();
+            return $media?->getUrl() ?? $this->defaultProfilePhotoUrl();
         }
 
         return $this->defaultProfilePhotoUrl();
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        if ($this->hasMedia('profile_photos')) {
+            $media = $this->getFirstMedia('profile_photos');
+
+            return $media?->getUrl();
+        }
+
+        return null;
     }
 
     public function canAccessPanel(Panel $panel): bool

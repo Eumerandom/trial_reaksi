@@ -2,17 +2,15 @@
 
 namespace App\Providers\Filament;
 
-use Filament\Pages\Dashboard;
-use App\Filament\Resources\ProductResource\Widgets\AfiliatedProducts;
+use App\Filament\Pages\Auth\EditProfile;
 use App\Filament\Resources\PostResource\Widgets\PostList;
+use App\Filament\Resources\ProductResource\Widgets\AfiliatedProducts;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
-use App\Filament\Resources\PostResource;
-use App\Filament\Resources\ProductResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
+use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -32,12 +30,13 @@ class AdminPanelProvider extends PanelProvider
         if (app()->environment('production')) {
             URL::forceScheme('https');
         }
-        
+
         return $panel
             ->default()
             ->id('admin')
             ->path('admin')
             ->login()
+            ->profile(EditProfile::class)
             ->colors([
                 'primary' => Color::Red,
                 'secondary' => Color::Yellow,
