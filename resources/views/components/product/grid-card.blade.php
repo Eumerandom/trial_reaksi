@@ -1,3 +1,14 @@
+@php
+    $statusTone = $product->status_tone ?? 'gray';
+    $statusLabel = $product->status_label ?? 'Belum Dikategorikan';
+    $badgeClasses = match($statusTone) {
+        'red' => 'bg-red-500 text-white',
+        'orange' => 'bg-orange-500 text-white',
+        'amber' => 'bg-amber-500 text-white',
+        'green' => 'bg-green-500 text-white',
+        default => 'bg-gray-500 text-white',
+    };
+@endphp
 <a
     href="{{ route('product.show', ['slug' => $product->slug]) }}"
     class="fade-up group block w-full transform-gpu sm:px-3 md:px-3"
@@ -6,12 +17,8 @@
         'relative overflow-hidden rounded-xl bg-white/90 ring-1 ring-black/5 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1',
     ])>
         <div class="relative w-full aspect-square">
-            <span @class([
-                'absolute z-10 top-3 left-3 px-2 py-1 rounded-md text-[10px] font-medium tracking-wide',
-                'bg-red-500 text-white' => $product->status === 'affiliated',
-                'bg-green-500 text-white' => $product->status === 'unaffiliated',
-            ])>
-                {{ $product->status === 'affiliated' ? 'Terafiliasi' : 'Tidak Terafiliasi' }}
+            <span class="absolute z-10 top-3 left-3 px-2 py-1 rounded-md text-[10px] font-medium tracking-wide {{ $badgeClasses }}">
+                {{ $statusLabel }}
             </span>
 
             @if(isset($product->local_product))

@@ -8,14 +8,24 @@
 
         <div class="max-w-6xl m-auto grid grid-cols-1 md:grid-cols-2 gap-6">
             @if($product)
+                @php
+                    $statusDef = \App\Support\StatusLevel::definition($product->status);
+                    $statusLabel = $statusDef['label'];
+                    $statusCta = $statusDef['cta'];
+                    $statusDescription = $statusDef['description'];
+                    $statusTone = $statusDef['tone'];
+                    $badgeBg = match($statusTone) {
+                        'red' => 'bg-red-100 text-red-600',
+                        'orange' => 'bg-orange-100 text-orange-600',
+                        'amber' => 'bg-amber-100 text-amber-600',
+                        'green' => 'bg-green-100 text-green-600',
+                        default => 'bg-gray-100 text-gray-600',
+                    };
+                @endphp
                 <div class="group relative overflow-hidden rounded-2xl bg-white ring-1 ring-black/5 shadow-sm">
                     <div class="relative w-full aspect-square">
-                        <span @class([
-                            'absolute z-10 top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold',
-                            'bg-red-100 text-red-600' => $product->status === 'affiliated',
-                            'bg-green-100 text-green-600' => $product->status === 'unaffiliated',
-                        ])>
-                            {{ $product->status === 'affiliated' ? 'Terafiliasi' : 'Tidak Terafiliasi' }}
+                        <span class="absolute z-10 top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold {{ $badgeBg }}">
+                            {{ $statusLabel }}
                         </span>
 
                         @if(isset($product->local_product))
@@ -95,32 +105,44 @@
                         </div>
                     </div>
 
-                    <div @class([
-                        'p-5 rounded-lg relative',
-                        'border border-red-500/60 bg-red-50' => $product->status === 'affiliated',
-                        'border border-green-500/60 bg-green-50' => $product->status === 'unaffiliated',
-                    ])>
-                        <div class="absolute top-4 right-4 text-xs flex items-center gap-1
-                            {{ $product->status === 'affiliated' ? 'text-red-600' : 'text-green-600' }}">
+                    @php
+                        $boxClasses = match($statusTone) {
+                            'red' => 'border-red-500/60 bg-red-50',
+                            'orange' => 'border-orange-500/60 bg-orange-50',
+                            'amber' => 'border-amber-500/60 bg-amber-50',
+                            'green' => 'border-green-500/60 bg-green-50',
+                            default => 'border-gray-500/60 bg-gray-50',
+                        };
+                        $textColor = match($statusTone) {
+                            'red' => 'text-red-600',
+                            'orange' => 'text-orange-600',
+                            'amber' => 'text-amber-600',
+                            'green' => 'text-green-600',
+                            default => 'text-gray-600',
+                        };
+                        $iconColor = match($statusTone) {
+                            'red' => 'text-red-500',
+                            'orange' => 'text-orange-500',
+                            'amber' => 'text-amber-500',
+                            'green' => 'text-green-500',
+                            default => 'text-gray-500',
+                        };
+                    @endphp
+                    <div class="p-5 rounded-lg relative border {{ $boxClasses }}">
+                        <div class="absolute top-4 right-4 text-xs flex items-center gap-1 {{ $textColor }}">
                             <flux:icon.clock class="size-4"></flux:icon.clock>
                             <span>{{ \Carbon\Carbon::make($product->updated_at)->format('Y-m-d') }}</span>
                         </div>
 
                         <div class="flex items-center gap-3">
-                            <flux:icon.info @class([
-                                'text-red-500' => $product->status === 'affiliated',
-                                'text-green-500' => $product->status === 'unaffiliated',
-                            ])></flux:icon.info>
-                            <h3 class="text-lg md:text-xl font-semibold">
-                                {{ $product->status === 'affiliated' ? 'Terafiliasi' : 'Tidak Terafiliasi' }}
-                            </h3>
+                            <flux:icon.info class="{{ $iconColor }}"></flux:icon.info>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-semibold">{{ $statusLabel }}</h3>
+                                <span class="text-sm font-medium {{ $textColor }}">{{ $statusCta }}</span>
+                            </div>
                         </div>
-                        <div class="ml-8 mt-1">
-                            <p class="text-zinc-600 text-sm">
-                                {{$product->status === "affiliated"
-                                    ? "Produk ini terafiliasi dengan Pembunuh Anak Kecil. Pertimbangkan informasi ini sebelum membeli."
-                                    : "Produk ini tidak terafiliasi dengan pihak tertentu. Anda bebas memilih untuk membeli."}}
-                            </p>
+                        <div class="ml-8 mt-2">
+                            <p class="text-zinc-600 text-sm">{{ $statusDescription }}</p>
                         </div>
                     </div>
 

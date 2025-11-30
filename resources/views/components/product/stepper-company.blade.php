@@ -5,11 +5,31 @@
 <div class="relative flex flex-col gap-3 py-2">
     @foreach($items as $i => $item)
         @php
-            $isAffiliated = $item->status === 'affiliated';
-            $border = $isAffiliated ? 'border-red-200' : 'border-green-200';
-            $shadow = $isAffiliated ? 'shadow-red-100/30' : 'shadow-green-100/30';
-            $badge = $isAffiliated ? 'bg-gradient-to-r from-red-400/80 to-red-600/80 text-white shadow-sm' : 'bg-gradient-to-r from-green-400/80 to-green-600/80 text-white shadow-sm';
-            $pinColor = $isAffiliated ? 'bg-red-400 border-red-200' : 'bg-green-400 border-green-200';
+            $statusDef = \App\Support\StatusLevel::definition($item->status);
+            $statusLabel = $statusDef['label'];
+            $statusTone = $statusDef['tone'];
+            
+            $border = match($statusTone) {
+                'red' => 'border-red-200',
+                'orange' => 'border-orange-200',
+                'amber' => 'border-amber-200',
+                'green' => 'border-green-200',
+                default => 'border-gray-200',
+            };
+            $shadow = match($statusTone) {
+                'red' => 'shadow-red-100/30',
+                'orange' => 'shadow-orange-100/30',
+                'amber' => 'shadow-amber-100/30',
+                'green' => 'shadow-green-100/30',
+                default => 'shadow-gray-100/30',
+            };
+            $badge = match($statusTone) {
+                'red' => 'bg-gradient-to-r from-red-400/80 to-red-600/80 text-white shadow-sm',
+                'orange' => 'bg-gradient-to-r from-orange-400/80 to-orange-600/80 text-white shadow-sm',
+                'amber' => 'bg-gradient-to-r from-amber-400/80 to-amber-600/80 text-white shadow-sm',
+                'green' => 'bg-gradient-to-r from-green-400/80 to-green-600/80 text-white shadow-sm',
+                default => 'bg-gradient-to-r from-gray-400/80 to-gray-600/80 text-white shadow-sm',
+            };
             $productCount = $item->products->count() ?? 0;
             $childrenCount = $item->children->count() ?? 0;
             $totalChild = $item->getTotalChildren();
@@ -21,7 +41,7 @@
                     <div class="flex items-center justify-between gap-2 mb-0.5">
                         <h3 class="font-bold text-[13px] text-gray-900 tracking-width">{{ $item->name }}</h3>
                         <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full {{ $badge }} shadow-sm">
-                            {{ $item->status === 'affiliated' ? 'Terafiliasi' : 'Tidak Terafiliasi' }}
+                            {{ $statusLabel }}
                         </span>
                     </div>
                     <div class="flex flex-wrap items-center gap-3 mt-0.5 text-[11px] text-gray-500">
