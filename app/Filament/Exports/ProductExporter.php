@@ -51,7 +51,7 @@ class ProductExporter extends Exporter
             ExportColumn::make('source')
                 ->label('Sumber URL'),
 
-            ExportColumn::make('image')
+            ExportColumn::make('image_url')
                 ->label('URL Gambar'),
 
             ExportColumn::make('created_at')
@@ -64,10 +64,10 @@ class ProductExporter extends Exporter
 
     public static function getCompletedNotificationBody(Export $export): string
     {
-        $body = 'Export produk selesai! ' . Number::format($export->successful_rows) . ' ' . str('baris')->plural($export->successful_rows) . ' berhasil diexport.';
+        $body = 'Export produk selesai! '.Number::format($export->successful_rows).' '.str('baris')->plural($export->successful_rows).' berhasil diexport.';
 
         if ($failedRowsCount = $export->getFailedRowsCount()) {
-            $body .= ' ' . Number::format($failedRowsCount) . ' ' . str('baris')->plural($failedRowsCount) . ' gagal diexport.';
+            $body .= ' '.Number::format($failedRowsCount).' '.str('baris')->plural($failedRowsCount).' gagal diexport.';
         }
 
         return $body;

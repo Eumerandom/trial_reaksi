@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources\ProductResource\Pages;
 
-use Filament\Actions\DeleteAction;
 use App\Filament\Resources\ProductResource;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditProduct extends EditRecord
@@ -21,5 +20,10 @@ class EditProduct extends EditRecord
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
+    }
+
+    protected function afterSave(): void
+    {
+        $this->record->syncImageColumnFromMedia();
     }
 }

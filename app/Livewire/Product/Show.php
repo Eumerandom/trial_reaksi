@@ -17,8 +17,12 @@ class Show extends Component
 
     public function mount($slug)
     {
-        $products = Product::with('company')->where('slug', $slug)->first();
-        $company = $products->company->load(['children', 'children.children']);
+        $products = Product::with([
+            'media',
+            'company.children',
+            'company.children.children',
+        ])->where('slug', $slug)->firstOrFail();
+        $company = $products->company;
         $this->parents = $company->getParents();
         $this->company = $company;
         $this->product = $products;

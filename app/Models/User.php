@@ -4,25 +4,30 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasMedia
 {
     use HasApiTokens;
+
     /** @use HasFactory<UserFactory> */
     use HasFactory;
 
     use HasProfilePhoto;
-
     use HasRoles;
+    use InteractsWithMedia;
     use Notifiable;
     use TwoFactorAuthenticatable;
 
@@ -71,9 +76,34 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('profile_photos')
+            ->useFallbackUrl($this->defaultProfilePhotoUrl())
+            ->singleFile();
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('avatar')
+            ->fit(Fit::Crop, 256, 256)
+            ->nonQueued();
+    }
+
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function getProfilePhotoUrlAttribute(): string
+    {
+        if ($this->hasMedia('profile_photos')) {
+            $media = $this->getFirstMedia('profile_photos');
+
+            return $media?->getUrl('avatar') ?? $media?->getUrl() ?? $this->defaultProfilePhotoUrl();
+        }
+
+        return $this->defaultProfilePhotoUrl();
     }
 
     public function canAccessPanel(Panel $panel): bool

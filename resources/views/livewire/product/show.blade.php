@@ -25,7 +25,7 @@
                         @endif
 
                         <img
-                            src="{{ $product->image ? '/storage/' . $product->image : 'https://placehold.co/800x600' }}"
+                            src="{{ $product->image_url ?? 'https://placehold.co/800x600' }}"
                             alt="{{ $product->name }}"
                             loading="lazy"
                             decoding="async"

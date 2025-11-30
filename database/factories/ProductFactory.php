@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
@@ -16,8 +19,18 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+        $name = $this->faker->unique()->words(3, true);
+
         return [
-            //
+            'status' => $this->faker->randomElement(['affiliated', 'unaffiliated']),
+            'company_id' => Company::factory(),
+            'categories_id' => Category::factory(),
+            'name' => $name,
+            'description' => $this->faker->paragraph(),
+            'source' => $this->faker->url(),
+            'image' => $this->faker->imageUrl(),
+            'slug' => Str::slug($name).'-'.$this->faker->unique()->numerify('###'),
+            'local_product' => $this->faker->boolean(),
         ];
     }
 }

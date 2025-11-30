@@ -23,7 +23,7 @@ class Index extends Component
 
     public function render()
     {
-        $products = Product::with(['category', 'company'])
+        $products = Product::with(['category', 'company', 'media'])
             ->select(['id', 'name', 'description', 'status', 'categories_id', 'company_id', 'slug', 'image', 'source', 'local_product'])
             ->get()
             ->map(function ($product) {
@@ -42,7 +42,7 @@ class Index extends Component
                         'name' => $product->company->name,
                     ] : null,
                     'slug' => $product->slug,
-                    'image' => $product->image,
+                    'image' => $product->image_url,
                     'source' => $product->source,
                     'local_product' => $product->local_product,
                     'is_local' => $product->local_product ? 'Produk Lokal' : 'Produk Import',

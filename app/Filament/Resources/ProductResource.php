@@ -3,29 +3,25 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Exports\ProductExporter;
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\FileUpload;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\ExportBulkAction;
-use App\Filament\Resources\ProductResource\Pages\ListProducts;
 use App\Filament\Resources\ProductResource\Pages\CreateProduct;
 use App\Filament\Resources\ProductResource\Pages\EditProduct;
-use App\Filament\Resources\ProductResource\Pages;
+use App\Filament\Resources\ProductResource\Pages\ListProducts;
 use App\Models\Product;
-use Filament\Forms\Components;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Columns;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
@@ -36,7 +32,7 @@ class ProductResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-shopping-bag';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-shopping-bag';
 
     public static function getGloballySearchableAttributes(): array
     {
@@ -106,14 +102,17 @@ class ProductResource extends Resource
 
                         Tab::make('Media')
                             ->schema([
-                                FileUpload::make('image')
-                                    ->label('Upload Image (opsional, atau isi URL di bawah)')
+                                SpatieMediaLibraryFileUpload::make('product_images')
+                                    ->label('Upload Image (tersimpan di storage)')
+                                    ->collection('product_images')
                                     ->image()
-                                    ->directory('product_images')
                                     ->disk('public')
-                                    ->preserveFilenames(),
+                                    ->imageEditor()
+                                    ->maxSize(5120)
+                                    ->columnSpanFull(),
                                 TextInput::make('image')
-                                    ->label('CDN Image URL (opsional, atau upload file di atas)')
+                                    ->label('External Image URL (opsional)')
+                                    ->helperText('Gunakan jika gambar tersedia di CDN atau sumber lain.')
                                     ->url()
                                     ->columnSpanFull(),
                             ]),
@@ -149,7 +148,10 @@ class ProductResource extends Resource
                     }),
 
                 IconColumn::make('local_product')->boolean(),
-                ImageColumn::make('image')->square(),
+                ImageColumn::make('image_url')
+                    ->label('Image')
+                    ->square()
+                    ->defaultImageUrl('https://placehold.co/200x200'),
                 TextColumn::make('updated_at')->date()->sortable(),
             ])
             ->filters([
