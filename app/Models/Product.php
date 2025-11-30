@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\StatusLevel;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,7 +29,7 @@ class Product extends Model implements HasMedia
         'image' => '',
     ];
 
-    protected $appends = ['image_url'];
+    protected $appends = ['image_url', 'status_label', 'status_cta', 'status_tone', 'status_level'];
 
     public function company()
     {
@@ -100,6 +101,34 @@ class Product extends Model implements HasMedia
         }
 
         $this->forceFill(['image' => $mediaUrl])->saveQuietly();
+    }
+
+    protected function statusLabel(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => StatusLevel::label($this->status),
+        );
+    }
+
+    protected function statusCta(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => StatusLevel::callToAction($this->status),
+        );
+    }
+
+    protected function statusTone(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => StatusLevel::tone($this->status),
+        );
+    }
+
+    protected function statusLevel(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?int => StatusLevel::level($this->status),
+        );
     }
 
     protected function ensureProductImageWebp(?Media $media = null): ?Media
