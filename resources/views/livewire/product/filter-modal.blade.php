@@ -156,15 +156,16 @@
         </flux:field>    
 
         <flux:field>
-            <flux:label>Status Afiliasi</flux:label>
+            <flux:label>Status Boikot</flux:label>
             <div x-data="{ 
                 open: false, 
                 selected: @entangle('filters.status'),
                 selectedText: 'Semua Status',
                 options: [
                     { id: '', name: 'Semua Status' },
-                    { id: 'affiliated', name: 'Terafiliasi' },
-                    { id: 'unaffiliated', name: 'Tidak Terafiliasi' }
+                    @foreach($statusOptions as $opt)
+                    { id: '{{ $opt['id'] }}', name: '{{ $opt['name'] }} ({{ $opt['cta'] }})' },
+                    @endforeach
                 ],
                 
                 selectOption(id, name) {
