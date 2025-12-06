@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\CompanyResource\Pages;
 
-use Filament\Actions\CreateAction;
+use App\Filament\Imports\CompanyImporter;
 use App\Filament\Resources\CompanyResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
+use Filament\Actions\ImportAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListCompanies extends ListRecords
@@ -14,6 +15,9 @@ class ListCompanies extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            ImportAction::make()
+                ->importer(CompanyImporter::class)
+                ->label('Import CSV'),
             CreateAction::make(),
         ];
     }
